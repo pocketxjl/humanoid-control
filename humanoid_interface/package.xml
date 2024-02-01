@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>humanoid_interface</name>
+  <version>0.0.1</version>
+  <description>The humanoid_interface package</description>
+
+  <maintainer email="xuejl2001@mail.ustc.edu.cn">Jialong Xue</maintainer>
+
+  <license>BSD-3</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <depend>ocs2_core</depend>
+  <depend>ocs2_oc</depend>
+  <depend>ocs2_ddp</depend>
+  <depend>ocs2_mpc</depend>
+  <depend>ocs2_sqp</depend>
+  <depend>ocs2_ipm</depend>
+  <depend>ocs2_robotic_assets</depend>
+  <depend>ocs2_robotic_tools</depend>
+  <depend>ocs2_pinocchio_interface</depend>
+  <depend>ocs2_centroidal_model</depend>
+  <depend>pinocchio</depend>
+
+</package>
