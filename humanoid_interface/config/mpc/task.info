@@ -161,18 +161,18 @@ initialState
    (11,0) 0.0     ; theta_base_x
 
    ;; Leg Joint Positions: [LF, LH, RF, RH] ;;
-   (12,0) -0.25   ; LF_HAA
-   (13,0)  0.60   ; LF_HFE
-   (14,0) -0.85   ; LF_KFE
-   (15,0) -0.25   ; LH_HAA
-   (16,0) -0.60   ; LH_HFE
-   (17,0)  0.85   ; LH_KFE
-   (18,0)  0.25   ; RF_HAA
-   (19,0)  0.60   ; RF_HFE
-   (20,0) -0.85   ; RF_KFE
-   (21,0)  0.25   ; RH_HAA
-   (22,0) -0.60   ; RH_HFE
-   (23,0)  0.85   ; RH_KFE
+   (12,0) 0.00   ; leg_l1_joint
+   (13,0) 0.00   ; leg_l2_joint
+   (14,0) 0.35   ; leg_l3_joint
+   (15,0) -0.90  ; leg_l4_joint
+   (16,0) 0.55   ; leg_l5_joint
+   (17,0) 0.00   ; leg_l6_joint
+   (18,0) 0.00   ; leg_r1_joint
+   (19,0) 0.00   ; leg_r2_joint
+   (20,0) 0.35   ; leg_r3_joint
+   (21,0) -0.90  ; leg_r4_joint
+   (22,0) 0.55   ; leg_r5_joint
+   (23,0) 0.00   ; leg_r6_joint
 }
 
 ; standard state weight matrix
@@ -197,18 +197,18 @@ Q
   (11,11) 200.0    ; theta_base_x
 
   ;; Leg Joint Positions: [LF, LH, RF, RH] ;;
-  (12,12) 20.0     ; LF_HAA
-  (13,13) 20.0     ; LF_HFE
-  (14,14) 20.0     ; LF_KFE
-  (15,15) 20.0     ; LH_HAA
-  (16,16) 20.0     ; LH_HFE
-  (17,17) 20.0     ; LH_KFE
-  (18,18) 20.0     ; RF_HAA
-  (19,19) 20.0     ; RF_HFE
-  (20,20) 20.0     ; RF_KFE
-  (21,21) 20.0     ; RH_HAA
-  (22,22) 20.0     ; RH_HFE
-  (23,23) 20.0     ; RH_KFE
+  (12,12) 20.0     ; leg_l1_joint
+  (13,13) 20.0     ; leg_l2_joint
+  (14,14) 20.0     ; leg_l3_joint
+  (15,15) 20.0     ; leg_l4_joint
+  (16,16) 20.0     ; leg_l5_joint
+  (17,17) 20.0     ; leg_l6_joint
+  (18,18) 20.0     ; leg_r1_joint
+  (19,19) 20.0     ; leg_r2_joint
+  (20,20) 20.0     ; leg_r3_joint
+  (21,21) 20.0     ; leg_r4_joint
+  (22,22) 20.0     ; leg_r5_joint
+  (23,23) 20.0     ; leg_r6_joint
 }
 
 ; control weight matrix
@@ -217,32 +217,32 @@ R
   scaling 1e-3
 
   ;; Feet Contact Forces: [LF, RF, LH, RH] ;;
-  (0,0)   1.0       ; left_front_force
-  (1,1)   1.0       ; left_front_force
-  (2,2)   1.0       ; left_front_force
-  (3,3)   1.0       ; right_front_force
-  (4,4)   1.0       ; right_front_force
-  (5,5)   1.0       ; right_front_force
-  (6,6)   1.0       ; left_hind_force
-  (7,7)   1.0       ; left_hind_force
-  (8,8)   1.0       ; left_hind_force
-  (9,9)   1.0       ; right_hind_force
-  (10,10) 1.0       ; right_hind_force
-  (11,11) 1.0       ; right_hind_force
+  (0,0)   1.0       ; l
+  (1,1)   1.0       ; l
+  (2,2)   1.0       ; l
+  (3,3)   1.0       ; l
+  (4,4)   1.0       ; l
+  (5,5)   1.0       ; l
+  (6,6)   1.0       ; r
+  (7,7)   1.0       ; r
+  (8,8)   1.0       ; r
+  (9,9)   1.0       ; r
+  (10,10) 1.0       ; r
+  (11,11) 1.0       ; r
 
   ;; foot velocity relative to base: [LF, LH, RF, RH] (uses the Jacobian at nominal configuration) ;;
   (12,12) 5000.0    ; x
   (13,13) 5000.0    ; y
   (14,14) 5000.0    ; z
-  (15,15) 5000.0    ; x
-  (16,16) 5000.0    ; y
-  (17,17) 5000.0    ; z
+  (15,15) 5000.0    ; r
+  (16,16) 5000.0    ; p
+  (17,17) 5000.0    ; y
   (18,18) 5000.0    ; x
   (19,19) 5000.0    ; y
   (20,20) 5000.0    ; z
-  (21,21) 5000.0    ; x
-  (22,22) 5000.0    ; y
-  (23,23) 5000.0    ; z
+  (21,21) 5000.0    ; r
+  (22,22) 5000.0    ; p
+  (23,23) 5000.0    ; y
 }
 
 frictionConeSoftConstraint
