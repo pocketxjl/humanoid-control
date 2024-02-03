@@ -19,9 +19,9 @@ model_settings
 
 swing_trajectory_config
 {
-  liftOffVelocity               0.2
-  touchDownVelocity            -0.4
-  swingHeight                   0.1
+  liftOffVelocity               0.4
+  touchDownVelocity            -0.8
+  swingHeight                   0.2
   touchdownAfterHorizon         0.2
   swingTimeScale                0.15
 }
@@ -155,7 +155,7 @@ initialState
    ;; Base Pose: [position, orientation] ;;
    (6,0)  0.0     ; p_base_x
    (7,0)  0.0     ; p_base_y
-   (8,0)  0.575   ; p_base_z
+   (8,0)  0.934   ; p_base_z
    (9,0)  0.0     ; theta_base_z
    (10,0) 0.0     ; theta_base_y
    (11,0) 0.0     ; theta_base_x
@@ -165,13 +165,13 @@ initialState
    (13,0) 0.00   ; leg_l2_joint
    (14,0) 0.35   ; leg_l3_joint
    (15,0) -0.90  ; leg_l4_joint
-   (16,0) 0.55   ; leg_l5_joint
+   (16,0) -0.55   ; leg_l5_joint
    (17,0) 0.00   ; leg_l6_joint
    (18,0) 0.00   ; leg_r1_joint
    (19,0) 0.00   ; leg_r2_joint
    (20,0) 0.35   ; leg_r3_joint
    (21,0) -0.90  ; leg_r4_joint
-   (22,0) 0.55   ; leg_r5_joint
+   (22,0) -0.55   ; leg_r5_joint
    (23,0) 0.00   ; leg_r6_joint
 }
 

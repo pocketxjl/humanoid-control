@@ -40,8 +40,8 @@ namespace humanoid {
 class SwingTrajectoryPlanner {
  public:
   struct Config {
-    scalar_t liftOffVelocity = 0.0;
-    scalar_t touchDownVelocity = 0.0;
+    scalar_t liftOffVelocity = 0.2;
+    scalar_t touchDownVelocity = -0.4;
     scalar_t swingHeight = 0.1;
     scalar_t swingTimeScale = 0.15;  // swing phases shorter than this time will be scaled down in height and velocity
   };

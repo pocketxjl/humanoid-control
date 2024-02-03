@@ -117,14 +117,18 @@ void HumanoidInterface::setupOptimalConrolProblem(const std::string& taskFile, c
   pinocchioInterfacePtr_.reset(new PinocchioInterface(centroidal_model::createPinocchioInterface(urdfFile, modelSettings_.jointNames)));
 
   // CentroidalModelInfo
+  std::cerr << "[HumanoidInterface] Break point ? " <<std::endl;
+  //output the pinocchioInterfacePtr_->getModel().nq - 6
+  std::cerr << "pinocchioInterfacePtr_->getModel().nq - 6 = " << pinocchioInterfacePtr_->getModel().nq - 6 <<std::endl;
+
   centroidalModelInfo_ = centroidal_model::createCentroidalModelInfo(
       *pinocchioInterfacePtr_, centroidal_model::loadCentroidalType(taskFile),
       centroidal_model::loadDefaultJointState(pinocchioInterfacePtr_->getModel().nq - 6, referenceFile), modelSettings_.contactNames3DoF,
       modelSettings_.contactNames6DoF);
-
+  std::cerr << "[HumanoidInterface] Break point ? " <<std::endl;
   // Swing trajectory planner
   auto swingTrajectoryPlanner =
-      std::make_unique<SwingTrajectoryPlanner>(loadSwingTrajectorySettings(taskFile, "swing_trajectory_config", verbose), 4);
+      std::make_unique<SwingTrajectoryPlanner>(loadSwingTrajectorySettings(taskFile, "swing_trajectory_config", verbose), 2);
 
   // Mode schedule manager
   referenceManagerPtr_ =
@@ -268,6 +272,7 @@ matrix_t HumanoidInterface::initializeInputCostWeight(const std::string& taskFil
   // Joint velocities
   R.bottomRightCorner(info.actuatedDofNum, info.actuatedDofNum) =
       baseToFeetJacobians.transpose() * R_taskspace.bottomRightCorner(totalContactDim, totalContactDim) * baseToFeetJacobians;
+
   return R;
 }
 

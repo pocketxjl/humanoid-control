@@ -29,21 +29,34 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #pragma once
 
-#include <array>
-#include <cstddef>
+#include <string>
+#include <vector>
 
-#include <ocs2_core/Types.h>
+#include <ros/ros.h>
+#include <std_msgs/Bool.h>
+
+#include <humanoid_interface/gait/ModeSequenceTemplate.h>
 
 namespace ocs2 {
 namespace humanoid {
 
-template <typename T>
-using feet_array_t = std::array<T, 2>;
-using contact_flag_t = feet_array_t<bool>;
+/** This class implements ModeSequence communication using ROS. */
+class GaitKeyboardPublisher {
+ public:
+  GaitKeyboardPublisher(ros::NodeHandle nodeHandle, const std::string& gaitFile, const std::string& robotName, bool verbose = false);
 
-using vector3_t = Eigen::Matrix<scalar_t, 3, 1>;
-using matrix3_t = Eigen::Matrix<scalar_t, 3, 3>;
-using quaternion_t = Eigen::Quaternion<scalar_t>;
+  /** Prints the command line interface and responds to user input. Function returns after one user input. */
+  void getKeyboardCommand();
+
+ private:
+  /** Prints the list of available gaits. */
+  void printGaitList(const std::vector<std::string>& gaitList) const;
+
+  std::vector<std::string> gaitList_;
+  std::map<std::string, ModeSequenceTemplate> gaitMap_;
+
+  ros::Publisher modeSequenceTemplatePublisher_;
+};
 
 }  // namespace humanoid
-}  // namespace ocs2
+}  // end of namespace ocs2

@@ -27,23 +27,31 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ******************************************************************************/
 
-#pragma once
+#include <ros/init.h>
+#include <ros/package.h>
 
-#include <array>
-#include <cstddef>
+#include "humanoid_dummy/gait/GaitKeyboardPublisher.h"
 
-#include <ocs2_core/Types.h>
+using namespace ocs2;
+using namespace humanoid;
 
-namespace ocs2 {
-namespace humanoid {
+int main(int argc, char* argv[]) {
+  const std::string robotName = "humanoid";
 
-template <typename T>
-using feet_array_t = std::array<T, 2>;
-using contact_flag_t = feet_array_t<bool>;
+  // Initialize ros node
+  ros::init(argc, argv, robotName + "_mpc_mode_schedule");
+  ros::NodeHandle nodeHandle;
+  // Get node parameters
+  std::string gaitCommandFile;
+  nodeHandle.getParam("/gaitCommandFile", gaitCommandFile);
+  std::cerr << "Loading gait file: " << gaitCommandFile << std::endl;
 
-using vector3_t = Eigen::Matrix<scalar_t, 3, 1>;
-using matrix3_t = Eigen::Matrix<scalar_t, 3, 3>;
-using quaternion_t = Eigen::Quaternion<scalar_t>;
+  GaitKeyboardPublisher gaitCommand(nodeHandle, gaitCommandFile, robotName, true);
 
-}  // namespace humanoid
-}  // namespace ocs2
+  while (ros::ok() && ros::master::check()) {
+    gaitCommand.getKeyboardCommand();
+  }
+
+  // Successful exit
+  return 0;
+}

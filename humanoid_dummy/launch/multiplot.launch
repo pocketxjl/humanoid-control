@@ -1,0 +1,14 @@
+<?xml version="1.0" ?>
+
+<launch>
+  <arg name="metrics_config"      default="$(find humanoid_interface)/config/multiplot/zero_velocity.xml" />
+
+  <node name="mpc_metrics" pkg="rqt_multiplot" type="rqt_multiplot"
+    args="--multiplot-run-all --multiplot-config $(arg metrics_config)"
+    output="screen"/>
+
+  <!-- Launch Performance Indices Multi-plot -->
+  <include file="$(find ocs2_ros_interfaces)/launch/performance_indices.launch">
+    <arg name="mpc_policy_topic_name"      value="humanoid_mpc_policy"/>
+  </include>
+</launch>

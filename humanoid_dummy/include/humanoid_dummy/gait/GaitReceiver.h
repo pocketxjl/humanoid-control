@@ -29,21 +29,41 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #pragma once
 
-#include <array>
-#include <cstddef>
+#include <mutex>
+
+#include <ros/ros.h>
 
 #include <ocs2_core/Types.h>
+#include <ocs2_msgs/mode_schedule.h>
+#include <ocs2_oc/synchronized_module/SolverSynchronizedModule.h>
+
+#include <humanoid_interface/gait/GaitSchedule.h>
+#include <humanoid_interface/gait/ModeSequenceTemplate.h>
+#include <humanoid_interface/gait/MotionPhaseDefinition.h>
 
 namespace ocs2 {
 namespace humanoid {
 
-template <typename T>
-using feet_array_t = std::array<T, 2>;
-using contact_flag_t = feet_array_t<bool>;
+class GaitReceiver : public SolverSynchronizedModule {
+ public:
+  GaitReceiver(::ros::NodeHandle nodeHandle, std::shared_ptr<GaitSchedule> gaitSchedulePtr, const std::string& robotName);
 
-using vector3_t = Eigen::Matrix<scalar_t, 3, 1>;
-using matrix3_t = Eigen::Matrix<scalar_t, 3, 3>;
-using quaternion_t = Eigen::Quaternion<scalar_t>;
+  void preSolverRun(scalar_t initTime, scalar_t finalTime, const vector_t& currentState,
+                    const ReferenceManagerInterface& referenceManager) override;
+
+  void postSolverRun(const PrimalSolution& primalSolution) override{};
+
+ private:
+  void mpcModeSequenceCallback(const ocs2_msgs::mode_schedule::ConstPtr& msg);
+
+  std::shared_ptr<GaitSchedule> gaitSchedulePtr_;
+
+  ::ros::Subscriber mpcModeSequenceSubscriber_;
+
+  std::mutex receivedGaitMutex_;
+  std::atomic_bool gaitUpdated_;
+  ModeSequenceTemplate receivedGait_;
+};
 
 }  // namespace humanoid
 }  // namespace ocs2

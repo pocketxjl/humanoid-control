@@ -21,8 +21,8 @@ trot
  {
    modeSequence
    {
-     [0]     L_CONTACT
-     [1]     R_CONTACT
+     [0]     LCONTACT
+     [1]     RCONTACT
    }
    switchingTimes
    {

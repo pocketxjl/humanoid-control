@@ -29,21 +29,29 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #pragma once
 
-#include <array>
-#include <cstddef>
+#include <vector>
 
-#include <ocs2_core/Types.h>
+#include <ocs2_msgs/mode_schedule.h>
+
+#include <humanoid_interface/gait/ModeSequenceTemplate.h>
 
 namespace ocs2 {
 namespace humanoid {
 
-template <typename T>
-using feet_array_t = std::array<T, 2>;
-using contact_flag_t = feet_array_t<bool>;
+/** Convert mode sequence template to ROS message */
+inline ocs2_msgs::mode_schedule createModeSequenceTemplateMsg(const ModeSequenceTemplate& modeSequenceTemplate) {
+  ocs2_msgs::mode_schedule modeScheduleMsg;
+  modeScheduleMsg.eventTimes.assign(modeSequenceTemplate.switchingTimes.begin(), modeSequenceTemplate.switchingTimes.end());
+  modeScheduleMsg.modeSequence.assign(modeSequenceTemplate.modeSequence.begin(), modeSequenceTemplate.modeSequence.end());
+  return modeScheduleMsg;
+}
 
-using vector3_t = Eigen::Matrix<scalar_t, 3, 1>;
-using matrix3_t = Eigen::Matrix<scalar_t, 3, 3>;
-using quaternion_t = Eigen::Quaternion<scalar_t>;
+/** Convert ROS message to mode sequence template */
+inline ModeSequenceTemplate readModeSequenceTemplateMsg(const ocs2_msgs::mode_schedule& modeScheduleMsg) {
+  std::vector<scalar_t> switchingTimes(modeScheduleMsg.eventTimes.begin(), modeScheduleMsg.eventTimes.end());
+  std::vector<size_t> modeSequence(modeScheduleMsg.modeSequence.begin(), modeScheduleMsg.modeSequence.end());
+  return {switchingTimes, modeSequence};
+}
 
 }  // namespace humanoid
 }  // namespace ocs2
