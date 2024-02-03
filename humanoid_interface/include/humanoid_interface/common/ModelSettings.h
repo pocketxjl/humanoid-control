@@ -50,8 +50,8 @@ struct ModelSettings {
   // This is only used to get names for the knees and to check urdf for extra joints that need to be fixed.
   std::vector<std::string> jointNames{"leg_l1_joint", "leg_l2_joint", "leg_l3_joint", "leg_l4_joint", "leg_l5_joint", "leg_l6_joint",
                                         "leg_r1_joint", "leg_r2_joint", "leg_r3_joint", "leg_r4_joint", "leg_r5_joint", "leg_r6_joint"};
-  std::vector<std::string> contactNames6DoF{"leg_l6_link", "leg_r6_link"};
-  std::vector<std::string> contactNames3DoF{};
+  std::vector<std::string> contactNames6DoF{};
+  std::vector<std::string> contactNames3DoF{"l_foot_toe", "l_foot_heel", "r_foot_toe", "r_foot_heel"};
 };
 
 ModelSettings loadModelSettings(const std::string& filename, const std::string& fieldName = "model_settings", bool verbose = "true");

@@ -49,7 +49,7 @@ HumanoidPreComputation::HumanoidPreComputation(PinocchioInterface pinocchioInter
       info_(std::move(info)),
       swingTrajectoryPlannerPtr_(&swingTrajectoryPlanner),
       settings_(std::move(settings)) {
-  eeNormalVelConConfigs_.resize(info_.numSixDofContacts);
+  eeNormalVelConConfigs_.resize(info_.numThreeDofContacts);
 }
 
 /******************************************************************************************************/
@@ -80,7 +80,7 @@ void HumanoidPreComputation::request(RequestSet request, scalar_t t, const vecto
   };
 
   if (request.contains(Request::Constraint)) {
-    for (size_t i = 0; i < info_.numSixDofContacts; i++) {
+    for (size_t i = 0; i < info_.numThreeDofContacts; i++) {
       eeNormalVelConConfigs_[i] = eeNormalVelConConfig(i);
     }
   }

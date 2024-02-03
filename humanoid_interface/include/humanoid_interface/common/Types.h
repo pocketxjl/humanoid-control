@@ -38,7 +38,7 @@ namespace ocs2 {
 namespace humanoid {
 
 template <typename T>
-using feet_array_t = std::array<T, 2>;
+using feet_array_t = std::array<T, 4>;
 using contact_flag_t = feet_array_t<bool>;
 
 using vector3_t = Eigen::Matrix<scalar_t, 3, 1>;

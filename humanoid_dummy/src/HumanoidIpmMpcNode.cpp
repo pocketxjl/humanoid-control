@@ -82,7 +82,7 @@ int main(int argc, char** argv) {
       return ocs2::SolverObserver::ConstraintTermObserver(ocs2::SolverObserver::Type::Intermediate, termName, std::move(callback));
     };
     for (size_t i = 0; i < interface.getCentroidalModelInfo().numSixDofContacts; i++) {
-      const std::string& footName = interface.modelSettings().contactNames6DoF[i];
+      const std::string& footName = interface.modelSettings().contactNames3DoF[i];
       mpc.getSolverPtr()->addSolverObserver(createStateInputBoundsObserver(footName + "_frictionCone"));
     }
   }

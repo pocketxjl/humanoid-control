@@ -114,6 +114,7 @@ HumanoidInterface::HumanoidInterface(const std::string& taskFile, const std::str
 void HumanoidInterface::setupOptimalConrolProblem(const std::string& taskFile, const std::string& urdfFile,
                                                      const std::string& referenceFile, bool verbose) {
   // PinocchioInterface
+  std::cerr << "[HumanoidInterface] Break point ? " <<std::endl;
   pinocchioInterfacePtr_.reset(new PinocchioInterface(centroidal_model::createPinocchioInterface(urdfFile, modelSettings_.jointNames)));
 
   // CentroidalModelInfo
@@ -128,7 +129,7 @@ void HumanoidInterface::setupOptimalConrolProblem(const std::string& taskFile, c
   std::cerr << "[HumanoidInterface] Break point ? " <<std::endl;
   // Swing trajectory planner
   auto swingTrajectoryPlanner =
-      std::make_unique<SwingTrajectoryPlanner>(loadSwingTrajectorySettings(taskFile, "swing_trajectory_config", verbose), 2);
+      std::make_unique<SwingTrajectoryPlanner>(loadSwingTrajectorySettings(taskFile, "swing_trajectory_config", verbose), 4);
 
   // Mode schedule manager
   referenceManagerPtr_ =
@@ -161,8 +162,8 @@ void HumanoidInterface::setupOptimalConrolProblem(const std::string& taskFile, c
 
   bool useAnalyticalGradientsConstraints = false;
   loadData::loadCppDataType(taskFile, "humanoid_interface.useAnalyticalGradientsConstraints", useAnalyticalGradientsConstraints);
-  for (size_t i = 0; i < centroidalModelInfo_.numSixDofContacts; i++) {
-    const std::string& footName = modelSettings_.contactNames6DoF[i];
+  for (size_t i = 0; i < centroidalModelInfo_.numThreeDofContacts; i++) {
+    const std::string& footName = modelSettings_.contactNames3DoF[i];
 
     std::unique_ptr<EndEffectorKinematics<scalar_t>> eeKinematicsPtr;
     if (useAnalyticalGradientsConstraints) {
@@ -240,40 +241,37 @@ std::shared_ptr<GaitSchedule> HumanoidInterface::loadGaitSchedule(const std::str
 /******************************************************************************************************/
 /******************************************************************************************************/
 matrix_t HumanoidInterface::initializeInputCostWeight(const std::string& taskFile, const CentroidalModelInfo& info) {
-  const size_t totalContactDim = 6 * info.numSixDofContacts;
+    const size_t totalContactDim = 3 * info.numThreeDofContacts;
 
-  vector_t initialState(centroidalModelInfo_.stateDim);
-  loadData::loadEigenMatrix(taskFile, "initialState", initialState);
+    vector_t initialState(centroidalModelInfo_.stateDim);
+    loadData::loadEigenMatrix(taskFile, "initialState", initialState);
 
-  const auto& model = pinocchioInterfacePtr_->getModel();
-  auto& data = pinocchioInterfacePtr_->getData();
-  const auto q = centroidal_model::getGeneralizedCoordinates(initialState, centroidalModelInfo_);
-  pinocchio::computeJointJacobians(model, data, q);
-  pinocchio::updateFramePlacements(model, data);
+    const auto& model = pinocchioInterfacePtr_->getModel();
+    auto& data = pinocchioInterfacePtr_->getData();
+    const auto q = centroidal_model::getGeneralizedCoordinates(initialState, centroidalModelInfo_);
+    pinocchio::computeJointJacobians(model, data, q);
+    pinocchio::updateFramePlacements(model, data);
 
-  matrix_t baseToFeetJacobians(totalContactDim, info.actuatedDofNum);
-  for (size_t i = 0; i < info.numSixDofContacts; i++) {
-    matrix_t jacobianWorldToContactPointInWorldFrame = matrix_t::Zero(6, info.generalizedCoordinatesNum);
-    pinocchio::getFrameJacobian(model, data, model.getBodyId(modelSettings_.contactNames6DoF[i]), pinocchio::LOCAL_WORLD_ALIGNED,
-                                jacobianWorldToContactPointInWorldFrame);
+    matrix_t baseToFeetJacobians(totalContactDim, info.actuatedDofNum);
+    for (size_t i = 0; i < info.numThreeDofContacts; i++) {
+        matrix_t jacobianWorldToContactPointInWorldFrame = matrix_t::Zero(6, info.generalizedCoordinatesNum);
+        pinocchio::getFrameJacobian(model, data, model.getBodyId(modelSettings_.contactNames3DoF[i]), pinocchio::LOCAL_WORLD_ALIGNED,
+                                    jacobianWorldToContactPointInWorldFrame);
 
-    //jacobianWorldToContactPointInWorldFrame从第7列开始是actuatedDofNum个，因为前6列代表base的速度
-    baseToFeetJacobians.block(6 * i, 0, 6, info.actuatedDofNum) =
-        jacobianWorldToContactPointInWorldFrame.block(0, 6, 6, info.actuatedDofNum);
-  }
+        baseToFeetJacobians.block(3 * i, 0, 3, info.actuatedDofNum) =
+                jacobianWorldToContactPointInWorldFrame.block(0, 6, 3, info.actuatedDofNum);
+    }
 
-  matrix_t R_taskspace(totalContactDim + totalContactDim, totalContactDim + totalContactDim);
-  loadData::loadEigenMatrix(taskFile, "R", R_taskspace);
+    matrix_t R_taskspace(totalContactDim + totalContactDim, totalContactDim + totalContactDim);
+    loadData::loadEigenMatrix(taskFile, "R", R_taskspace);
 
-  //Feet Contact Forces and foot velocity relative to base
-  matrix_t R = matrix_t::Zero(info.inputDim, info.inputDim);
-  // Contact Forces
-  R.topLeftCorner(totalContactDim, totalContactDim) = R_taskspace.topLeftCorner(totalContactDim, totalContactDim);
-  // Joint velocities
-  R.bottomRightCorner(info.actuatedDofNum, info.actuatedDofNum) =
-      baseToFeetJacobians.transpose() * R_taskspace.bottomRightCorner(totalContactDim, totalContactDim) * baseToFeetJacobians;
-
-  return R;
+    matrix_t R = matrix_t::Zero(info.inputDim, info.inputDim);
+    // Contact Forces
+    R.topLeftCorner(totalContactDim, totalContactDim) = R_taskspace.topLeftCorner(totalContactDim, totalContactDim);
+    // Joint velocities
+    R.bottomRightCorner(info.actuatedDofNum, info.actuatedDofNum) =
+            baseToFeetJacobians.transpose() * R_taskspace.bottomRightCorner(totalContactDim, totalContactDim) * baseToFeetJacobians;
+    return R;
 }
 
 /******************************************************************************************************/

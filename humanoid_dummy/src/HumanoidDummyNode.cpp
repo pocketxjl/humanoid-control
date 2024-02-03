@@ -64,7 +64,7 @@ int main(int argc, char** argv) {
   // Visualization
   CentroidalModelPinocchioMapping pinocchioMapping(interface.getCentroidalModelInfo());
   PinocchioEndEffectorKinematics endEffectorKinematics(interface.getPinocchioInterface(), pinocchioMapping,
-                                                       interface.modelSettings().contactNames6DoF);
+                                                       interface.modelSettings().contactNames3DoF);
   auto humanoidVisualizer = std::make_shared<HumanoidVisualizer>(
       interface.getPinocchioInterface(), interface.getCentroidalModelInfo(), endEffectorKinematics, nodeHandle);
 
