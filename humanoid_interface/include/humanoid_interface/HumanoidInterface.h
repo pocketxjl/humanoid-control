@@ -105,6 +105,9 @@ class HumanoidInterface final : public RobotInterface {
                                                                   size_t contactPointIndex, bool useAnalyticalGradients);
   std::unique_ptr<StateInputConstraint> getNormalVelocityConstraint(const EndEffectorKinematics<scalar_t>& eeKinematics,
                                                                     size_t contactPointIndex, bool useAnalyticalGradients);
+  std::unique_ptr<StateInputConstraint> getFootRollConstraint(const EndEffectorKinematics<scalar_t>& eeKinematics,
+                                                                                    double Gain,
+                                                                                   bool useAnalyticalGradients);
 
   ModelSettings modelSettings_;
   ddp::Settings ddpSettings_;

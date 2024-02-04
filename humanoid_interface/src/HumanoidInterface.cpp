@@ -51,6 +51,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "humanoid_interface/constraint/NormalVelocityConstraintCppAd.h"
 #include "humanoid_interface/constraint/ZeroForceConstraint.h"
 #include "humanoid_interface/constraint/ZeroVelocityConstraintCppAd.h"
+#include "humanoid_interface/constraint/FootRollConstraint.h"
 #include "humanoid_interface/cost/HumanoidQuadraticTrackingCost.h"
 #include "humanoid_interface/dynamics/HumanoidDynamicsAD.h"
 
@@ -114,19 +115,13 @@ HumanoidInterface::HumanoidInterface(const std::string& taskFile, const std::str
 void HumanoidInterface::setupOptimalConrolProblem(const std::string& taskFile, const std::string& urdfFile,
                                                      const std::string& referenceFile, bool verbose) {
   // PinocchioInterface
-  std::cerr << "[HumanoidInterface] Break point ? " <<std::endl;
   pinocchioInterfacePtr_.reset(new PinocchioInterface(centroidal_model::createPinocchioInterface(urdfFile, modelSettings_.jointNames)));
 
   // CentroidalModelInfo
-  std::cerr << "[HumanoidInterface] Break point ? " <<std::endl;
-  //output the pinocchioInterfacePtr_->getModel().nq - 6
-  std::cerr << "pinocchioInterfacePtr_->getModel().nq - 6 = " << pinocchioInterfacePtr_->getModel().nq - 6 <<std::endl;
-
   centroidalModelInfo_ = centroidal_model::createCentroidalModelInfo(
       *pinocchioInterfacePtr_, centroidal_model::loadCentroidalType(taskFile),
       centroidal_model::loadDefaultJointState(pinocchioInterfacePtr_->getModel().nq - 6, referenceFile), modelSettings_.contactNames3DoF,
       modelSettings_.contactNames6DoF);
-  std::cerr << "[HumanoidInterface] Break point ? " <<std::endl;
   // Swing trajectory planner
   auto swingTrajectoryPlanner =
       std::make_unique<SwingTrajectoryPlanner>(loadSwingTrajectorySettings(taskFile, "swing_trajectory_config", verbose), 4);
@@ -193,7 +188,11 @@ void HumanoidInterface::setupOptimalConrolProblem(const std::string& taskFile, c
                                             getZeroVelocityConstraint(*eeKinematicsPtr, i, useAnalyticalGradientsConstraints));
     problemPtr_->equalityConstraintPtr->add(footName + "_normalVelocity",
                                             getNormalVelocityConstraint(*eeKinematicsPtr, i, useAnalyticalGradientsConstraints));
-  }
+    // 由于一只脚上有两个虚拟接触点，只需要给其中一个接触点添加滚转角约束
+      if (i % 2 == 0){
+          problemPtr_->equalityConstraintPtr->add(footName + "_footRoll", getFootRollConstraint(*eeKinematicsPtr, modelSettings_.FootRollErrorGain, useAnalyticalGradientsConstraints));
+      }
+    }
 
   // Pre-computation
   problemPtr_->preComputationPtr.reset(new HumanoidPreComputation(*pinocchioInterfacePtr_, centroidalModelInfo_,
@@ -383,6 +382,20 @@ std::unique_ptr<StateInputConstraint> HumanoidInterface::getNormalVelocityConstr
   } else {
     return std::make_unique<NormalVelocityConstraintCppAd>(*referenceManagerPtr_, eeKinematics, contactPointIndex);
   }
+}
+
+/******************************************************************************************************/
+/******************************************************************************************************/
+/******************************************************************************************************/
+std::unique_ptr<StateInputConstraint> HumanoidInterface::getFootRollConstraint(const EndEffectorKinematics<scalar_t>& eeKinematics,
+                                                                               double Gain,
+                                                                               bool useAnalyticalGradients){
+    if (useAnalyticalGradients) {
+        throw std::runtime_error(
+                "[HumanoidInterface::getNormalVelocityConstraint] The analytical end-effector normal velocity constraint is not implemented!");
+    } else {
+        return std::make_unique<FootRollConstraint>(*eeKinematics.clone(), Gain);
+    }
 }
 
 }  // namespace humanoid

@@ -88,6 +88,7 @@ add_library(${PROJECT_NAME}
   src/constraint/ZeroForceConstraint.cpp
   src/constraint/NormalVelocityConstraintCppAd.cpp
   src/constraint/ZeroVelocityConstraintCppAd.cpp
+  src/constraint/FootRollContraint.cpp
   src/initialization/HumanoidInitializer.cpp
   src/reference_manager/SwitchedModelReferenceManager.cpp
   src/foot_planner/CubicSpline.cpp
