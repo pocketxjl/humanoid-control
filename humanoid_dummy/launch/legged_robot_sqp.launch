@@ -38,7 +38,7 @@
           output="screen" launch-prefix=""/>
 
     <node pkg="humanoid_dummy" type="humanoid_dummy_node" name="humanoid_dummy_node"
-          output="screen" launch-prefix="gnome-terminal --"/>
+          output="screen" launch-prefix=""/>
 
     <node pkg="humanoid_dummy" type="humanoid_target" name="humanoid_target"
           output="screen" launch-prefix="gnome-terminal --"/>

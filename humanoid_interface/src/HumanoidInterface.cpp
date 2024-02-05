@@ -129,7 +129,7 @@ void HumanoidInterface::setupOptimalConrolProblem(const std::string& taskFile, c
   std::cerr << "[HumanoidInterface] Break point ? " <<std::endl;
   // Swing trajectory planner
   auto swingTrajectoryPlanner =
-      std::make_unique<SwingTrajectoryPlanner>(loadSwingTrajectorySettings(taskFile, "swing_trajectory_config", verbose), 4);
+      std::make_unique<SwingTrajectoryPlanner>(loadSwingTrajectorySettings(taskFile, "swing_trajectory_config", verbose), 6);
 
   // Mode schedule manager
   referenceManagerPtr_ =

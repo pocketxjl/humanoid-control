@@ -81,7 +81,7 @@ int main(int argc, char** argv) {
                                                           ocs2::ros::CallbackInterpolationStrategy::linear_interpolation);
       return ocs2::SolverObserver::ConstraintTermObserver(ocs2::SolverObserver::Type::Intermediate, termName, std::move(callback));
     };
-    for (size_t i = 0; i < interface.getCentroidalModelInfo().numSixDofContacts; i++) {
+    for (size_t i = 0; i < interface.getCentroidalModelInfo().numThreeDofContacts; i++) {
       const std::string& footName = interface.modelSettings().contactNames3DoF[i];
       mpc.getSolverPtr()->addSolverObserver(createStateInputBoundsObserver(footName + "_frictionCone"));
     }

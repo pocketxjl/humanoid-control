@@ -77,8 +77,10 @@ void HumanoidVisualizer::launchVisualizerNode(ros::NodeHandle& nodeHandle) {
   costDesiredFeetPositionPublishers_.resize(centroidalModelInfo_.numThreeDofContacts);
   costDesiredFeetPositionPublishers_[0] = nodeHandle.advertise<visualization_msgs::Marker>("/humanoid/desiredFeetTrajectory/LTOE", 1);
   costDesiredFeetPositionPublishers_[1] = nodeHandle.advertise<visualization_msgs::Marker>("/humanoid/desiredFeetTrajectory/LHEEL", 1);
-  costDesiredFeetPositionPublishers_[2] = nodeHandle.advertise<visualization_msgs::Marker>("/humanoid/desiredFeetTrajectory/RTOE", 1);
-  costDesiredFeetPositionPublishers_[3] = nodeHandle.advertise<visualization_msgs::Marker>("/humanoid/desiredFeetTrajectory/RHEEL", 1);
+  costDesiredFeetPositionPublishers_[2] = nodeHandle.advertise<visualization_msgs::Marker>("/humanoid/desiredFeetTrajectory/LSIDE", 1);
+  costDesiredFeetPositionPublishers_[3] = nodeHandle.advertise<visualization_msgs::Marker>("/humanoid/desiredFeetTrajectory/RTOE", 1);
+  costDesiredFeetPositionPublishers_[4] = nodeHandle.advertise<visualization_msgs::Marker>("/humanoid/desiredFeetTrajectory/RHEEL", 1);
+  costDesiredFeetPositionPublishers_[5] = nodeHandle.advertise<visualization_msgs::Marker>("/humanoid/desiredFeetTrajectory/RSIDE", 1);
   stateOptimizedPublisher_ = nodeHandle.advertise<visualization_msgs::MarkerArray>("/humanoid/optimizedStateTrajectory", 1);
   currentStatePublisher_ = nodeHandle.advertise<visualization_msgs::MarkerArray>("/humanoid/currentState", 1);
 
