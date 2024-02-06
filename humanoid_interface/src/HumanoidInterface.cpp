@@ -190,7 +190,7 @@ void HumanoidInterface::setupOptimalConrolProblem(const std::string& taskFile, c
                                             getNormalVelocityConstraint(*eeKinematicsPtr, i, useAnalyticalGradientsConstraints));
     // 由于一只脚上有两个虚拟接触点，只需要给其中一个接触点添加滚转角约束
       if (i % 2 == 0){
-          problemPtr_->equalityConstraintPtr->add(footName + "_footRoll", getFootRollConstraint(*eeKinematicsPtr, modelSettings_.FootRollErrorGain, useAnalyticalGradientsConstraints));
+          problemPtr_->equalityConstraintPtr->add(footName + "_footRoll", getFootRollConstraint(i));
       }
     }
 
@@ -387,15 +387,8 @@ std::unique_ptr<StateInputConstraint> HumanoidInterface::getNormalVelocityConstr
 /******************************************************************************************************/
 /******************************************************************************************************/
 /******************************************************************************************************/
-std::unique_ptr<StateInputConstraint> HumanoidInterface::getFootRollConstraint(const EndEffectorKinematics<scalar_t>& eeKinematics,
-                                                                               double Gain,
-                                                                               bool useAnalyticalGradients){
-    if (useAnalyticalGradients) {
-        throw std::runtime_error(
-                "[HumanoidInterface::getNormalVelocityConstraint] The analytical end-effector normal velocity constraint is not implemented!");
-    } else {
-        return std::make_unique<FootRollConstraint>(*eeKinematics.clone(), Gain);
-    }
+std::unique_ptr<StateInputConstraint> HumanoidInterface::getFootRollConstraint(size_t contactPointIndex){
+    return std::make_unique<FootRollConstraint>(*referenceManagerPtr_, contactPointIndex, centroidalModelInfo_);
 }
 
 }  // namespace humanoid

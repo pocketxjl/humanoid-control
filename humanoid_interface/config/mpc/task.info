@@ -10,7 +10,6 @@ humanoid_interface
 model_settings
 {
   positionErrorGain             0.0 ; 20.0
-  FootRollErrorGain             300.0
   phaseTransitionStanceTime     0.4
 
   verboseCppAd                  true

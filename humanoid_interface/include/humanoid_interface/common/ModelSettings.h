@@ -41,8 +41,6 @@ namespace humanoid {
 struct ModelSettings {
   scalar_t positionErrorGain = 0.0;
 
-  scalar_t FootRollErrorGain = 200.0;
-
   scalar_t phaseTransitionStanceTime = 0.4;
 
   bool verboseCppAd = true;

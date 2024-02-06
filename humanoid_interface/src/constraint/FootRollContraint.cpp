@@ -3,76 +3,45 @@
 //
 #include "humanoid_interface/constraint/FootRollConstraint.h"
 
-#include <pinocchio/fwd.hpp>
-
-#include <pinocchio/algorithm/frames-derivatives.hpp>
-#include <pinocchio/algorithm/frames.hpp>
-#include <pinocchio/algorithm/kinematics.hpp>
-#include <utility>
-#include <random>
+#include <ocs2_centroidal_model/AccessHelperFunctions.h>
 
 namespace ocs2 {
 namespace humanoid {
-    FootRollConstraint::FootRollConstraint(const EndEffectorKinematics<scalar_t>& endEffectorKinematics,
-                                                             double Gain)
+    FootRollConstraint::FootRollConstraint(const SwitchedModelReferenceManager& referenceManager, size_t contactPointIndex,CentroidalModelInfo info)
             : StateInputConstraint(ConstraintOrder::Linear),
-              endEffectorKinematicsPtr_(endEffectorKinematics.clone()),
-                Gain_(Gain)
-   {
-        if (endEffectorKinematicsPtr_->getIds().size() != 1) {
-            throw std::runtime_error("[EndEffectorLinearConstraint] this class only accepts a single end-effector!");
-        }
-    }
+              referenceManagerPtr_(&referenceManager),
+              contactPointIndex_(contactPointIndex),
+              info_(std::move(info)) {}
 
     FootRollConstraint::FootRollConstraint(const FootRollConstraint& rhs)
             : StateInputConstraint(rhs),
-                Gain_(rhs.Gain_),
-              endEffectorKinematicsPtr_(rhs.endEffectorKinematicsPtr_->clone()){}
+                referenceManagerPtr_(rhs.referenceManagerPtr_),
+                contactPointIndex_(rhs.contactPointIndex_),
+                info_(rhs.info_) {}
+
+    bool FootRollConstraint::isActive(scalar_t time) const {
+//        return !referenceManagerPtr_->getContactFlags(time)[contactPointIndex_];
+        return true;
+    }
 
 
     vector_t FootRollConstraint::getValue(scalar_t time, const vector_t& state, const vector_t& input,
                                                    const PreComputation& preComp) const {
-        //get the orientation of end effector
-        //创建一个四元数，方向向前
-        Eigen::Quaternion<scalar_t> q;
-        q.w() = 1;
-        q.x() = 0;
-        q.y() = 0;
-        q.z() = 0;
-        auto referenceQuaternion = {q};
-
-        vector_t f = endEffectorKinematicsPtr_->getOrientationError(state, referenceQuaternion).front();
-        Eigen::Matrix<scalar_t, 3, 3> I = Eigen::Matrix<scalar_t, 3, 3>::Identity();
-        I(2, 2) = 0;
-
-        return Gain_ * I * f;
+        //获取最后一个关节的速度
+        long index = 5 + (contactPointIndex_ / 2) * 6;
+        return centroidal_model::getJointVelocities(input, info_).block<-1, 1>(index, 0, 1, 1);
     }
 
 
     VectorFunctionLinearApproximation FootRollConstraint::getLinearApproximation(scalar_t time, const vector_t& state,
                                                                                           const vector_t& input,
                                                                                           const PreComputation& preComp) const {
-        //get the orientation of end effector
-        //创建一个四元数，方向向前
-        Eigen::Quaternion<scalar_t> q;
-        q.w() = 1;
-        q.x() = 0;
-        q.y() = 0;
-        q.z() = 0;
-        auto referenceQuaternion = {q};
-
-        VectorFunctionLinearApproximation linearApproximation =
-                VectorFunctionLinearApproximation::Zero(getNumConstraints(time), state.size(), input.size());
-        auto orientationApprox = endEffectorKinematicsPtr_->getOrientationErrorLinearApproximation(state, referenceQuaternion).front();
-
-        //创建一个3x3的单位矩阵
-        Eigen::Matrix<scalar_t, 3, 3> I = Eigen::Matrix<scalar_t, 3, 3>::Identity();
-        I(2, 2) = 0;
-
-        linearApproximation.f.noalias() = Gain_ * I * orientationApprox.f;
-        linearApproximation.dfdx.noalias() = Gain_ * I * orientationApprox.dfdx;
-
-        return linearApproximation;
+        VectorFunctionLinearApproximation approx;
+        approx.f = getValue(time, state, input, preComp);
+        approx.dfdx = matrix_t::Zero(1, state.size());
+        approx.dfdu = matrix_t::Zero(1, input.size());
+        approx.dfdu.middleCols<1>(17 + (contactPointIndex_ / 2) * 6).diagonal() = vector_t::Ones(1);
+        return approx;
     }
 }
 }

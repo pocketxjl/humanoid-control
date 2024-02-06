@@ -9,11 +9,9 @@
 
 #include <ocs2_core/constraint/StateInputConstraint.h>
 
-#include <ocs2_robotic_tools/end_effector/EndEffectorKinematics.h>
+#include <ocs2_centroidal_model/CentroidalModelInfo.h>
 
-#include <ocs2_robotic_tools/common/RotationTransforms.h>
-
-#include <ocs2_pinocchio_interface/PinocchioInterface.h>
+#include "humanoid_interface/reference_manager/SwitchedModelReferenceManager.h"
 
 
 
@@ -34,15 +32,14 @@ class FootRollConstraint final : public StateInputConstraint {
    * @param [in] endEffectorKinematics: The kinematic interface to the target end-effector.
    * @param [in] numConstraints: The number of constraints {1, 2, 3}
    */
-  FootRollConstraint(const EndEffectorKinematics<scalar_t>& endEffectorKinematics, double Gain);
+  FootRollConstraint(const SwitchedModelReferenceManager& referenceManager, size_t contactPointIndex,
+                     CentroidalModelInfo info);
 
   ~FootRollConstraint() override = default;
   FootRollConstraint* clone() const override { return new FootRollConstraint(*this); }
 
-  /** Gets the underlying end-effector kinematics interface. */
-  EndEffectorKinematics<scalar_t>& getEndEffectorKinematics() { return *endEffectorKinematicsPtr_; }
-
-  size_t getNumConstraints(scalar_t time) const override { return 3; }
+  bool isActive(scalar_t time) const override;
+  size_t getNumConstraints(scalar_t time) const override { return 1; }
   vector_t getValue(scalar_t time, const vector_t& state, const vector_t& input, const PreComputation& preComp) const override;
   VectorFunctionLinearApproximation getLinearApproximation(scalar_t time, const vector_t& state, const vector_t& input,
                                                            const PreComputation& preComp) const override;
@@ -50,10 +47,9 @@ class FootRollConstraint final : public StateInputConstraint {
  private:
   FootRollConstraint(const FootRollConstraint& rhs);
 
-  std::unique_ptr<EndEffectorKinematics<scalar_t>> endEffectorKinematicsPtr_;
-    const PinocchioInterface* pinocchioInterfacePtr_;
-    const std::string bodyName_;
-    double Gain_ = 200;
+    const SwitchedModelReferenceManager* referenceManagerPtr_;
+    const size_t contactPointIndex_;
+    const CentroidalModelInfo info_;
 };
 
 }  // namespace humanoid
