@@ -42,7 +42,9 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <ocs2_centroidal_model/CentroidalModelPinocchioMapping.h>
 #include <ocs2_centroidal_model/ModelHelperFunctions.h>
 #include <ocs2_core/misc/Display.h>
+#include <ocs2_core/misc/LoadStdVectorOfPair.h>
 #include <ocs2_core/soft_constraint/StateInputSoftConstraint.h>
+#include <ocs2_core/soft_constraint/StateSoftConstraint.h>
 #include <ocs2_oc/synchronized_module/SolverSynchronizedModule.h>
 #include <ocs2_pinocchio_interface/PinocchioEndEffectorKinematicsCppAd.h>
 
@@ -52,6 +54,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "humanoid_interface/constraint/ZeroForceConstraint.h"
 #include "humanoid_interface/constraint/ZeroVelocityConstraintCppAd.h"
 #include "humanoid_interface/constraint/FootRollConstraint.h"
+#include "humanoid_interface/constraint/LeggedSelfCollisionConstraint.h"
 #include "humanoid_interface/cost/HumanoidQuadraticTrackingCost.h"
 #include "humanoid_interface/dynamics/HumanoidDynamicsAD.h"
 
@@ -193,6 +196,9 @@ void HumanoidInterface::setupOptimalConrolProblem(const std::string& taskFile, c
           problemPtr_->equalityConstraintPtr->add(footName + "_footRoll", getFootRollConstraint(i));
       }
     }
+            // Self-collision avoidance constraint
+    problemPtr_->stateSoftConstraintPtr->add("selfCollision",
+                                                     getSelfCollisionConstraint(*pinocchioInterfacePtr_, taskFile, "selfCollision", verbose));
 
   // Pre-computation
   problemPtr_->preComputationPtr.reset(new HumanoidPreComputation(*pinocchioInterfacePtr_, centroidalModelInfo_,
@@ -389,6 +395,45 @@ std::unique_ptr<StateInputConstraint> HumanoidInterface::getNormalVelocityConstr
 /******************************************************************************************************/
 std::unique_ptr<StateInputConstraint> HumanoidInterface::getFootRollConstraint(size_t contactPointIndex){
     return std::make_unique<FootRollConstraint>(*referenceManagerPtr_, contactPointIndex, centroidalModelInfo_);
+}
+
+/******************************************************************************************************/
+/******************************************************************************************************/
+/******************************************************************************************************/
+std::unique_ptr<StateCost> HumanoidInterface::getSelfCollisionConstraint(const PinocchioInterface& pinocchioInterface,
+                                                                       const std::string& taskFile, const std::string& prefix,
+                                                                       bool verbose) {
+    std::vector<std::pair<size_t, size_t>> collisionObjectPairs;
+    std::vector<std::pair<std::string, std::string>> collisionLinkPairs;
+    scalar_t mu = 1e-2;
+    scalar_t delta = 1e-3;
+    scalar_t minimumDistance = 0.0;
+
+    boost::property_tree::ptree pt;
+    boost::property_tree::read_info(taskFile, pt);
+    if (verbose) {
+        std::cerr << "\n #### SelfCollision Settings: ";
+        std::cerr << "\n #### =============================================================================\n";
+    }
+    loadData::loadPtreeValue(pt, mu, prefix + ".mu", verbose);
+    loadData::loadPtreeValue(pt, delta, prefix + ".delta", verbose);
+    loadData::loadPtreeValue(pt, minimumDistance, prefix + ".minimumDistance", verbose);
+    loadData::loadStdVectorOfPair(taskFile, prefix + ".collisionObjectPairs", collisionObjectPairs, verbose);
+    loadData::loadStdVectorOfPair(taskFile, prefix + ".collisionLinkPairs", collisionLinkPairs, verbose);
+
+    geometryInterfacePtr_ = std::make_unique<PinocchioGeometryInterface>(pinocchioInterface, collisionLinkPairs, collisionObjectPairs);
+    if (verbose) {
+        std::cerr << " #### =============================================================================\n";
+        const size_t numCollisionPairs = geometryInterfacePtr_->getNumCollisionPairs();
+        std::cerr << "SelfCollision: Testing for " << numCollisionPairs << " collision pairs\n";
+    }
+
+    std::unique_ptr<StateConstraint> constraint = std::make_unique<LeggedSelfCollisionConstraint>(
+            CentroidalModelPinocchioMapping(centroidalModelInfo_), *geometryInterfacePtr_, minimumDistance);
+
+    auto penalty = std::make_unique<RelaxedBarrierPenalty>(RelaxedBarrierPenalty::Config{mu, delta});
+
+    return std::make_unique<StateSoftConstraint>(std::move(constraint), std::move(penalty));
 }
 
 }  // namespace humanoid

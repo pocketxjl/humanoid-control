@@ -1,0 +1,799 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- This URDF was automatically created by SolidWorks to URDF Exporter! Originally created by Stephen Brawner (brawner@gmail.com) 
+     Commit Version: 1.6.0-4-g7f85cfe  Build Version: 1.6.7995.38578
+     For more information, please see http://wiki.ros.org/sw_urdf_exporter -->
+<robot
+  name="humanoid_legged_description">
+  <link name="dummy_link">
+  </link>
+  <link
+    name="base_link">
+    <inertial>
+      <origin
+        xyz="0.023940 0.000470 0.287306"
+        rpy="0 0 0" />
+      <mass
+        value="31.110854" />
+      <inertia
+        ixx="2.388229"
+        ixy="-0.007628"
+        ixz="0.044346"
+        iyy="1.659713"
+        iyz="0.008720"
+        izz="1.153761" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://humanoid_legged_description/meshes/base_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.75294 0.75294 0.75294 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://humanoid_legged_description/meshes/base_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <!-- Fixed joint to add dummy base link -->
+  <joint name="dummy_to_base_link" type="fixed">
+      <parent link="dummy_link"/>
+      <child link="base_link"/>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+  </joint>
+  <link
+    name="leg_l1_link">
+    <inertial>
+      <origin
+        xyz="0.072108 0.000000 -0.006156"
+        rpy="0 0 0" />
+      <mass
+        value="1.703116" />
+      <inertia
+        ixx="0.002361"
+        ixy="0.000000"
+        ixz="0.000080"
+        iyy="0.002706"
+        iyz="0.000000"
+        izz="0.004264" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://humanoid_legged_description/meshes/leg_l1_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.898039215686275 0.917647058823529 0.929411764705882 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://humanoid_legged_description/meshes/leg_l1_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="leg_l1_joint"
+    type="revolute">
+    <origin
+      xyz="0.016745166004061 0.158 -0.0250735931288075"
+      rpy="0 0.785398163397454 3.14159265358979" />
+    <parent
+      link="base_link" />
+    <child
+      link="leg_l1_link" />
+    <axis
+      xyz="-1 0 0" />
+    <limit effort="150.0" lower="-1.57" upper="1.57" velocity="7.5"/>
+    <dynamics damping="0.0" friction="0.0"/>
+  </joint>
+  <link
+    name="leg_l2_link">
+    <inertial>
+      <origin
+        xyz="0.0396478671717015 -1.27832793017646E-06 -0.0357769089706589"
+        rpy="0 0 0" />
+      <mass
+        value="1.099494" />
+      <inertia
+        ixx="0.003556"
+        ixy="0.000000"
+        ixz="0.000721"
+        iyy="0.002946"
+        iyz="0.000000"
+        izz="0.003182" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://humanoid_legged_description/meshes/leg_l2_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.898039215686275 0.917647058823529 0.929411764705882 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://humanoid_legged_description/meshes/leg_l2_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="leg_l2_joint"
+    type="revolute">
+    <origin
+      xyz="0.0800000000000011 0 -0.0420000000000002"
+      rpy="0.585706330182336 1.57079631189374 -2.51846950759238" />
+    <parent
+      link="leg_l1_link" />
+    <child
+      link="leg_l2_link" />
+    <axis
+      xyz="-1 0 0" />
+    <limit effort="150.0" lower="-1.57" upper="1.57" velocity="7.5"/>
+    <dynamics damping="0.0" friction="0.0"/>
+  </joint>
+  <link
+    name="leg_l3_link">
+    <inertial>
+      <origin
+        xyz="-0.0159397736222746 0.00024584013397122 -0.214301665526998"
+        rpy="0 0 0" />
+      <mass
+        value="11.2873798308346" />
+      <inertia
+        ixx="0.142094"
+        ixy="-0.000033"
+        ixz="0.037431"
+        iyy="0.183106"
+        iyz="0.000495"
+        izz="0.072721" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://humanoid_legged_description/meshes/leg_l3_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.898039215686275 0.898039215686275 0.898039215686275 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://humanoid_legged_description/meshes/leg_l3_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="leg_l3_joint"
+    type="revolute">
+    <origin
+      xyz="0.092 0 -0.08"
+      rpy="0 -0.785398163397442 0" />
+    <parent
+      link="leg_l2_link" />
+    <child
+      link="leg_l3_link" />
+    <axis
+      xyz="0 -1 0" />
+    <limit effort="300.0" lower="-0.90" upper="1.57" velocity="7.5"/>
+    <dynamics damping="0.0" friction="0.0"/>
+  </joint>
+  <link
+    name="leg_l4_link">
+    <inertial>
+      <origin
+        xyz="0.011266 0.000171 -0.112137"
+        rpy="0 0 0" />
+      <mass
+        value="3.235545" />
+      <inertia
+        ixx="0.014790"
+        ixy="0.000007"
+        ixz="0.000170"
+        iyy="0.013056"
+        iyz="-0.000057"
+        izz="0.004989" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://humanoid_legged_description/meshes/leg_l4_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.898039215686275 0.917647058823529 0.929411764705882 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://humanoid_legged_description/meshes/leg_l4_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="leg_l4_joint"
+    type="revolute">
+    <origin
+      xyz="0 0 -0.459104968164964"
+      rpy="0 0 0" />
+    <parent
+      link="leg_l3_link" />
+    <child
+      link="leg_l4_link" />
+    <axis
+      xyz="0 -1 0" />
+    <limit effort="300.0" lower="-1.7" upper="0.1" velocity="7.5"/>
+    <dynamics damping="0.0" friction="0.0"/>
+  </joint>
+  <link
+    name="leg_l5_link">
+    <inertial>
+      <origin
+        xyz="-3.21773463429764E-09 -3.21773496736455E-09 -2.21156426505331E-13"
+        rpy="0 0 0" />
+      <mass
+        value="0.179272166113496" />
+      <inertia
+        ixx="0.000025"
+        ixy="0.000000"
+        ixz="0.000000"
+        iyy="0.000025"
+        iyz="0.000000"
+        izz="0.000041" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://humanoid_legged_description/meshes/leg_l5_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.898039215686275 0.898039215686275 0.898039215686275 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://humanoid_legged_description/meshes/leg_l5_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="leg_l5_joint"
+    type="revolute">
+    <origin
+      xyz="2.21008500064235E-05 0 -0.321306622119717"
+      rpy="0 0 0" />
+    <parent
+      link="leg_l4_link" />
+    <child
+      link="leg_l5_link" />
+    <axis
+      xyz="0 1 0" />
+    <limit effort="90.0" lower="-1.0" upper="1.0" velocity="7.5"/>
+    <dynamics damping="0.0" friction="0.0"/>
+  </joint>
+  <link
+    name="leg_l6_link">
+    <inertial>
+      <origin
+        xyz="0.0428722257654519 1.11022302462516E-15 -0.0287264736311192"
+        rpy="0 0 0" />
+      <mass
+        value="0.359578868782819" />
+      <inertia
+        ixx="0.000193"
+        ixy="0.000000"
+        ixz="0.000026"
+        iyy="0.000903"
+        iyz="0.000000"
+        izz="0.001011" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://humanoid_legged_description/meshes/leg_l6_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.898039215686275 0.917647058823529 0.929411764705882 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://humanoid_legged_description/meshes/leg_l6_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="leg_l6_joint"
+    type="revolute">
+    <origin
+      xyz="0 0 0"
+      rpy="0 0 0" />
+    <parent
+      link="leg_l5_link" />
+    <child
+      link="leg_l6_link" />
+    <axis
+      xyz="0.99999999763436 0 6.87842964705043E-05" />
+    <limit effort="90.0" lower="-1.0" upper="1.0" velocity="7.5"/>
+    <dynamics damping="0.0" friction="0.0"/>
+  </joint>
+  <link
+    name="l_foot_toe">
+  </link>
+  <joint
+    name="l_foot_toe_joint"
+    type="fixed">
+    <origin
+      xyz="0.1415 0 -0.038"
+      rpy="0 0 0" />
+    <parent
+      link="leg_l6_link" />
+    <child
+      link="l_foot_toe" />
+  </joint>
+  <link
+    name="l_foot_heel">
+  </link>
+  <joint
+    name="l_foot_heel_joint"
+    type="fixed">
+    <origin
+      xyz="-0.0445 0 -0.038"
+      rpy="0 0 0" />
+    <parent
+      link="leg_l6_link" />
+    <child
+      link="l_foot_heel" />
+  </joint>
+  <link
+    name="l_foot_side">
+  </link>
+  <joint
+    name="l_foot_side_joint"
+    type="fixed">
+    <origin
+      xyz="0 -0.0445 -0.038"
+      rpy="0 0 0" />
+    <parent
+      link="leg_l6_link" />
+    <child
+      link="l_foot_side" />
+  </joint>
+  <link
+    name="leg_r1_link">
+    <inertial>
+      <origin
+        xyz="0.063447807974593 8.35629230255819E-08 -0.00523903423538546"
+        rpy="0 0 0" />
+      <mass
+        value="0.812038227652222" />
+      <inertia
+        ixx="0.002361"
+        ixy="0.000000"
+        ixz="0.000080"
+        iyy="0.002706"
+        iyz="0.000000"
+        izz="0.004264" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://humanoid_legged_description/meshes/leg_r1_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.898039215686275 0.917647058823529 0.929411764705882 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://humanoid_legged_description/meshes/leg_r1_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="leg_r1_joint"
+    type="revolute">
+    <origin
+      xyz="0.0167451660040608 -0.158 -0.0250735931288074"
+      rpy="0 0.785398163397455 3.14159265358979" />
+    <parent
+      link="base_link" />
+    <child
+      link="leg_r1_link" />
+    <axis
+      xyz="-1 0 0" />
+    <limit effort="150.0" lower="-1.57" upper="1.57" velocity="7.5"/>
+    <dynamics damping="0.0" friction="0.0"/>
+  </joint>
+  <link
+    name="leg_r2_link">
+    <inertial>
+      <origin
+        xyz="0.0396478671717016 -1.27832792998217E-06 -0.0357769089706589"
+        rpy="0 0 0" />
+      <mass
+        value="1.09949380454122" />
+      <inertia
+        ixx="0.003556"
+        ixy="0.000000"
+        ixz="0.000721"
+        iyy="0.002946"
+        iyz="0.000000"
+        izz="0.003182" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://humanoid_legged_description/meshes/leg_r2_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.898039215686275 0.917647058823529 0.929411764705882 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://humanoid_legged_description/meshes/leg_r2_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="leg_r2_joint"
+    type="revolute">
+    <origin
+      xyz="0.0800000000000007 0 -0.0419999999999999"
+      rpy="3.14159265358979 1.5707963267949 0" />
+    <parent
+      link="leg_r1_link" />
+    <child
+      link="leg_r2_link" />
+    <axis
+      xyz="-1 0 0" />
+    <limit effort="150.0" lower="-1.57" upper="1.57" velocity="7.5"/>
+    <dynamics damping="0.0" friction="0.0"/>
+  </joint>
+  <link
+    name="leg_r3_link">
+    <inertial>
+      <origin
+        xyz="-0.0158963064456719 0.000244401291231849 -0.21409470691189"
+        rpy="0 0 0" />
+      <mass
+        value="11.2704290325054" />
+      <inertia
+        ixx="0.142094"
+        ixy="-0.000033"
+        ixz="0.037431"
+        iyy="0.183106"
+        iyz="0.000495"
+        izz="0.072721" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://humanoid_legged_description/meshes/leg_r3_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.898039215686275 0.917647058823529 0.929411764705882 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://humanoid_legged_description/meshes/leg_r3_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="leg_r3_joint"
+    type="revolute">
+    <origin
+      xyz="0.0920000000000001 0 -0.08"
+      rpy="0 -0.785398163397442 0" />
+    <parent
+      link="leg_r2_link" />
+    <child
+      link="leg_r3_link" />
+    <axis
+      xyz="0 -1 0" />
+    <limit effort="300.0" lower="-0.90" upper="1.57" velocity="7.5"/>
+    <dynamics damping="0.0" friction="0.0"/>
+  </joint>
+  <link
+    name="leg_r4_link">
+    <inertial>
+      <origin
+        xyz="0.0115517137512392 -0.000630805005833679 -0.123218798748804"
+        rpy="0 0 0" />
+      <mass
+        value="1.6873629685696" />
+      <inertia
+        ixx="0.014790"
+        ixy="0.000007"
+        ixz="0.000170"
+        iyy="0.013056"
+        iyz="-0.000057"
+        izz="0.004989" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://humanoid_legged_description/meshes/leg_r4_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.898039215686275 0.917647058823529 0.929411764705882 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://humanoid_legged_description/meshes/leg_r4_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="leg_r4_joint"
+    type="revolute">
+    <origin
+      xyz="0 0 -0.459104968164964"
+      rpy="0 0 0" />
+    <parent
+      link="leg_r3_link" />
+    <child
+      link="leg_r4_link" />
+    <axis
+      xyz="0 -1 0" />
+    <limit effort="300.0" lower="-1.7" upper="0.1" velocity="7.5"/>
+    <dynamics damping="0.0" friction="0.0"/>
+  </joint>
+  <link
+    name="leg_r5_link">
+    <inertial>
+      <origin
+        xyz="-3.21773463429764E-09 -3.21773468980879E-09 -2.21378471110256E-13"
+        rpy="0 0 0" />
+      <mass
+        value="0.179272166113496" />
+      <inertia
+        ixx="0.000025"
+        ixy="0.000000"
+        ixz="0.000000"
+        iyy="0.000025"
+        iyz="0.000000"
+        izz="0.000041" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://humanoid_legged_description/meshes/leg_r5_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.898039215686275 0.898039215686275 0.898039215686275 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://humanoid_legged_description/meshes/leg_r5_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="leg_r5_joint"
+    type="revolute">
+    <origin
+      xyz="2.21008500065345E-05 0 -0.321306622119717"
+      rpy="0 0 0" />
+    <parent
+      link="leg_r4_link" />
+    <child
+      link="leg_r5_link" />
+    <axis
+      xyz="0 1 0" />
+    <limit effort="90.0" lower="-1.0" upper="1.0" velocity="7.5"/>
+    <dynamics damping="0.0" friction="0.0"/>
+  </joint>
+  <link
+    name="leg_r6_link">
+    <inertial>
+      <origin
+        xyz="0.0428722257654521 1.58206781009085E-15 -0.0287264736311188"
+        rpy="0 0 0" />
+      <mass
+        value="0.359578868782818" />
+      <inertia
+        ixx="0.000193"
+        ixy="0.000000"
+        ixz="0.000026"
+        iyy="0.000903"
+        iyz="0.000000"
+        izz="0.001011" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://humanoid_legged_description/meshes/leg_r6_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.898039215686275 0.917647058823529 0.929411764705882 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://humanoid_legged_description/meshes/leg_r6_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="leg_r6_joint"
+    type="revolute">
+    <origin
+      xyz="0 0 0"
+      rpy="0 0 0" />
+    <parent
+      link="leg_r5_link" />
+    <child
+      link="leg_r6_link" />
+    <axis
+      xyz="0.99999999763436 0 6.87842964705043E-05" />
+    <limit effort="90.0" lower="-1.0" upper="1.0" velocity="7.5"/>
+    <dynamics damping="0.0" friction="0.0"/>
+  </joint>
+  <link
+    name="r_foot_toe">
+  </link>
+  <joint
+    name="r_foot_toe_joint"
+    type="fixed">
+    <origin
+      xyz="0.1415 0 -0.038"
+      rpy="0 0 0" />
+    <parent
+      link="leg_r6_link" />
+    <child
+      link="r_foot_toe" />
+  </joint>
+  <link
+    name="r_foot_heel">
+  </link>
+  <joint
+    name="r_foot_heel_joint"
+    type="fixed">
+    <origin
+      xyz="-0.0445 0 -0.038"
+      rpy="0 0 0" />
+    <parent
+      link="leg_r6_link" />
+    <child
+      link="r_foot_heel" />
+  </joint>
+  <link
+    name="r_foot_side">
+  </link>
+  <joint
+    name="r_foot_side_joint"
+    type="fixed">
+    <origin
+      xyz="0 -0.0445 -0.038"
+      rpy="0 0 0" />
+    <parent
+      link="leg_r6_link" />
+    <child
+      link="r_foot_side" />
+  </joint>
+</robot>

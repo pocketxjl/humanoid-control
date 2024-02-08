@@ -41,6 +41,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <ocs2_robotic_tools/common/RobotInterface.h>
 #include <ocs2_robotic_tools/end_effector/EndEffectorKinematics.h>
 #include <ocs2_sqp/SqpSettings.h>
+#include <ocs2_self_collision/PinocchioGeometryInterface.h>
 
 #include "humanoid_interface/common/ModelSettings.h"
 #include "humanoid_interface/initialization/HumanoidInitializer.h"
@@ -83,6 +84,7 @@ class HumanoidInterface final : public RobotInterface {
   const RolloutBase& getRollout() const { return *rolloutPtr_; }
   PinocchioInterface& getPinocchioInterface() { return *pinocchioInterfacePtr_; }
   const CentroidalModelInfo& getCentroidalModelInfo() const { return centroidalModelInfo_; }
+  PinocchioGeometryInterface& getGeometryInterface() { return *geometryInterfacePtr_; }
   std::shared_ptr<SwitchedModelReferenceManager> getSwitchedModelReferenceManagerPtr() const { return referenceManagerPtr_; }
 
   const HumanoidInitializer& getInitializer() const override { return *initializerPtr_; }
@@ -106,6 +108,8 @@ class HumanoidInterface final : public RobotInterface {
   std::unique_ptr<StateInputConstraint> getNormalVelocityConstraint(const EndEffectorKinematics<scalar_t>& eeKinematics,
                                                                     size_t contactPointIndex, bool useAnalyticalGradients);
   std::unique_ptr<StateInputConstraint> getFootRollConstraint(size_t contactPointIndex);
+    std::unique_ptr<StateCost> getSelfCollisionConstraint(const PinocchioInterface& pinocchioInterface, const std::string& taskFile,
+                                                          const std::string& prefix, bool verbose);
 
   ModelSettings modelSettings_;
   ddp::Settings ddpSettings_;
@@ -123,6 +127,7 @@ class HumanoidInterface final : public RobotInterface {
   rollout::Settings rolloutSettings_;
   std::unique_ptr<RolloutBase> rolloutPtr_;
   std::unique_ptr<HumanoidInitializer> initializerPtr_;
+  std::unique_ptr<PinocchioGeometryInterface> geometryInterfacePtr_;
 
   vector_t initialState_;
 };
