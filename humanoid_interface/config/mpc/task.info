@@ -9,7 +9,7 @@ humanoid_interface
 
 model_settings
 {
-  positionErrorGain             0.0 ; 20.0
+  positionErrorGain             20.0 ; 20.0
   phaseTransitionStanceTime     0.4
 
   verboseCppAd                  true
@@ -19,10 +19,9 @@ model_settings
 
 swing_trajectory_config
 {
-  liftOffVelocity               0.4
-  touchDownVelocity            -0.8
-  swingHeight                   0.2
-  touchdownAfterHorizon         0.2
+  liftOffVelocity               0.1
+  touchDownVelocity            -0.2
+  swingHeight                   0.15
   swingTimeScale                0.15
 }
 
@@ -197,14 +196,14 @@ Q
   (11,11) 200.0    ; theta_base_x
 
   ;; Leg Joint Positions: [LF, LH, RF, RH] ;;
-  (12,12) 20.0     ; leg_l1_joint
-  (13,13) 20.0     ; leg_l2_joint
+  (12,12) 200.0     ; leg_l1_joint
+  (13,13) 200.0     ; leg_l2_joint
   (14,14) 20.0     ; leg_l3_joint
   (15,15) 20.0     ; leg_l4_joint
   (16,16) 20.0     ; leg_l5_joint
   (17,17) 20.0     ; leg_l6_joint
-  (18,18) 20.0     ; leg_r1_joint
-  (19,19) 20.0     ; leg_r2_joint
+  (18,18) 200.0     ; leg_r1_joint
+  (19,19) 200.0     ; leg_r2_joint
   (20,20) 20.0     ; leg_r3_joint
   (21,21) 20.0     ; leg_r4_joint
   (22,22) 20.0     ; leg_r5_joint
