@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<package format="2">
+    <name>humanoid_estimation</name>
+    <version>0.0.0</version>
+    <description>The humanoid_estimation packages.</description>
+    <maintainer email="contact@bridgedp.com">bridgedp</maintainer>
+    <license>MIT</license>
+
+    <buildtool_depend>catkin</buildtool_depend>
+
+    <build_depend>cmake_clang_tools</build_depend>
+    <depend>roscpp</depend>
+    <depend>humanoid_common</depend>
+    <depend>realtime_tools</depend>
+    <depend>tf2_ros</depend>
+    <depend>humanoid_interface</depend>
+
+</package>

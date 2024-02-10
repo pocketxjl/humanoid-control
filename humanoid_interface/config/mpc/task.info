@@ -271,3 +271,50 @@ selfCollision
   mu      1e-2
   delta   1e-3
 }
+
+; Whole body control
+torqueLimitsTask
+{
+   (0,0)  150.0     ; motor 1
+   (1,0)  150.0     ; motor 2
+   (2,0)  300.0     ; motor 3
+   (3,0)  300.0     ; motor 4
+   (4,0)  180.0     ; motor 5
+   (5,0)  90.0     ; motor 6
+}
+
+frictionConeTask
+{
+  frictionCoefficient    0.7
+}
+
+swingLegTask
+{
+    kp                   160  
+    kd                   18   
+}
+
+baseAccelTask
+{
+    kp                   40
+    kd                   4
+}
+
+baseHeightTask
+{
+    kp                   20
+    kd                   3
+}
+
+baseAngularTask 
+{
+    kp                   20
+    kd                   3
+}
+
+weight
+{
+    swingLeg        100
+    baseAccel       1
+    contactForce    0.0
+}

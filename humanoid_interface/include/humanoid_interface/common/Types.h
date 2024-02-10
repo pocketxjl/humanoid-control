@@ -49,6 +49,7 @@ using matrix3_t = Eigen::Matrix<scalar_t, 3, 3>;
 using matrix35_t = Eigen::Matrix<scalar_t, 3, 5>;
 using matrix65_t = Eigen::Matrix<scalar_t, 6, 5>;
 using matrix56_t = Eigen::Matrix<scalar_t, 5, 6>;
+using matrix66_t = Eigen::Matrix<scalar_t, 6, 6>;
 using quaternion_t = Eigen::Quaternion<scalar_t>;
 
 using vectorf_t = Eigen::Matrix<float, Eigen::Dynamic, 1>;

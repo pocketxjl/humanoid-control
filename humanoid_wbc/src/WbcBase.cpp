@@ -113,8 +113,8 @@ void WbcBase::updateMeasured(const vector_t& rbdStateMeasured)
   // For base motion tracking task
   base_j_.setZero(6, info_.generalizedCoordinatesNum);
   base_dj_.setZero(6, info_.generalizedCoordinatesNum);
-  pinocchio::getFrameJacobian(model, data, model.getBodyId("base_link"), pinocchio::LOCAL_WORLD_ALIGNED, base_j_);
-  pinocchio::getFrameJacobianTimeVariation(model, data, model.getBodyId("base_link"), pinocchio::LOCAL_WORLD_ALIGNED,
+  pinocchio::getFrameJacobian(model, data, model.getBodyId("dummy_link"), pinocchio::LOCAL_WORLD_ALIGNED, base_j_);
+  pinocchio::getFrameJacobianTimeVariation(model, data, model.getBodyId("dummy_link"), pinocchio::LOCAL_WORLD_ALIGNED,
                                            base_dj_);
 }
 

@@ -192,7 +192,7 @@ void HumanoidInterface::setupOptimalConrolProblem(const std::string& taskFile, c
     problemPtr_->equalityConstraintPtr->add(footName + "_normalVelocity",
                                             getNormalVelocityConstraint(*eeKinematicsPtr, i, useAnalyticalGradientsConstraints));
     // 由于一只脚上有两个虚拟接触点，只需要给其中一个接触点添加滚转角约束
-      if (i % 2 == 0){
+      if (i < 2){
           problemPtr_->equalityConstraintPtr->add(footName + "_footRoll", getFootRollConstraint(i));
       }
     }
