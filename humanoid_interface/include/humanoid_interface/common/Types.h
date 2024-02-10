@@ -42,8 +42,24 @@ using feet_array_t = std::array<T, 4>;
 using contact_flag_t = feet_array_t<bool>;
 
 using vector3_t = Eigen::Matrix<scalar_t, 3, 1>;
+using vector5_t = Eigen::Matrix<scalar_t, 5, 1>;
+using vector6_t = Eigen::Matrix<scalar_t, 6, 1>;
+
 using matrix3_t = Eigen::Matrix<scalar_t, 3, 3>;
+using matrix35_t = Eigen::Matrix<scalar_t, 3, 5>;
+using matrix65_t = Eigen::Matrix<scalar_t, 6, 5>;
+using matrix56_t = Eigen::Matrix<scalar_t, 5, 6>;
 using quaternion_t = Eigen::Quaternion<scalar_t>;
+
+using vectorf_t = Eigen::Matrix<float, Eigen::Dynamic, 1>;
+using vector3f_t = Eigen::Matrix<float, 3, 1>;
+using vector5f_t = Eigen::Matrix<float, 5, 1>;
+using vector6f_t = Eigen::Matrix<float, 6, 1>;
+
+using matrixf_t = Eigen::Matrix<float, Eigen::Dynamic, Eigen::Dynamic>;
+using matrix3f_t = Eigen::Matrix<float, 3, 3>;
+using matrix35f_t = Eigen::Matrix<float, 3, 5>;
+using matrix65f_t = Eigen::Matrix<float, 6, 5>;
 
 }  // namespace humanoid
 }  // namespace ocs2

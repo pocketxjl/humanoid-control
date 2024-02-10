@@ -11,7 +11,7 @@
     <!-- The reference related config file of the robot -->
     <arg name="referenceFile"     default="$(find humanoid_interface)/config/command/reference.info"/>
     <!-- The URDF model of the robot -->
-    <arg name="urdfFile"          default="$(find humanoid_legged_description)/urdf/humanoid_legged.urdf"/>
+    <arg name="urdfFile"          default="$(find humanoid_legged_description)/urdf/humanoid_legged_control.urdf"/>
     <arg name="urdfFileOrigin"    default="$(find humanoid_legged_description)/urdf/humanoid_legged_origin.urdf"/>
     <!-- The file defining gait definition -->
     <arg name="gaitCommandFile"   default="$(find humanoid_interface)/config/command/gait.info"/>
