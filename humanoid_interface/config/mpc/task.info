@@ -28,7 +28,7 @@ swing_trajectory_config
 ; Multiple_Shooting SQP settings
 sqp
 {
-  nThreads                              3
+  nThreads                              4
   dt                                    0.015
   sqpIteration                          1
   deltaTol                              1e-4
@@ -37,10 +37,10 @@ sqp
   inequalityConstraintMu                0.1
   inequalityConstraintDelta             5.0
   projectStateInputEqualityConstraints  true
-  printSolverStatistics                 true
+  printSolverStatistics                 false
   printSolverStatus                     false
   printLinesearch                       false
-  useFeedbackPolicy                     true
+  useFeedbackPolicy                     false
   integratorType                        RK2
   threadPriority                        50
 }

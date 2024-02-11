@@ -171,18 +171,29 @@ void humanoidController::update(const ros::Time& time, const ros::Duration& peri
 
   //TODO: send the controller command to hardware interface
     std_msgs::Float32MultiArray targetTorqueMsg;
-    targetTorqueMsg.data = std::vector<float>(torque.data(), torque.data() + torque.size());
+    for (int i1 = 0; i1 < 12; ++i1) {
+        targetTorqueMsg.data.push_back(torque(i1));
+    }
+    //output targetTorqueMsg
+//    std::cerr << "targetTorqueMsg: " << targetTorqueMsg << std::endl;
     std_msgs::Float32MultiArray targetPosMsg;
-    targetPosMsg.data = std::vector<float>(posDes.data(), posDes.data() + posDes.size());
+    for (int i1 = 0; i1 < 12; ++i1) {
+        targetPosMsg.data.push_back(posDes(i1));
+    }
     std_msgs::Float32MultiArray targetVelMsg;
-    targetVelMsg.data = std::vector<float>(velDes.data(), velDes.data() + velDes.size());
+    for (int i1 = 0; i1 < 12; ++i1) {
+        targetVelMsg.data.push_back(velDes(i1));
+    }
     targetTorquePub_.publish(targetTorqueMsg);
     targetPosPub_.publish(targetPosMsg);
     targetVelPub_.publish(targetVelMsg);
     std_msgs::Float32MultiArray targetKp;
-    targetKp.data = {20.0, 20.0, 40.0, 40.0, 3.0, 0.0, 20.0, 20.0, 40.0, 40.0, 3.0, 0.0};
+//    targetKp.data = {20.0, 20.0, 40.0, 40.0, 3.0, 0.0, 20.0, 20.0, 40.0, 40.0, 3.0, 0.0};
+    //set targetKp.data to zero for testing
+    targetKp.data = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
     std_msgs::Float32MultiArray targetKd;
-    targetKd.data = {2.0, 2.0, 4.0, 4.0, 0.3, 0.0, 2.0, 2.0, 4.0, 4.0, 0.3, 0.0};
+//    targetKd.data = {2.0, 2.0, 4.0, 4.0, 0.3, 0.0, 2.0, 2.0, 4.0, 4.0, 0.3, 0.0};
+    targetKd.data = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
     targetKpPub_.publish(targetKp);
     targetKdPub_.publish(targetKd);
 

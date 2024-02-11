@@ -10,7 +10,7 @@ from nav_msgs.msg import Odometry
 from sensor_msgs.msg import Imu
 
 
-class HectorSim(MuJoCoBase):
+class HumanoidSim(MuJoCoBase):
   def __init__(self, xml_path):
     super().__init__(xml_path)
     self.simend = 1000.0
@@ -216,7 +216,7 @@ def main():
     rospack.list()
     hector_desc_path = rospack.get_path('humanoid_legged_description')
     xml_path = hector_desc_path + "/mjcf/humanoid_legged.xml"
-    sim = HectorSim(xml_path)
+    sim = HumanoidSim(xml_path)
     sim.reset()
     sim.simulate()
 
