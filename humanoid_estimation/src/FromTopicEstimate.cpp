@@ -17,10 +17,9 @@ namespace ocs2
 namespace humanoid
 {
 FromTopicStateEstimate::FromTopicStateEstimate(PinocchioInterface pinocchioInterface, CentroidalModelInfo info,
-                                               const PinocchioEndEffectorKinematics& eeKinematics)
+                                               const PinocchioEndEffectorKinematics& eeKinematics, ::ros::NodeHandle& nh)
   : StateEstimateBase(std::move(pinocchioInterface), std::move(info), eeKinematics)
 {
-  ros::NodeHandle nh;
   sub_ = nh.subscribe<nav_msgs::Odometry>("/ground_truth/state", 10, &FromTopicStateEstimate::callback, this);
 }
 

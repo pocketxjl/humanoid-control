@@ -105,7 +105,7 @@ HumanoidInterface::HumanoidInterface(const std::string& taskFile, const std::str
   rolloutSettings_ = rollout::loadSettings(taskFile, "rollout", verbose);
 
   // OptimalConrolProblem
-  setupOptimalConrolProblem(taskFile, urdfFile, referenceFile, verbose);
+  setupOptimalControlProblem(taskFile, urdfFile, referenceFile, verbose);
 
   // initial state
   initialState_.setZero(centroidalModelInfo_.stateDim);
@@ -115,7 +115,7 @@ HumanoidInterface::HumanoidInterface(const std::string& taskFile, const std::str
 /******************************************************************************************************/
 /******************************************************************************************************/
 /******************************************************************************************************/
-void HumanoidInterface::setupOptimalConrolProblem(const std::string& taskFile, const std::string& urdfFile,
+void HumanoidInterface::setupOptimalControlProblem(const std::string& taskFile, const std::string& urdfFile,
                                                      const std::string& referenceFile, bool verbose) {
   // PinocchioInterface
   pinocchioInterfacePtr_.reset(new PinocchioInterface(centroidal_model::createPinocchioInterface(urdfFile, modelSettings_.jointNames)));
@@ -141,7 +141,7 @@ void HumanoidInterface::setupOptimalConrolProblem(const std::string& taskFile, c
   loadData::loadCppDataType(taskFile, "humanoid_interface.useAnalyticalGradientsDynamics", useAnalyticalGradientsDynamics);
   std::unique_ptr<SystemDynamicsBase> dynamicsPtr;
   if (useAnalyticalGradientsDynamics) {
-    throw std::runtime_error("[HumanoidInterface::setupOptimalConrolProblem] The analytical dynamics class is not yet implemented!");
+    throw std::runtime_error("[HumanoidInterface::setupOptimalControlProblem] The analytical dynamics class is not yet implemented!");
   } else {
     const std::string modelName = "dynamics";
     dynamicsPtr.reset(new HumanoidDynamicsAD(*pinocchioInterfacePtr_, centroidalModelInfo_, modelName, modelSettings_));
@@ -166,7 +166,7 @@ void HumanoidInterface::setupOptimalConrolProblem(const std::string& taskFile, c
     std::unique_ptr<EndEffectorKinematics<scalar_t>> eeKinematicsPtr;
     if (useAnalyticalGradientsConstraints) {
       throw std::runtime_error(
-          "[HumanoidInterface::setupOptimalConrolProblem] The analytical end-effector linear constraint is not implemented!");
+          "[HumanoidInterface::setupOptimalControlProblem] The analytical end-effector linear constraint is not implemented!");
     } else {
       const auto infoCppAd = centroidalModelInfo_.toCppAd();
       const CentroidalModelPinocchioMappingCppAd pinocchioMappingCppAd(infoCppAd);

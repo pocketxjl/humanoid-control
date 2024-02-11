@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<package format="2">
+    <name>humanoid_controllers</name>
+    <version>0.0.0</version>
+    <description>The humanoid_controllers packages.</description>
+    <maintainer email="liaoqiayuan@gmail.com">Qiayuan Liao</maintainer>
+    <license>BSD</license>
+    <author email="liaoqiayuan@gmail.com">Qiayuan Liao</author>
+
+    <buildtool_depend>catkin</buildtool_depend>
+
+    <build_depend>cmake_clang_tools</build_depend>
+    <depend>roscpp</depend>
+    <depend>humanoid_common</depend>
+    <depend>humanoid_interface</depend>
+    <depend>humanoid_estimation</depend>
+    <depend>humanoid_wbc</depend>
+
+    <depend>humanoid_dummy</depend>
+    <depend>ocs2_self_collision_visualization</depend>
+
+    <depend>angles</depend>
+
+
+    <export>
+        <controller_interface plugin="${prefix}/humanoid_controllers_plugins.xml"/>
+    </export>
+</package>

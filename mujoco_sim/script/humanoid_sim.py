@@ -7,6 +7,7 @@ import rospy
 import rospkg
 from std_msgs.msg import Float32MultiArray,Bool
 from nav_msgs.msg import Odometry
+from sensor_msgs.msg import Imu
 
 
 class HectorSim(MuJoCoBase):
@@ -30,6 +31,7 @@ class HectorSim(MuJoCoBase):
 
     self.pubJoints = rospy.Publisher('/jointsPosVel', Float32MultiArray, queue_size=10)
     self.pubOdom = rospy.Publisher('/ground_truth/state', Odometry, queue_size=10)
+    self.pubImu = rospy.Publisher('/imu', Imu, queue_size=10)
 
     rospy.Subscriber("/targetTorque", Float32MultiArray, self.targetTorqueCallback) 
     rospy.Subscriber("/targetPos", Float32MultiArray, self.targetPosCallback) 
@@ -39,6 +41,8 @@ class HectorSim(MuJoCoBase):
     #set the initial joint position
     self.data.qpos[:3] = np.array([0, 0, 0.98])
     self.data.qpos[-12:] = np.array([0, 0, 0.35, -0.90, -0.55, 0, 0, 0, 0.35, -0.90, -0.55, 0])
+    self.data.qvel[:3] = np.array([0, 0, 0])
+    self.data.qvel[-12:] = np.zeros(12)
 
     # * show the model
     mj.mj_step(self.model, self.data)
@@ -105,14 +109,15 @@ class HectorSim(MuJoCoBase):
         ori = self.data.sensor('BodyQuat').data.copy()
         vel = self.data.qvel[:3].copy()
         angVel = self.data.sensor('BodyGyro').data.copy()
+
         bodyOdom.header.stamp = rospy.Time.now()
         bodyOdom.pose.pose.position.x = pos[0]
         bodyOdom.pose.pose.position.y = pos[1]
         bodyOdom.pose.pose.position.z = pos[2]
-        bodyOdom.pose.pose.orientation.x = ori[0]
-        bodyOdom.pose.pose.orientation.y = ori[1]
-        bodyOdom.pose.pose.orientation.z = ori[2]
-        bodyOdom.pose.pose.orientation.w = ori[3]
+        bodyOdom.pose.pose.orientation.x = ori[1]
+        bodyOdom.pose.pose.orientation.y = ori[2]
+        bodyOdom.pose.pose.orientation.z = ori[3]
+        bodyOdom.pose.pose.orientation.w = ori[0]
         bodyOdom.twist.twist.linear.x = vel[0]
         bodyOdom.twist.twist.linear.y = vel[1]
         bodyOdom.twist.twist.linear.z = vel[2]
@@ -121,8 +126,68 @@ class HectorSim(MuJoCoBase):
         bodyOdom.twist.twist.angular.z = angVel[2]
         self.pubOdom.publish(bodyOdom)
 
+        bodyImu = Imu()
+        acc = self.data.sensor('BodyAcc').data.copy()
+        bodyImu.header.stamp = rospy.Time.now()
+        bodyImu.angular_velocity.x = angVel[0]
+        bodyImu.angular_velocity.y = angVel[1]
+        bodyImu.angular_velocity.z = angVel[2]
+        bodyImu.linear_acceleration.x = acc[0]
+        bodyImu.linear_acceleration.y = acc[1]
+        bodyImu.linear_acceleration.z = acc[2]
+        bodyImu.orientation.x = ori[1]
+        bodyImu.orientation.y = ori[2]
+        bodyImu.orientation.z = ori[3]
+        bodyImu.orientation.w = ori[0]
+        self.pubImu.publish(bodyImu)
+
       if self.data.time >= self.simend:
           break
+      if self.pause_flag:
+        # publish the state even if the simulation is paused
+        # * Publish joint positions and velocities
+        jointsPosVel = Float32MultiArray()
+        # get last 12 element of qpos and qvel
+        qp = self.data.qpos[-12:].copy()
+        qv = np.zeros(12)
+        jointsPosVel.data = np.concatenate((qp,qv))
+
+        self.pubJoints.publish(jointsPosVel)
+        # * Publish body pose
+        bodyOdom = Odometry()
+        pos = self.data.sensor('BodyPos').data.copy()
+        ori = self.data.sensor('BodyQuat').data.copy()
+        vel = self.data.qvel[:3].copy()
+        angVel = self.data.sensor('BodyGyro').data.copy()
+        bodyOdom.header.stamp = rospy.Time.now()
+        bodyOdom.pose.pose.position.x = pos[0]
+        bodyOdom.pose.pose.position.y = pos[1]
+        bodyOdom.pose.pose.position.z = pos[2]
+        bodyOdom.pose.pose.orientation.x = ori[1]
+        bodyOdom.pose.pose.orientation.y = ori[2]
+        bodyOdom.pose.pose.orientation.z = ori[3]
+        bodyOdom.pose.pose.orientation.w = ori[0]
+        bodyOdom.twist.twist.linear.x = 0
+        bodyOdom.twist.twist.linear.y = 0
+        bodyOdom.twist.twist.linear.z = 0
+        bodyOdom.twist.twist.angular.x = 0
+        bodyOdom.twist.twist.angular.y = 0
+        bodyOdom.twist.twist.angular.z = 0
+        self.pubOdom.publish(bodyOdom)
+
+        bodyImu = Imu()
+        bodyImu.header.stamp = rospy.Time.now()
+        bodyImu.angular_velocity.x = 0
+        bodyImu.angular_velocity.y = 0
+        bodyImu.angular_velocity.z = 0
+        bodyImu.linear_acceleration.x = 0
+        bodyImu.linear_acceleration.y = 0
+        bodyImu.linear_acceleration.z = 0
+        bodyImu.orientation.x = ori[1]
+        bodyImu.orientation.y = ori[2]
+        bodyImu.orientation.z = ori[3]
+        bodyImu.orientation.w = ori[0]
+        self.pubImu.publish(bodyImu)
 
       # get framebuffer viewport
       viewport_width, viewport_height = glfw.get_framebuffer_size(

@@ -79,7 +79,7 @@ inline contact_flag_t modeNumber2StanceLeg(const size_t& modeNumber) {
 /******************************************************************************************************/
 /******************************************************************************************************/
 inline size_t stanceLeg2ModeNumber(const contact_flag_t& stanceLegs) {
-  return static_cast<size_t>(stanceLegs[0]) + 3 * static_cast<size_t>(stanceLegs[2]);
+  return static_cast<size_t>(stanceLegs[0]) + 2 * static_cast<size_t>(stanceLegs[3]);
 }
 
 /******************************************************************************************************/
