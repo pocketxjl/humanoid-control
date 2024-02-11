@@ -23,9 +23,11 @@
     <light directional="false" cutoff="60" exponent="1" diffuse=".5 .5 .5" specular=".1 .1 .1" pos="0.5 0.1 0.8" dir="-0.5 -0.1 -0.8"/>
         <geom name="floor" pos="0  0  0" size="20 20 20" type="plane" material="plane" condim="3" conaffinity="15" friction=".7 .001 .001" contype="6"/>
         <body name="base_link" pos="0 0 2">
+            <freejoint/>
             <inertial pos="0.02394 0.00047 0.287306" quat="0.999787 0.00893974 -0.0179368 -0.0048468" mass="31.1109" diaginertia="2.38989 1.6598 1.15201" />
             <geom type="mesh" contype="0" conaffinity="0" group="1" rgba="0.75294 0.75294 0.75294 1" mesh="base_link" />
-            <!-- <geom type="mesh" rgba="0.75294 0.75294 0.75294 1" mesh="base_link" /> -->
+            <geom type="mesh" rgba="0.75294 0.75294 0.75294 1" mesh="base_link" />
+            <site name="imu" pos="0 0 0"/>
             <body name="leg_l1_link" pos="0.0167452 0.158 -0.0250736" quat="0 -0.382683 0 0.92388">
                 <inertial pos="0.072108 0 -0.006156" quat="0 0.721778 0 0.692124" mass="1.70312" diaginertia="0.00426736 0.002706 0.00235764" />
                 <joint name="leg_l1_joint" pos="0 0 0" axis="-1 0 0"  damping='0.2'/>
@@ -114,4 +116,35 @@
         <motor gear="1" joint="leg_r5_joint" name="leg_r5_motor" ctrllimited="true"  ctrlrange='-90 90'/>
         <motor gear="1" joint="leg_r6_joint" name="leg_r6_motor" ctrllimited="true"  ctrlrange='-90 90'/>
     </actuator>
+    <sensor>
+        <jointpos name="leg_l1_pos" joint="leg_l1_joint"/>
+        <jointpos name="leg_l2_pos" joint="leg_l2_joint"/>
+        <jointpos name="leg_l3_pos" joint="leg_l3_joint"/>
+        <jointpos name="leg_l4_pos" joint="leg_l4_joint"/>
+        <jointpos name="leg_l5_pos" joint="leg_l5_joint"/>
+        <jointpos name="leg_l6_pos" joint="leg_l6_joint"/>
+        <jointpos name="leg_r1_pos" joint="leg_r1_joint"/>
+        <jointpos name="leg_r2_pos" joint="leg_r2_joint"/>
+        <jointpos name="leg_r3_pos" joint="leg_r3_joint"/>
+        <jointpos name="leg_r4_pos" joint="leg_r4_joint"/>
+        <jointpos name="leg_r5_pos" joint="leg_r5_joint"/>
+        <jointpos name="leg_r6_pos" joint="leg_r6_joint"/>
+        <jointvel name="leg_l1_vel" joint="leg_l1_joint"/>
+        <jointvel name="leg_l2_vel" joint="leg_l2_joint"/>
+        <jointvel name="leg_l3_vel" joint="leg_l3_joint"/>
+        <jointvel name="leg_l4_vel" joint="leg_l4_joint"/>
+        <jointvel name="leg_l5_vel" joint="leg_l5_joint"/>
+        <jointvel name="leg_l6_vel" joint="leg_l6_joint"/>
+        <jointvel name="leg_r1_vel" joint="leg_r1_joint"/>
+        <jointvel name="leg_r2_vel" joint="leg_r2_joint"/>
+        <jointvel name="leg_r3_vel" joint="leg_r3_joint"/>
+        <jointvel name="leg_r4_vel" joint="leg_r4_joint"/>
+        <jointvel name="leg_r5_vel" joint="leg_r5_joint"/>
+        <jointvel name="leg_r6_vel" joint="leg_r6_joint"/>
+        <accelerometer name="BodyAcc" site="imu"/>
+        <velocimeter name="BodyVel" site="imu"/>
+        <gyro name="BodyGyro" site="imu"/>
+        <framepos name="BodyPos" objtype="site" objname="imu"/>
+        <framequat name="BodyQuat" objtype="site" objname="imu"/>
+    </sensor>
 </mujoco>
