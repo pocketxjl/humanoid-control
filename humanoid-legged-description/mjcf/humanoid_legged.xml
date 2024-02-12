@@ -42,12 +42,12 @@
                         <inertial pos="-0.0159398 0.00024584 -0.214302" quat="0.694261 -0.142764 -0.146297 0.690084" mass="11.2874" diaginertia="0.183109 0.158438 0.0563741" />
                         <joint name="leg_l3_joint" pos="0 0 0" axis="0 -1 0"   damping='0.2'/>
                         <geom type="mesh" contype="0" conaffinity="0" group="1" rgba="0.898039 0.898039 0.898039 1" mesh="leg_l3_link" />
-                        <geom type="mesh" rgba="0.898039 0.898039 0.898039 1" mesh="leg_l3_link" />
+                        <!-- <geom type="mesh" rgba="0.898039 0.898039 0.898039 1" mesh="leg_l3_link" /> -->
                         <body name="leg_l4_link" pos="0 0 -0.459105">
                             <inertial pos="0.011266 0.000171 -0.112137" quat="0.999955 -0.00355323 -0.00866498 0.00169984" mass="3.23555" diaginertia="0.014793 0.0130564 0.00498565" />
                             <joint name="leg_l4_joint" pos="0 0 0" axis="0 -1 0"   damping='0.2'/>
                             <geom type="mesh" contype="0" conaffinity="0" group="1" rgba="0.898039 0.917647 0.929412 1" mesh="leg_l4_link" />
-                            <geom type="mesh" rgba="0.898039 0.917647 0.929412 1" mesh="leg_l4_link" />
+                            <!-- <geom type="mesh" rgba="0.898039 0.917647 0.929412 1" mesh="leg_l4_link" /> -->
                             <body name="leg_l5_link" pos="2.21009e-05 0 -0.321307">
                                 <inertial pos="-3.21773e-09 -3.21773e-09 0" quat="0.5 0.5 -0.5 0.5" mass="0.179272" diaginertia="4.1e-05 2.5e-05 2.5e-05" />
                                 <joint name="leg_l5_joint" pos="0 0 0" axis="0 1 0"   damping='0.2'/>
@@ -56,8 +56,8 @@
                                 <body name="leg_l6_link" pos="0 0 0">
                                     <inertial pos="0.0428722 0 -0.0287265" quat="0 0.71824 0 0.695796" mass="0.359579" diaginertia="0.00101183 0.000903 0.000192174" />
                                     <joint name="leg_l6_joint" pos="0 0 0" axis="1 0 6.87843e-05"   damping='0.2'/>
-                                    <geom size="0.20 0.05 0.008" pos="0.01 -0.0 -0.027" type="box" contype="0" conaffinity="0" group="1" rgba="0.898039 0.917647 0.929412 1"/>
-                                    <geom size="0.20 0.05 0.008" pos="0.01 -0.0 -0.027" type="box" rgba="0.8 0 0 0"/>
+                                    <geom size="0.20 0.025 0.008" pos="0.01 -0.0 -0.027" type="box" contype="0" conaffinity="0" group="1" rgba="0.898039 0.917647 0.929412 1"/>
+                                    <geom size="0.20 0.025 0.008" pos="0.01 -0.0 -0.027" type="box" rgba="0.8 0 0 0"/>
                                 </body>
                             </body>
                         </body>
@@ -92,8 +92,8 @@
                                 <body name="leg_r6_link" pos="0 0 0">
                                     <inertial pos="0.0428722 0 -0.0287265" quat="0 0.71824 0 0.695796" mass="0.359579" diaginertia="0.00101183 0.000903 0.000192174" />
                                     <joint name="leg_r6_joint" pos="0 0 0" axis="1 0 6.87843e-05"   damping='0.2'/>
-                                    <geom size="0.20 0.05 0.008" pos="0.01 -0.0 -0.027" type="box" contype="0" conaffinity="0" group="1" rgba="0.898039 0.917647 0.929412 1"/>
-                                    <geom size="0.20 0.05 0.008" pos="0.01 -0.0 -0.027" type="box" rgba="0.8 0 0 0"/>
+                                    <geom size="0.20 0.025 0.008" pos="0.01 -0.0 -0.027" type="box" contype="0" conaffinity="0" group="1" rgba="0.898039 0.917647 0.929412 1"/>
+                                    <geom size="0.20 0.025 0.008" pos="0.01 -0.0 -0.027" type="box" rgba="0.8 0 0 0"/>
                                 </body>
                             </body>
                         </body>
