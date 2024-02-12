@@ -7,6 +7,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 find_package(catkin REQUIRED
         COMPONENTS
         roscpp
+        controller_interface
         humanoid_common
         humanoid_interface
         humanoid_wbc
@@ -26,6 +27,7 @@ catkin_package(
         ${PROJECT_NAME}
         CATKIN_DEPENDS
         roscpp
+        controller_interface
         humanoid_common
         humanoid_interface
         humanoid_wbc
@@ -120,3 +122,8 @@ install(DIRECTORY include/${PROJECT_NAME}/
         DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
         FILES_MATCHING PATTERN "*.h"
         )
+
+# Install plugins
+install(FILES humanoid_controllers_plugins.xml
+        DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
+)

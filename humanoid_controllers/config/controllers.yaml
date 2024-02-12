@@ -1,0 +1,8 @@
+controllers:
+  joint_state_controller:
+    type: joint_state_controller/JointStateController
+    publish_rate: 100
+  humanoid_controller:
+    type: humanoid_controller/humanoidController
+  humanoid_cheater_controller:
+    type: humanoid_controller/humanoidCheaterController

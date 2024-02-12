@@ -39,4 +39,8 @@
           output="screen"/>
     <node pkg="humanoid_controllers" type="cheat_controller_node" name="cheat_controller"
           output="screen"/>
+    <node pkg="mujoco_sim" type="humanoid_sim.py" name="humanoid_sim"
+          output="screen"/>
+    <node pkg="mujoco_sim" type="teleop.py" name="teleop"
+          output="screen" launch-prefix="gnome-terminal --"/>
 </launch>

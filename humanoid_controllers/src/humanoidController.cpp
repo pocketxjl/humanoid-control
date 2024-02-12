@@ -21,10 +21,12 @@
 #include <humanoid_estimation/FromTopiceEstimate.h>
 #include <humanoid_estimation/LinearKalmanFilter.h>
 #include <humanoid_wbc/WeightedWbc.h>
+#include <pluginlib/class_list_macros.hpp>
 
-namespace ocs2 {
-namespace humanoid {
-bool humanoidController::init(ros::NodeHandle& controller_nh) {
+namespace humanoid_controller{
+using namespace ocs2;
+using namespace humanoid;
+bool humanoidController::init(HybridJointInterface* robot_hw, ros::NodeHandle& controller_nh) {
     controllerNh_ = controller_nh;
   // Initialize OCS2
   std::string urdfFile;
@@ -46,6 +48,9 @@ bool humanoidController::init(ros::NodeHandle& controller_nh) {
                                                                       HumanoidInterface_->modelSettings().contactNames3DoF);
   robotVisualizer_ = std::make_shared<HumanoidVisualizer>(HumanoidInterface_->getPinocchioInterface(),
                                                              HumanoidInterface_->getCentroidalModelInfo(), *eeKinematicsPtr_, nh);
+
+  defalutJointPos_.resize(jointNum_);
+  loadData::loadEigenMatrix(referenceFile, "defaultJointState", defalutJointPos_);
 
   // Hardware interface
   //TODO: setup hardware controller interface
@@ -108,15 +113,10 @@ void humanoidController::ImuCallback(const sensor_msgs::Imu::ConstPtr &msg) {
 
 void humanoidController::starting(const ros::Time& time) {
   // Initial state
-  //set the initial state = {0, 0, 0, 0, 0, 0, 0, 0, 0.98, 0, 0, 0, 0, 0, 0.35, -0.90, -0.55, 0, 0, 0, 0.35, -0.90, -0.55, 0}
+  //set the initial state = {0, 0, 0, 0, 0, 0, 0, 0, 0.976, 0, 0, 0, 0, 0, 0.35, -0.90, -0.55, 0, 0, 0, 0.35, -0.90, -0.55, 0}
   currentObservation_.state = vector_t::Zero(HumanoidInterface_->getCentroidalModelInfo().stateDim);
-    currentObservation_.state(8) = 0.98;
-    currentObservation_.state(14) = 0.35;
-    currentObservation_.state(15) = -0.90;
-    currentObservation_.state(16) = -0.55;
-    currentObservation_.state(20) = 0.35;
-    currentObservation_.state(21) = -0.90;
-    currentObservation_.state(22) = -0.55;
+  currentObservation_.state(8) = 0.976;
+  currentObservation_.state.segment(6 + 6, jointNum_) = defalutJointPos_;
 
   updateStateEstimation(time, ros::Duration(0.002));
   currentObservation_.input.setZero(HumanoidInterface_->getCentroidalModelInfo().inputDim);
@@ -137,7 +137,8 @@ void humanoidController::starting(const ros::Time& time) {
   mpcRunning_ = true;
 }
 
-void humanoidController::update(const ros::Time& time, const ros::Duration& period) {
+void humanoidController::update(const ros::Time& time, const ros::Duration& period) {  
+
   // State Estimate
   updateStateEstimation(time, period);
 
@@ -154,19 +155,40 @@ void humanoidController::update(const ros::Time& time, const ros::Duration& peri
   // Whole body control
   currentObservation_.input = optimizedInput;
 
+  // if(currentObservation_.mode == ModeNumber::STANCE){
+  //   optimizedState.setZero();
+  //   optimizedInput.setZero();
+  //   optimizedState.segment(6, 6) = currentObservation_.state.segment<6>(6);
+  //   optimizedState.segment(6 + 6, jointNum_) = defalutJointPos_;
+  //   plannedMode_ = 3;
+  //   wbc_->setStanceMode(true);
+  // }
+  // else{
+  //   wbc_->setStanceMode(false);
+  // }
+
   wbcTimer_.startTimer();
   vector_t x = wbc_->update(optimizedState, optimizedInput, measuredRbdState_, plannedMode_, period.toSec());
   wbcTimer_.endTimer();
 
-  vector_t torque = x.tail(12);
+  const vector_t& torque = x.tail(jointNum_);
+  const vector_t& wbc_planned_joint_acc = x.segment(6, jointNum_);
+  const vector_t& wbc_planned_body_acc = x.head(6);
+  const vector_t& wbc_planned_contact_force = x.segment(6 + jointNum_, wbc_->getContactForceSize());
+
 
   vector_t posDes = centroidal_model::getJointAngles(optimizedState, HumanoidInterface_->getCentroidalModelInfo());
   vector_t velDes = centroidal_model::getJointVelocities(optimizedInput, HumanoidInterface_->getCentroidalModelInfo());
+
+  scalar_t dt = period.toSec();
+  posDes = posDes + 0.5 * wbc_planned_joint_acc * dt * dt;
+  velDes = velDes + wbc_planned_joint_acc * dt;
 
   // Safety check, if failed, stop the controller
   if (!safetyChecker_->check(currentObservation_, optimizedState, optimizedInput)) {
     ROS_ERROR_STREAM("[humanoid Controller] Safety check failed, stopping the controller.");
     //TODO: send the stop command to hardware interface
+    return;
   }
 
   //TODO: send the controller command to hardware interface
@@ -188,12 +210,12 @@ void humanoidController::update(const ros::Time& time, const ros::Duration& peri
     targetPosPub_.publish(targetPosMsg);
     targetVelPub_.publish(targetVelMsg);
     std_msgs::Float32MultiArray targetKp;
-//    targetKp.data = {20.0, 20.0, 40.0, 40.0, 3.0, 0.0, 20.0, 20.0, 40.0, 40.0, 3.0, 0.0};
+   targetKp.data = {20.0, 20.0, 40.0, 40.0, 3.0, 0.0, 20.0, 20.0, 40.0, 40.0, 3.0, 0.0};
     //set targetKp.data to zero for testing
-    targetKp.data = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
+    // targetKp.data = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
     std_msgs::Float32MultiArray targetKd;
-//    targetKd.data = {2.0, 2.0, 4.0, 4.0, 0.3, 0.0, 2.0, 2.0, 4.0, 4.0, 0.3, 0.0};
-    targetKd.data = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
+   targetKd.data = {2.0, 2.0, 4.0, 4.0, 0.3, 0.0, 2.0, 2.0, 4.0, 4.0, 0.3, 0.0};
+    // targetKd.data = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
     targetKpPub_.publish(targetKp);
     targetKdPub_.publish(targetKd);
 
@@ -235,10 +257,6 @@ void humanoidController::updateStateEstimation(const ros::Time& time, const ros:
   //  currentObservation_.mode = stateEstimate_->getMode();
   //TODO: 暂时用plannedMode_代替，需要在接触传感器可靠之后修改为stateEstimate_->getMode()
   currentObservation_.mode =  plannedMode_;
-  //output currentObservation_.mode
-//  std::cerr << "currentObservation_.mode: " << currentObservation_.mode << std::endl;
-  //output currentObservation_.state
-//    std::cerr << "currentObservation_.state: " << currentObservation_.state << std::endl;
 }
 
 humanoidController::~humanoidController() {
@@ -321,5 +339,6 @@ void humanoidCheaterController::setupStateEstimate(const std::string& /*taskFile
                                                             HumanoidInterface_->getCentroidalModelInfo(), *eeKinematicsPtr_, controllerNh_);
 }
 
-}  // namespace humanoid
-}  // namespace ocs2
+}  // namespace humanoid_controller
+PLUGINLIB_EXPORT_CLASS(humanoid_controller::humanoidController, controller_interface::ControllerBase)
+PLUGINLIB_EXPORT_CLASS(humanoid_controller::humanoidCheaterController, controller_interface::ControllerBase)

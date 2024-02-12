@@ -39,7 +39,7 @@ class HumanoidSim(MuJoCoBase):
     rospy.Subscriber("/targetKp", Float32MultiArray, self.targetKpCallback)
     rospy.Subscriber("/targetKd", Float32MultiArray, self.targetKdCallback)
     #set the initial joint position
-    self.data.qpos[:3] = np.array([0, 0, 0.98])
+    self.data.qpos[:3] = np.array([0, 0, 0.976])
     self.data.qpos[-12:] = np.array([0, 0, 0.35, -0.90, -0.55, 0, 0, 0, 0.35, -0.90, -0.55, 0])
     self.data.qvel[:3] = np.array([0, 0, 0])
     self.data.qvel[-12:] = np.zeros(12)
@@ -86,6 +86,7 @@ class HumanoidSim(MuJoCoBase):
   #   pass
 
   def simulate(self):
+    publish_time = self.data.time
     while not glfw.window_should_close(self.window):
       simstart = self.data.time
 
@@ -95,51 +96,54 @@ class HumanoidSim(MuJoCoBase):
         self.data.ctrl[:] = self.targetTorque + self.targetKp * (self.targetPos - self.data.qpos[-12:]) + self.targetKd * (self.targetVel - self.data.qvel[-12:])
         # Step simulation environment
         mj.mj_step(self.model, self.data)
-        # * Publish joint positions and velocities
-        jointsPosVel = Float32MultiArray()
-        # get last 12 element of qpos and qvel
-        qp = self.data.qpos[-12:].copy()
-        qv = self.data.qvel[-12:].copy()
-        jointsPosVel.data = np.concatenate((qp,qv))
+        if (self.data.time - publish_time >= 1.0 / 500.0):
+          # * Publish joint positions and velocities
+          jointsPosVel = Float32MultiArray()
+          # get last 12 element of qpos and qvel
+          qp = self.data.qpos[-12:].copy()
+          qv = self.data.qvel[-12:].copy()
+          jointsPosVel.data = np.concatenate((qp,qv))
 
-        self.pubJoints.publish(jointsPosVel)
-        # * Publish body pose
-        bodyOdom = Odometry()
-        pos = self.data.sensor('BodyPos').data.copy()
-        ori = self.data.sensor('BodyQuat').data.copy()
-        vel = self.data.qvel[:3].copy()
-        angVel = self.data.sensor('BodyGyro').data.copy()
+          self.pubJoints.publish(jointsPosVel)
+          # * Publish body pose
+          bodyOdom = Odometry()
+          pos = self.data.sensor('BodyPos').data.copy()
+          ori = self.data.sensor('BodyQuat').data.copy()
+          vel = self.data.qvel[:3].copy()
+          angVel = self.data.sensor('BodyGyro').data.copy()
 
-        bodyOdom.header.stamp = rospy.Time.now()
-        bodyOdom.pose.pose.position.x = pos[0]
-        bodyOdom.pose.pose.position.y = pos[1]
-        bodyOdom.pose.pose.position.z = pos[2]
-        bodyOdom.pose.pose.orientation.x = ori[1]
-        bodyOdom.pose.pose.orientation.y = ori[2]
-        bodyOdom.pose.pose.orientation.z = ori[3]
-        bodyOdom.pose.pose.orientation.w = ori[0]
-        bodyOdom.twist.twist.linear.x = vel[0]
-        bodyOdom.twist.twist.linear.y = vel[1]
-        bodyOdom.twist.twist.linear.z = vel[2]
-        bodyOdom.twist.twist.angular.x = angVel[0]
-        bodyOdom.twist.twist.angular.y = angVel[1]
-        bodyOdom.twist.twist.angular.z = angVel[2]
-        self.pubOdom.publish(bodyOdom)
+          bodyOdom.header.stamp = rospy.Time.now()
+          bodyOdom.pose.pose.position.x = pos[0]
+          bodyOdom.pose.pose.position.y = pos[1]
+          bodyOdom.pose.pose.position.z = pos[2]
+          bodyOdom.pose.pose.orientation.x = ori[1]
+          bodyOdom.pose.pose.orientation.y = ori[2]
+          bodyOdom.pose.pose.orientation.z = ori[3]
+          bodyOdom.pose.pose.orientation.w = ori[0]
+          bodyOdom.twist.twist.linear.x = vel[0]
+          bodyOdom.twist.twist.linear.y = vel[1]
+          bodyOdom.twist.twist.linear.z = vel[2]
+          bodyOdom.twist.twist.angular.x = angVel[0]
+          bodyOdom.twist.twist.angular.y = angVel[1]
+          bodyOdom.twist.twist.angular.z = angVel[2]
+          self.pubOdom.publish(bodyOdom)
 
-        bodyImu = Imu()
-        acc = self.data.sensor('BodyAcc').data.copy()
-        bodyImu.header.stamp = rospy.Time.now()
-        bodyImu.angular_velocity.x = angVel[0]
-        bodyImu.angular_velocity.y = angVel[1]
-        bodyImu.angular_velocity.z = angVel[2]
-        bodyImu.linear_acceleration.x = acc[0]
-        bodyImu.linear_acceleration.y = acc[1]
-        bodyImu.linear_acceleration.z = acc[2]
-        bodyImu.orientation.x = ori[1]
-        bodyImu.orientation.y = ori[2]
-        bodyImu.orientation.z = ori[3]
-        bodyImu.orientation.w = ori[0]
-        self.pubImu.publish(bodyImu)
+          bodyImu = Imu()
+          acc = self.data.sensor('BodyAcc').data.copy()
+          bodyImu.header.stamp = rospy.Time.now()
+          bodyImu.angular_velocity.x = angVel[0]
+          bodyImu.angular_velocity.y = angVel[1]
+          bodyImu.angular_velocity.z = angVel[2]
+          bodyImu.linear_acceleration.x = acc[0]
+          bodyImu.linear_acceleration.y = acc[1]
+          bodyImu.linear_acceleration.z = acc[2]
+          bodyImu.orientation.x = ori[1]
+          bodyImu.orientation.y = ori[2]
+          bodyImu.orientation.z = ori[3]
+          bodyImu.orientation.w = ori[0]
+          self.pubImu.publish(bodyImu)
+
+          publish_time = self.data.time
 
       if self.data.time >= self.simend:
           break

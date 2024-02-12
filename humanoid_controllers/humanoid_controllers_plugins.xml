@@ -1,0 +1,16 @@
+<library path="lib/libhumanoid_controllers">
+
+    <class name="humanoid_controller/humanoidController" type="humanoid_controller::humanoidController"
+           base_class_type="controller_interface::ControllerBase">
+        <description>
+            The basic humanoid controller.
+        </description>
+    </class>
+
+    <class name="humanoid_controller/humanoidCheaterController" type="humanoid_controller::humanoidCheaterController"
+           base_class_type="controller_interface::ControllerBase">
+        <description>
+            The basic humanoid controller with cheat state estimator
+        </description>
+    </class>
+</library>

@@ -4,6 +4,9 @@
 
 #pragma once
 
+#include <controller_interface/controller.h>
+#include <hardware_interface/imu_sensor_interface.h>
+#include <humanoid_common/hardware_interface/ContactSensorInterface.h>
 
 #include <ocs2_centroidal_model/CentroidalModelRbdConversions.h>
 #include <ocs2_core/misc/Benchmark.h>
@@ -21,17 +24,18 @@
 #include "std_msgs/Bool.h"
 #include "sensor_msgs/Imu.h"
 
-namespace ocs2 {
-namespace humanoid {
+namespace humanoid_controller{
+using namespace ocs2;
+using namespace humanoid;
 
-class humanoidController{
+class humanoidController : public controller_interface::Controller<HybridJointInterface>{
  public:
   humanoidController() = default;
-  ~humanoidController();
-  bool init(ros::NodeHandle& controller_nh);
-  void update(const ros::Time& time, const ros::Duration& period);
-  void starting(const ros::Time& time);
-  void stopping(const ros::Time& /*time*/) { mpcRunning_ = false; }
+  ~humanoidController() override;
+  bool init(HybridJointInterface* robot_hw, ros::NodeHandle& controller_nh) override;
+  void update(const ros::Time& time, const ros::Duration& period) override;
+  void starting(const ros::Time& time) override;
+  void stopping(const ros::Time& /*time*/) override { mpcRunning_ = false; }
 
  protected:
   virtual void updateStateEstimation(const ros::Time& time, const ros::Duration& period);
@@ -92,6 +96,7 @@ class humanoidController{
   vector3_t angularVel_, linearAccel_;
   matrix3_t orientationCovariance_, angularVelCovariance_, linearAccelCovariance_;
   size_t plannedMode_ = 3;
+  vector_t defalutJointPos_;
 };
 
 class humanoidCheaterController : public humanoidController {
@@ -99,6 +104,5 @@ class humanoidCheaterController : public humanoidController {
   void setupStateEstimate(const std::string& taskFile, bool verbose) override;
 };
 
-}  // namespace humanoid
-}  // namespace ocs2
+}  // namespace humanoid_controller
 

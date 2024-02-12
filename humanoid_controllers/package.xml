@@ -15,12 +15,14 @@
     <depend>humanoid_interface</depend>
     <depend>humanoid_estimation</depend>
     <depend>humanoid_wbc</depend>
+    <depend>controller_interface</depend>
 
     <depend>humanoid_dummy</depend>
     <depend>ocs2_self_collision_visualization</depend>
 
     <depend>angles</depend>
 
+    <exec_depend>controller_manager</exec_depend>
 
     <export>
         <controller_interface plugin="${prefix}/humanoid_controllers_plugins.xml"/>
