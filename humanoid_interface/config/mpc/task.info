@@ -315,6 +315,6 @@ baseAngularTask
 weight
 {
     swingLeg        100
-    baseAccel       1
-    contactForce    0.0
+    baseAccel       10
+    contactForce    10
 }

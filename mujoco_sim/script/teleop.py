@@ -9,7 +9,7 @@ class KeyboardController:
     def __init__(self):
         self.publisher = rospy.Publisher('/cmd_vel', Twist, queue_size=1)
         self.twist_msg = Twist()
-        self.rate = rospy.Rate(10)  # 设置循环的频率为10Hz
+        self.rate = rospy.Rate(150)  # 设置循环的频率为150Hz
 
     def on_press(self, key):
         try:
