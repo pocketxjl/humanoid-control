@@ -39,7 +39,7 @@ WbcBase::WbcBase(const PinocchioInterface& pinocchioInterface, CentroidalModelIn
 {
   // linear force, plus angular force
   contact_force_size_ = 3 * info_.numThreeDofContacts;
-  numDecisionVars_ = info_.generalizedCoordinatesNum + contact_force_size_ + info_.actuatedDofNum;  // 16+3*4+10=38
+  numDecisionVars_ = info_.generalizedCoordinatesNum + contact_force_size_ + info_.actuatedDofNum;  // 18+3*4+12=42
   qMeasured_ = vector_t(info_.generalizedCoordinatesNum);
   vMeasured_ = vector_t(info_.generalizedCoordinatesNum);
   cmd_body_pos_.resize(6);
