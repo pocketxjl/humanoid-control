@@ -21,7 +21,7 @@ swing_trajectory_config
 {
   liftOffVelocity               0.065
   touchDownVelocity            -0.13
-  swingHeight                   0.10
+  swingHeight                   0.06
   swingTimeScale                0.15
 }
 
@@ -183,17 +183,17 @@ Q
   (0,0)   15.0     ; vcom_x
   (1,1)   15.0     ; vcom_y
   (2,2)   30.0     ; vcom_z
-  (3,3)   13.0      ; L_x / robotMass
-  (4,4)   13.0     ; L_y / robotMass
-  (5,5)   13.0     ; L_z / robotMass
+  (3,3)   10.0      ; L_x / robotMass
+  (4,4)   10.0     ; L_y / robotMass
+  (5,5)   10.0     ; L_z / robotMass
 
   ;; Base Pose: [position, orientation] ;;
   (6,6)   500.0    ; p_base_x
   (7,7)   500.0    ; p_base_y
   (8,8)   500.0    ; p_base_z
   (9,9)   100.0    ; theta_base_z
-  (10,10) 500.0    ; theta_base_y
-  (11,11) 500.0    ; theta_base_x
+  (10,10) 200.0    ; theta_base_y
+  (11,11) 200.0    ; theta_base_x
 
   ;; Leg Joint Positions: [LF, LH, RF, RH] ;;
   (12,12) 300.0     ; leg_l1_joint

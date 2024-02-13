@@ -19,11 +19,11 @@
     <arg name="gaitCommandFile"   default="$(find humanoid_interface)/config/command/gait.info"/>
 
     <!-- rviz -->
-    <group if="$(arg rviz)">
+    <!-- <group if="$(arg rviz)">
       <param name="$(arg description_name)" textfile="$(arg urdfFileOrigin)"/>
       <arg name="rvizconfig" default="$(find humanoid_dummy)/rviz/humanoid.rviz" />
       <node pkg="rviz" type="rviz" name="rviz" args="-d $(arg rvizconfig)" output="screen" />
-    </group>
+    </group> -->
 
     <!-- make the files into global parameters -->
     <param name="taskFile"          value="$(arg taskFile)" />
@@ -31,6 +31,7 @@
     <param name="urdfFile"          value="$(arg urdfFile)" />
     <param name="urdfFileOrigin"          value="$(arg urdfFileOrigin)" />
     <param name="gaitCommandFile"   value="$(arg gaitCommandFile)"/>
+    <param name="$(arg description_name)" textfile="$(arg urdfFileOrigin)"/>
 
     <node pkg="humanoid_dummy" type="humanoid_gait_command" name="humanoid_gait_command"
           output="screen" launch-prefix="gnome-terminal --"/>
