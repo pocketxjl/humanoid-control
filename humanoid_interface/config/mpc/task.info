@@ -19,9 +19,9 @@ model_settings
 
 swing_trajectory_config
 {
-  liftOffVelocity               0.1
-  touchDownVelocity            -0.2
-  swingHeight                   0.15
+  liftOffVelocity               0.065
+  touchDownVelocity            -0.13
+  swingHeight                   0.10
   swingTimeScale                0.15
 }
 
@@ -183,7 +183,7 @@ Q
   (0,0)   15.0     ; vcom_x
   (1,1)   15.0     ; vcom_y
   (2,2)   30.0     ; vcom_z
-  (3,3)   10.0      ; L_x / robotMass
+  (3,3)   13.0      ; L_x / robotMass
   (4,4)   13.0     ; L_y / robotMass
   (5,5)   13.0     ; L_z / robotMass
 

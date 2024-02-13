@@ -56,8 +56,8 @@
                                 <body name="leg_l6_link" pos="0 0 0">
                                     <inertial pos="0.0428722 0 -0.0287265" quat="0 0.71824 0 0.695796" mass="0.359579" diaginertia="0.00101183 0.000903 0.000192174" />
                                     <joint name="leg_l6_joint" pos="0 0 0" axis="1 0 6.87843e-05"   damping='0.2'/>
-                                    <geom size="0.20 0.025 0.008" pos="0.01 -0.0 -0.027" type="box" contype="0" conaffinity="0" group="1" rgba="0.898039 0.917647 0.929412 1"/>
-                                    <geom size="0.20 0.025 0.008" pos="0.01 -0.0 -0.027" type="box" rgba="0.8 0 0 0"/>
+                                    <geom size="0.15 0.025 0.008" pos="0.05 -0.0 -0.027" type="box" contype="0" conaffinity="0" group="1" rgba="0.898039 0.917647 0.929412 1"/>
+                                    <geom size="0.15 0.025 0.008" pos="0.05 -0.0 -0.027" type="box" rgba="0.8 0 0 0"/>
                                 </body>
                             </body>
                         </body>
@@ -92,8 +92,8 @@
                                 <body name="leg_r6_link" pos="0 0 0">
                                     <inertial pos="0.0428722 0 -0.0287265" quat="0 0.71824 0 0.695796" mass="0.359579" diaginertia="0.00101183 0.000903 0.000192174" />
                                     <joint name="leg_r6_joint" pos="0 0 0" axis="1 0 6.87843e-05"   damping='0.2'/>
-                                    <geom size="0.20 0.025 0.008" pos="0.01 -0.0 -0.027" type="box" contype="0" conaffinity="0" group="1" rgba="0.898039 0.917647 0.929412 1"/>
-                                    <geom size="0.20 0.025 0.008" pos="0.01 -0.0 -0.027" type="box" rgba="0.8 0 0 0"/>
+                                    <geom size="0.15 0.025 0.008" pos="0.05 -0.0 -0.027" type="box" contype="0" conaffinity="0" group="1" rgba="0.898039 0.917647 0.929412 1"/>
+                                    <geom size="0.15 0.025 0.008" pos="0.05 -0.0 -0.027" type="box" rgba="0.8 0 0 0"/>
                                 </body>
                             </body>
                         </body>
