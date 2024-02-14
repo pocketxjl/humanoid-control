@@ -26,9 +26,9 @@ class KeyboardController:
                     self.twist_msg.linear.x = 0.0
 
                 if key.char == 'a':
-                    self.twist_msg.linear.y = 0.15
+                    self.twist_msg.linear.y = 0.25
                 elif key.char == 'd':
-                    self.twist_msg.linear.y = -0.15
+                    self.twist_msg.linear.y = -0.25
                 else:
                     self.twist_msg.linear.y = 0.0
 
