@@ -13,7 +13,7 @@ class KeyboardController:
 
     def on_press(self, key):
         try:
-            if key.char == 'q':
+            if key.char == 'z':
                 # 退出程序
                 rospy.signal_shutdown("Quit")
             else:
@@ -26,8 +26,15 @@ class KeyboardController:
                     self.twist_msg.linear.x = 0.0
 
                 if key.char == 'a':
-                    self.twist_msg.angular.z = 0.35
+                    self.twist_msg.linear.y = 0.15
                 elif key.char == 'd':
+                    self.twist_msg.linear.y = -0.15
+                else:
+                    self.twist_msg.linear.y = 0.0
+
+                if key.char == 'q':
+                    self.twist_msg.angular.z = 0.35
+                elif key.char == 'e':
                     self.twist_msg.angular.z = -0.35
                 else:
                     self.twist_msg.angular.z = 0.0
