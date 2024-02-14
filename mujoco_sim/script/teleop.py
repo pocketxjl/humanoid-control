@@ -19,9 +19,9 @@ class KeyboardController:
             else:
                 # 根据按键设置线性速度和角速度
                 if key.char == 'w':
-                    self.twist_msg.linear.x = 0.35
+                    self.twist_msg.linear.x = 0.4
                 elif key.char == 's':
-                    self.twist_msg.linear.x = -0.35
+                    self.twist_msg.linear.x = -0.4
                 else:
                     self.twist_msg.linear.x = 0.0
 
