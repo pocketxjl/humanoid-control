@@ -44,6 +44,7 @@ class KeyboardController:
     def on_release(self, key):
         # 松开按键时设置线性速度和角速度为0，并发布消息
         self.twist_msg.linear.x = 0.0
+        self.twist_msg.linear.y = 0.0
         self.twist_msg.angular.z = 0.0
 
 def ros_publish():
