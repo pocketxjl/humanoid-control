@@ -196,14 +196,14 @@ Q
   (11,11) 200.0    ; theta_base_x
 
   ;; Leg Joint Positions: [LF, LH, RF, RH] ;;
-  (12,12) 250.0     ; leg_l1_joint
-  (13,13) 250.0     ; leg_l2_joint
+  (12,12) 300.0     ; leg_l1_joint
+  (13,13) 300.0     ; leg_l2_joint
   (14,14) 20.0     ; leg_l3_joint
   (15,15) 20.0     ; leg_l4_joint
   (16,16) 20.0     ; leg_l5_joint
   (17,17) 20.0     ; leg_l6_joint
-  (18,18) 250.0     ; leg_r1_joint
-  (19,19) 250.0     ; leg_r2_joint
+  (18,18) 300.0     ; leg_r1_joint
+  (19,19) 300.0     ; leg_r2_joint
   (20,20) 20.0     ; leg_r3_joint
   (21,21) 20.0     ; leg_r4_joint
   (22,22) 20.0     ; leg_r5_joint
