@@ -23,7 +23,7 @@ class HumanoidSim(MuJoCoBase):
     # * Set subscriber and publisher
 
     # initialize target joint position, velocity, and torque
-    self.targetPos = np.array([0, 0, 0.35, -0.90, -0.55, 0, 0, 0, 0.35, -0.90, -0.55, 0])
+    self.targetPos = np.array([0.05, -0.05, 0.35, -0.90, -0.55, 0, -0.05, 0.05, 0.35, -0.90, -0.55, 0])
     self.targetVel = np.zeros(12)
     self.targetTorque = np.zeros(12)
     self.targetKp = np.ones(12) * 30
@@ -40,7 +40,7 @@ class HumanoidSim(MuJoCoBase):
     rospy.Subscriber("/targetKd", Float32MultiArray, self.targetKdCallback)
     #set the initial joint position
     self.data.qpos[:3] = np.array([0, 0, 0.976])
-    self.data.qpos[-12:] = np.array([0, 0, 0.35, -0.90, -0.55, 0, 0, 0, 0.35, -0.90, -0.55, 0])
+    self.data.qpos[-12:] = np.array([0.05, -0.05, 0.35, -0.90, -0.55, 0, -0.05, 0.05, 0.35, -0.90, -0.55, 0])
     self.data.qvel[:3] = np.array([0, 0, 0])
     self.data.qvel[-12:] = np.zeros(12)
 
