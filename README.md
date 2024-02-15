@@ -130,6 +130,22 @@ In weighted WBC, a portion of the tasks serves as weighted costs,  providing the
 | constraint | Torque limit task                                            |
 | constraint | Friction cone task                                           |
 
+Every task is defined as a quadruple $\left(A, b, D, f\right)$ where
+$$
+Ax -b = w\\
+Dx - f <= v\\
+w \rightarrow 0, v \rightarrow 0
+$$
+To formulate the QP problem from task definitions, we use the following formula:
+
+For cost task, we have $H=A^TA$ and $g=-A^Tb$. 
+
+For equality constrained task, we have $A_{qp} = A,lbA=b, ubA=b$
+
+For non-equality constrained task, we have $A_{qp} = D,lbA=-\infty, ubA=f$
+
+The stacking of tasks is defined as the concatenation of the matrices $A$, $b$, $D$, and $f$. Once multiple tasks are stacked, the parameters of the QP  problem are obtained using the aforementioned formula. The qpOASES solver is then used to solve the problem.
+
 ### PD controller
 
 Obtain optimized joint positions and joint velocities from MRT (Model  Reference Tracking), obtain joint accelerations and joint torques from  WBC (Whole Body Control), and feed them into a PD controller after  processing. MRT, based on the trajectory optimized by NMPC, obtains the optimized states and inputs at a high frequency.
