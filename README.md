@@ -54,7 +54,7 @@ roslaunch humanoid_dummy legged_robot_sqp.launch
 
 ## Framework
 
-### Foot Panner
+### Foot Planner
 
 The foot planner is a switch model provided by OCS2, which switch the contact status between right foot and left foot. The foot planner only plans the z-axis of swinging foot as Cubic Spline. 
 
