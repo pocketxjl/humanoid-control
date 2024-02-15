@@ -46,6 +46,7 @@ catkin config -DCMAKE_BUILD_TYPE=RelWithDebInfo #important
 catkin build humanoid_controllers humanoid_legged_description mujoco_sim
 # To start simulation with the cheat state estimator.
 # Input the gait command, and press SPACE on mujoco simulation window. 
+# NOTE: The program is not yet fully refined, and the robot is unstable in the stance state. If you want to run it, you need to enter "trot" in the gait command window, then quickly press the SPACE in the Mujoco window to start the simulation. 
 roslaunch humanoid_controllers load_cheat_controller.launch
 # To start only the NMPC module and simulate with OCS2 dummy node
 roslaunch humanoid_dummy legged_robot_sqp.launch
