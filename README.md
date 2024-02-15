@@ -155,6 +155,8 @@ $$
 \mathbf{T}_{des} = \mathbf{T}_j
 $$
 
+where $t$ is the WBC period. 
+
 ### Frequency
 
 | Module         | Frequency |
