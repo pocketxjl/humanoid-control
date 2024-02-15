@@ -29,7 +29,7 @@ its dependencies following the step below.
    ```
    Ensure you can command the ANYmal as shown in
    the [document](https://leggedrobotics.github.io/ocs2/robotic_examples.html#legged-robot) and below.
-   ![](/home/pocket/code/humanoid_ws/src/humanoid-control/README.assets/legged_robot.gif)
+   ![](./README.assets/legged_robot.gif)
 
 ### Mujoco
 
