@@ -1,5 +1,56 @@
 # Humanoid Control
 
+## Build and Start
+
+### OCS2
+
+OCS2 is a huge monorepo; **DO NOT** try to compile the whole repo. You only need to compile `ocs2_legged_robot_ros` and
+its dependencies following the step below.
+
+1. You are supposed to clone the OCS2, pinocchio, and hpp-fcl as described in the documentation of OCS2.
+   ```bash
+   # Clone OCS2
+   git clone https://github.com/leggedrobotics/ocs2.git
+   # Clone pinocchio
+   git clone --recurse-submodules https://github.com/leggedrobotics/pinocchio.git
+   # Clone hpp-fcl
+   git clone --recurse-submodules https://github.com/leggedrobotics/hpp-fcl.git
+   # Clone ocs2_robotic_assets
+   git clone https://github.com/leggedrobotics/ocs2_robotic_assets.git
+   # Install dependencies
+   sudo apt install liburdfdom-dev liboctomap-dev libassimp-dev
+   ```
+2. Compile the `ocs2_legged_robot_ros` package with [catkin tools](https://catkin-tools.readthedocs.io/en/latest/)
+   instead of `catkin_make`. It will take you about ten minutes.
+   
+   ```bash
+   catkin config -DCMAKE_BUILD_TYPE=RelWithDebInfo #important
+   catkin build ocs2_legged_robot_ros ocs2_self_collision_visualization
+   ```
+   Ensure you can command the ANYmal as shown in
+   the [document](https://leggedrobotics.github.io/ocs2/robotic_examples.html#legged-robot) and below.
+   ![](/home/pocket/code/humanoid_ws/src/humanoid-control/README.assets/legged_robot.gif)
+
+### Mujoco
+
+For the latest version of mujoco, it is very easy to install it on python:
+
+```bash
+pip3 install mujoco
+```
+
+### Getting Start
+
+```bash
+catkin config -DCMAKE_BUILD_TYPE=RelWithDebInfo #important
+catkin build humanoid_controllers humanoid_legged_description mujoco_sim
+# To start simulation with the cheat state estimator.
+# Input the gait command, and press SPACE on mujoco simulation window. 
+roslaunch humanoid_controllers load_cheat_controller.launch
+# To start only the NMPC module and simulate with OCS2 dummy node
+roslaunch humanoid_dummy legged_robot_sqp.launch
+```
+
 ## Framework
 
 ### Foot Panner
