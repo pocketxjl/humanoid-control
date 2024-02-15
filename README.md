@@ -169,3 +169,10 @@ where $t$ is the WBC period.
 
 **To ensure the speed of the program, it is crucial that you optimize the code at least to the RelWithDebInfo level. This is highly important!**
 
+## Acknowledgement
+
+[legged-control by Qiayuan Liao](https://github.com/qiayuanl/legged_control?tab=readme-ov-file): Nonlinear MPC and WBC framework for legged robot based on OCS2 and ros-controls.
+
+[hunter-bipedal-control by BridgeDP](https://github.com/bridgedp/hunter_bipedal_control): An open source bipedal robot control framework, based on non-linear MPC and WBC, tailered for EC-hunter80-v01 bipedal robot. 
+
+[pai-sim by High-Torque](https://github.com/humarobot/Hector_Simulation): Acknowledgement for the Mujoco simulation framework in python. 
