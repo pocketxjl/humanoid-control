@@ -238,6 +238,8 @@ void humanoidController::updateStateEstimation(const ros::Time& time, const ros:
   jointPos = jointPos_;
     jointVel = jointVel_;
   //TODO: get contactFlag from hardware interface
+  //暂时用plannedMode_代替，需要在接触传感器可靠之后修改为stateEstimate_->getMode()
+  contactFlag = modeNumber2StanceLeg(plannedMode_);
 
   quat = quat_;
   angularVel = angularVel_;
