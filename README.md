@@ -107,11 +107,11 @@ subproblem is solved using HPIPM.
 WBC only considers the current moment. The WBC optimization task is expressed in the following form according to qpOASES:
 
 $$
-\begin{array}{lc}
-\min _{x} & \frac{1}{2} x^{T} H x+x^{T} g\left(w_{0}\right) \\
-\text { s.t. } & \operatorname{lb} A\left(w_{0}\right) \leq A x \leq \mathrm{ub} A\left(w_{0}\right), \\
-& \operatorname{lb}\left(w_{0}\right) \leq x \leq \mathrm{ub}\left(w_{0}\right),
-\end{array}
+\begin{split}
+\min_{x} & \frac{1}{2} x^{T} H x+x^{T} g(w_{0}) \\
+\text { s.t. } & lbA(w_{0}) \leq A x \leq ubA(w_{0}), \\
+& lb(w_{0}) \leq x \leq ub(w_{0}),
+\end{split}
 $$
 
 Where $x$ is the optimization variable, with a dimension of 42 in this framework, defined as follows:
@@ -161,9 +161,9 @@ Obtain optimized joint positions and joint velocities from MRT (Model  Reference
 
 $$
 \begin{split}
-\mathbf{q}_{des} = \mathbf{q}_{opt}+\frac{1}{2}\mathbf{a}_jt^2 \\
-\mathbf{v}_{des} = \mathbf{v}_{opt}+\mathbf{a}_jt\\
-\mathbf{T}_{des} = \mathbf{T}_j
+\mathbf{q_des} = \mathbf{q_opt} + \frac{1}{2}\mathbf{a}_jt^2\\
+\mathbf{v_des} = \mathbf{v_opt} + \mathbf{a}_jt\\
+\mathbf{T_des} = \mathbf{T}_j
 \end{split}
 $$
 
