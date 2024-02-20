@@ -52,6 +52,8 @@ roslaunch humanoid_controllers load_cheat_controller.launch
 roslaunch humanoid_dummy legged_robot_sqp.launch
 ```
 
+The effect of the simulation is shown in the video provided in [this link](https://b23.tv/Jz3INC4). (Note: The video version is older, and the actual effect may vary depending on the latest code).
+
 ## Framework
 
 ### Foot Planner
