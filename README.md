@@ -64,6 +64,7 @@ The foot planner is a switch model provided by OCS2, which switch the contact st
 
 The NMPC part solves the following optimization problems at each cycle through the formulation and solving interfaces
 provided by OCS2:
+
 $$
 \begin{split}
 \begin{cases}
@@ -104,6 +105,7 @@ subproblem is solved using HPIPM.
 ### WBC
 
 WBC only considers the current moment. The WBC optimization task is expressed in the following form according to qpOASES:
+
 $$
 \begin{array}{lc}
 \min _{x} & \frac{1}{2} x^{T} H x+x^{T} g\left(w_{0}\right) \\
@@ -111,10 +113,13 @@ $$
 & \operatorname{lb}\left(w_{0}\right) \leq x \leq \mathrm{ub}\left(w_{0}\right),
 \end{array}
 $$
+
 Where $x$ is the optimization variable, with a dimension of 42 in this framework, defined as follows:
+
 $$
 \begin{equation} x= [\mathbf{a}_{b}^T, \mathbf{a}_j^T, \mathbf{f}_c^T, \mathbf{T}_j^T]^T\end{equation}
 $$
+
 where $\mathbf{a}_{b}^T \in \mathbb{R}^6$ is the base acceleration, $\mathbf{a}_j^T \in \mathbb{R}^{12}$ is the joint acceleration, $\mathbf{f}_c^T \in \mathbb{R}^{12}$ is the contact force and $\mathbf{T}_j^T \in \mathbb{R}^{12}$ is the joint torque. 
 
 In weighted WBC, a portion of the tasks serves as weighted costs,  providing the optimization problem's $H$ and $g(w_0)$. Another portion  of the tasks serves as constraints, providing $A$, $lbA$, $ubA$, $lb$,  and $ub$. The definition of the tasks is shown in the following table.
@@ -131,11 +136,15 @@ In weighted WBC, a portion of the tasks serves as weighted costs,  providing the
 | constraint | Friction cone task                                           |
 
 Every task is defined as a quadruple $\left(A, b, D, f\right)$ where
+
 $$
+\begin{split}
 Ax -b = w\\
 Dx - f <= v\\
 w \rightarrow 0, v \rightarrow 0
+\end{split}
 $$
+
 To formulate the QP problem from task definitions, we use the following formula:
 
 For cost task, we have $H=A^TA$ and $g=-A^Tb$. 
@@ -149,10 +158,13 @@ The stacking of tasks is defined as the concatenation of the matrices $A$, $b$, 
 ### PD controller
 
 Obtain optimized joint positions and joint velocities from MRT (Model  Reference Tracking), obtain joint accelerations and joint torques from  WBC (Whole Body Control), and feed them into a PD controller after  processing. MRT, based on the trajectory optimized by NMPC, obtains the optimized states and inputs at a high frequency.
+
 $$
+\begin{split}
 \mathbf{q}_{des} = \mathbf{q}_{opt}+\frac{1}{2}\mathbf{a}_jt^2 \\
 \mathbf{v}_{des} = \mathbf{v}_{opt}+\mathbf{a}_jt\\
 \mathbf{T}_{des} = \mathbf{T}_j
+\end{split}
 $$
 
 where $t$ is the WBC period. 
