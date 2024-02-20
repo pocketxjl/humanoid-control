@@ -140,7 +140,7 @@ Every task is defined as a quadruple $\left(A, b, D, f\right)$ where
 $$
 \begin{split}
 Ax -b = w\\
-Dx - f <= v\\
+Dx - f \leq v\\
 w \rightarrow 0, v \rightarrow 0
 \end{split}
 $$
