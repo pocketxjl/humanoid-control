@@ -23,7 +23,7 @@ class HumanoidSim(MuJoCoBase):
     # * Set subscriber and publisher
 
     # initialize target joint position, velocity, and torque
-    self.targetPos = np.array([0.07, -0.07, 0.35, -0.90, -0.55, 0, -0.07, 0.07, 0.35, -0.90, -0.55, 0])
+    self.targetPos = np.array([0.05, -0.05, 0.35, -0.90, -0.55, 0, -0.05, 0.05, 0.35, -0.90, -0.55, 0])
     self.targetVel = np.zeros(12)
     self.targetTorque = np.zeros(12)
     self.targetKp = np.ones(12) * 30
@@ -32,6 +32,7 @@ class HumanoidSim(MuJoCoBase):
     self.pubJoints = rospy.Publisher('/jointsPosVel', Float32MultiArray, queue_size=10)
     self.pubOdom = rospy.Publisher('/ground_truth/state', Odometry, queue_size=10)
     self.pubImu = rospy.Publisher('/imu', Imu, queue_size=10)
+    self.pubRealTorque = rospy.Publisher('/realTorque', Float32MultiArray, queue_size=10)
 
     rospy.Subscriber("/targetTorque", Float32MultiArray, self.targetTorqueCallback) 
     rospy.Subscriber("/targetPos", Float32MultiArray, self.targetPosCallback) 
@@ -40,7 +41,7 @@ class HumanoidSim(MuJoCoBase):
     rospy.Subscriber("/targetKd", Float32MultiArray, self.targetKdCallback)
     #set the initial joint position
     self.data.qpos[:3] = np.array([0, 0, 0.976])
-    self.data.qpos[-12:] = np.array([0.07, -0.07, 0.35, -0.90, -0.55, 0, -0.07, 0.07, 0.35, -0.90, -0.55, 0])
+    self.data.qpos[-12:] = np.array([0.05, -0.05, 0.35, -0.90, -0.55, 0, -0.05, 0.05, 0.35, -0.90, -0.55, 0])
     self.data.qvel[:3] = np.array([0, 0, 0])
     self.data.qvel[-12:] = np.zeros(12)
 
@@ -87,6 +88,7 @@ class HumanoidSim(MuJoCoBase):
 
   def simulate(self):
     publish_time = self.data.time
+    torque_publish_time = self.data.time
     while not glfw.window_should_close(self.window):
       simstart = self.data.time
 
@@ -144,6 +146,12 @@ class HumanoidSim(MuJoCoBase):
           self.pubImu.publish(bodyImu)
 
           publish_time = self.data.time
+
+      if (self.data.time - torque_publish_time >= 1.0 / 40.0):
+        targetTorque = Float32MultiArray()
+        targetTorque.data = self.data.ctrl[:]
+        self.pubRealTorque.publish(targetTorque)
+        torque_publish_time = self.data.time
 
       if self.data.time >= self.simend:
           break

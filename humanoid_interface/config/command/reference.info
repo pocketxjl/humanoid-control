@@ -5,14 +5,14 @@ comHeight                           0.976
 
 defaultJointState
 {
-   (0,0)   0.07   ; leg_l1_joint
-   (1,0)   -0.07   ; leg_l2_joint
+   (0,0)   0.05   ; leg_l1_joint
+   (1,0)   -0.05   ; leg_l2_joint
    (2,0)   0.35   ; leg_l3_joint
    (3,0)  -0.90   ; leg_l4_joint
    (4,0)   -0.55   ; leg_l5_joint
    (5,0)   0.00   ; leg_l6_joint
-   (6,0)   -0.07   ; leg_r1_joint
-   (7,0)   0.07   ; leg_r2_joint
+   (6,0)   -0.05   ; leg_r1_joint
+   (7,0)   0.05   ; leg_r2_joint
    (8,0)   0.35   ; leg_r3_joint
    (9,0)  -0.90   ; leg_r4_joint
    (10,0)  -0.55   ; leg_r5_joint
