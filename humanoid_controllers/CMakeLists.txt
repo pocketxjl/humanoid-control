@@ -92,6 +92,20 @@ target_link_libraries(cheat_controller_node
         )
 target_compile_options(cheat_controller_node PRIVATE ${OCS2_CXX_FLAGS})
 
+# Normal Controller Node
+add_executable(normal_controller_node
+        src/NormalControllerNode.cpp
+        )
+add_dependencies(normal_controller_node
+        ${PROJECT_NAME}
+        ${catkin_EXPORTED_TARGETS}
+        )
+target_link_libraries(normal_controller_node
+        ${PROJECT_NAME}
+        ${catkin_LIBRARIES}
+        )
+target_compile_options(normal_controller_node PRIVATE ${OCS2_CXX_FLAGS})
+
 #########################
 ###   CLANG TOOLING   ###
 #########################

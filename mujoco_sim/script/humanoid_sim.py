@@ -143,6 +143,9 @@ class HumanoidSim(MuJoCoBase):
           bodyImu.orientation.y = ori[2]
           bodyImu.orientation.z = ori[3]
           bodyImu.orientation.w = ori[0]
+          bodyImu.orientation_covariance = [0.0, 0, 0, 0, 0.0, 0, 0, 0, 0.0]
+          bodyImu.angular_velocity_covariance = [0.0, 0, 0, 0, 0.0, 0, 0, 0, 0.0]
+          bodyImu.linear_acceleration_covariance = [0.0, 0, 0, 0, 0.0, 0, 0, 0, 0.0]
           self.pubImu.publish(bodyImu)
 
           publish_time = self.data.time
@@ -194,7 +197,7 @@ class HumanoidSim(MuJoCoBase):
         bodyImu.angular_velocity.z = 0
         bodyImu.linear_acceleration.x = 0
         bodyImu.linear_acceleration.y = 0
-        bodyImu.linear_acceleration.z = 0
+        bodyImu.linear_acceleration.z = 9.81
         bodyImu.orientation.x = ori[1]
         bodyImu.orientation.y = ori[2]
         bodyImu.orientation.z = ori[3]
