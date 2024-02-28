@@ -210,11 +210,11 @@ void humanoidController::update(const ros::Time& time, const ros::Duration& peri
     targetPosPub_.publish(targetPosMsg);
     targetVelPub_.publish(targetVelMsg);
     std_msgs::Float32MultiArray targetKp;
-   targetKp.data = {120.0, 120.0, 120.0, 120.0, 5.0, 5.0, 120.0, 120.0, 120.0, 120.0, 5.0, 5.0};
+   targetKp.data = {120.0, 120.0, 120.0, 120.0, 1.0, 1.0, 120.0, 120.0, 120.0, 120.0, 1.0, 1.0};
     //set targetKp.data to zero for testing
     // targetKp.data = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
     std_msgs::Float32MultiArray targetKd;
-   targetKd.data = {4.0, 4.0, 4.0, 4.0, 0.5, 0.5, 4.0, 4.0, 4.0, 4.0, 0.5, 0.5};
+   targetKd.data = {4.0, 4.0, 4.0, 4.0, 0.1, 0.1, 4.0, 4.0, 4.0, 4.0, 0.1, 0.1};
     // targetKd.data = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
     targetKpPub_.publish(targetKp);
     targetKdPub_.publish(targetKd);
