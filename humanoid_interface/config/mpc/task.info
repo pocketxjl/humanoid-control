@@ -322,7 +322,7 @@ weight
 ; State Estimation
 kalmanFilter
 {
-    footRadius                  -0.008
+    footRadius                  -0.01
     imuProcessNoisePosition     0.02
     imuProcessNoiseVelocity     0.02
     footProcessNoisePosition    0.9

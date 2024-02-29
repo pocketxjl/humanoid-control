@@ -125,7 +125,7 @@ vector_t KalmanFilterEstimate::update(const ros::Time& time, const ros::Duration
     int rIndex3 = 24 + i;
     bool isContact = contactFlag_[i];
 
-    scalar_t high_suspect_number(100);
+    scalar_t high_suspect_number(1000);
     q.block(qIndex, qIndex, 3, 3) = (isContact ? 1. : high_suspect_number) * q.block(qIndex, qIndex, 3, 3);
     r.block(rIndex1, rIndex1, 3, 3) = (isContact ? 1. : high_suspect_number) * r.block(rIndex1, rIndex1, 3, 3);
     r.block(rIndex2, rIndex2, 3, 3) = (isContact ? 1. : high_suspect_number) * r.block(rIndex2, rIndex2, 3, 3);
