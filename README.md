@@ -37,6 +37,7 @@ For the latest version of mujoco, it is very easy to install it on python:
 
 ```bash
 pip3 install mujoco
+pip3 install pynput #for teleop.py
 ```
 
 ### Getting Start
