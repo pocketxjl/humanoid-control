@@ -62,7 +62,31 @@ The effect of the simulation is shown in the video provided in [this link](https
 
 The foot planner is a switch model provided by OCS2, which switch the contact status between right foot and left foot. The foot planner only plans the z-axis of swinging foot as Cubic Spline. 
 
-***TODO: Add the x-axis and y-axis planner?***
+### State Estimator
+
+The state estimator only needs to estimate the coordinates and linear velocity of the trunk. It is a nonlinear Kalman filter, where the system's state equation is
+
+$$
+\begin{split}
+\begin{cases}
+\ \ \hat{x}(k) = A\hat{x}(k-1) + Bu(k)+\omega(k-1) \\
+\ \ z(k) = H\hat{x}(k) + \nu(k) \\
+\end{cases}\end{split}
+$$
+
+where $x$, $u$, $z$ are defines as
+
+$$
+\begin{split}
+x &= [\mathbf{pos}_{b}^T, \mathbf{vel}_b^T, \mathbf{pos}_c^T]^T\\
+u &= \mathbf{acc}_b\\
+z &= [-\mathbf{pos}_{local,c}^T, -\mathbf{vel}_{local,c}^T,\mathbf{height}_c^T]^T\\
+\end{split}
+$$
+
+Where the subscript $b$ refers to the trunk, subscript $c$ refers to the  foot-end contact point, and subscript $local$ refers to the quantity in the trunk coordinate system. 
+
+In the state estimator, $z$ is obtained from the robot's kinematics, and only the kinematics of the supporting foot is trusted. The noise parameters related to the  swinging foot will be set to a very large 'distrust value.' At this  time, since the state equation only accepts updates from the  accelerometer, and the Q parameter for the supporting foot is much  smaller than that for the swinging foot, it is possible to achieve an  estimation where the position of the supporting foot remains unchanged,  and the position changes when it switches to the swinging foot.  Moreover, since only the dynamics of the supporting foot are trusted,  the height measurement of the foot can be directly set to 0.
 
 ### NMPC
 
