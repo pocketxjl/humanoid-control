@@ -78,9 +78,9 @@ where $x$, $u$, $z$ are defines as
 
 $$
 \begin{split}
-x &= [\mathbf{pos}_{b}^T, \mathbf{vel}_b^T, \mathbf{pos}_c^T]^T\\
-u &= \mathbf{acc}_b\\
-z &= [-\mathbf{pos}_{local,c}^T, -\mathbf{vel}_{local,c}^T,\mathbf{height}_c^T]^T\\
+x &= [\mathbf{pos_b}^T, \mathbf{vel_b}^T, \mathbf{pos_c}^T]^T\\
+u &= \mathbf{acc_b}\\
+z &= [-\mathbf{pos_{local,c}}^T, -\mathbf{vel_{local,c}}^T,\mathbf{height_c}^T]^T\\
 \end{split}
 $$
 
