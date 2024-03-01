@@ -71,7 +71,7 @@ $$
 \begin{split}
 \begin{cases}
 \ \ \hat{x}(k) = A\hat{x}(k-1) + Bu(k)+\omega(k-1) \\
-\ \ z(k) = H\hat{x}(k) + \nu(k) \\
+\ \ z(k) = H\hat{x}(k) + g(k) + \nu(k) \\
 \end{cases}\end{split}
 $$
 
@@ -81,13 +81,15 @@ $$
 \begin{split}
 x &= [\mathbf{pos_b}^T, \mathbf{vel_b}^T, \mathbf{pos_c}^T]^T\\
 u &= \mathbf{acc_b}\\
-z &= [-\mathbf{pos_{local,c}}^T, -\mathbf{vel_{local,c}}^T,\mathbf{height_c}^T]^T\\
+z &= [-\mathbf{pos_{local,c}}^T, \mathbf{vel_{c}}^T,\mathbf{height_c}^T]^T = [-\mathbf{pos_{local,c}}^T, \mathbf{0}^T,\mathbf{0}^T]^T,\text{for contact foot}\\
+g &= \mathbf{vel_{local,c}}\\
+H\hat{x}(k) &=  [-\mathbf{\hat{pos}_{local,c}}^T, \mathbf{\hat{vel}_{b}}^T,\mathbf{\hat{height}_c}^T]^T
 \end{split}
 $$
 
 Where the subscript $b$ refers to the trunk, subscript $c$ refers to the  foot-end contact point, and subscript $local$ refers to the quantity in the trunk coordinate system. 
 
-In the state estimator, $z$ is obtained from the robot's kinematics, and only the kinematics of the supporting foot is trusted. The noise parameters related to the  swinging foot will be set to a very large 'distrust value.' At this  time, since the state equation only accepts updates from the  accelerometer, and the Q parameter for the supporting foot is much  smaller than that for the swinging foot, it is possible to achieve an  estimation where the position of the supporting foot remains unchanged,  and the position changes when it switches to the swinging foot.  Moreover, since only the dynamics of the supporting foot are trusted,  the height measurement of the foot can be directly set to 0.
+In the state estimator, $z$ is obtained from the robot's kinematics, and only the kinematics of the supporting foot is trusted. The noise parameters related to the  swinging foot will be set to a very large 'distrust value.' At this  time, since the state equation only accepts updates from the  accelerometer, and the Q parameter for the supporting foot is much  smaller than that for the swinging foot, it is possible to achieve an  estimation where the position of the supporting foot remains unchanged,  and the position changes when it switches to the swinging foot.  Moreover, since only the dynamics of the supporting foot are trusted,  the height and velocity measurement of the foot can be directly set to 0.
 
 ### NMPC
 
@@ -190,9 +192,9 @@ Obtain optimized joint positions and joint velocities from MRT (Model  Reference
 
 $$
 \begin{split}
-\mathbf{q_des} = \mathbf{q_opt} + \frac{1}{2}\mathbf{a}_jt^2\\
-\mathbf{v_des} = \mathbf{v_opt} + \mathbf{a}_jt\\
-\mathbf{T_des} = \mathbf{T}_j
+\mathbf{q_des} &= \mathbf{q_opt} + \frac{1}{2}\mathbf{a}_jt^2\\
+\mathbf{v_des} &= \mathbf{v_opt} + \mathbf{a}_jt\\
+\mathbf{T_des} &= \mathbf{T}_j
 \end{split}
 $$
 
