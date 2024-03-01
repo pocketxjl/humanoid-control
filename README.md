@@ -71,7 +71,7 @@ $$
 \begin{split}
 \begin{cases}
 \ \ \hat{x}(k) = A\hat{x}(k-1) + Bu(k)+\omega(k-1) \\
-\ \ z(k) = H\hat{x}(k) + g(k) + \nu(k) \\
+\ \ z(k) = H\hat{x}(k) + \nu(k) \\
 \end{cases}\end{split}
 $$
 
@@ -81,9 +81,7 @@ $$
 \begin{split}
 x &= [\mathbf{pos_b}^T, \mathbf{vel_b}^T, \mathbf{pos_c}^T]^T\\
 u &= \mathbf{acc_b}\\
-z &= [-\mathbf{pos_{local,c}}^T, \mathbf{vel_{c}}^T,\mathbf{height_c}^T]^T = [-\mathbf{pos_{local,c}}^T, \mathbf{0}^T,\mathbf{0}^T]^T,\text{for contact foot}\\
-g &= \mathbf{vel_{local,c}}\\
-H\hat{x}(k) &=  [-\mathbf{\hat{pos}_{local,c}}^T, \mathbf{\hat{vel}_{b}}^T,\mathbf{\hat{height}_c}^T]^T
+z &= [-\mathbf{pos_{local,c}}^T, \mathbf{vel_{b}}^T,\mathbf{height_c}^T]^T = [-\mathbf{pos_{local,c}}^T, -\mathbf{vel_{local,c}},\mathbf{0}^T]^T,\text{for contact foot}\\
 \end{split}
 $$
 
