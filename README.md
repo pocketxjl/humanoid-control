@@ -64,7 +64,7 @@ The foot planner is a switch model provided by OCS2, which switch the contact st
 
 ### State Estimator
 
-The state estimator only needs to estimate the coordinates and linear velocity of the trunk. It is a nonlinear Kalman filter, where the system's state equation is
+The state estimator only needs to estimate the coordinates and linear velocity of the trunk. It is a linear Kalman filter, where the system's state equation is
 
 $$
 \begin{split}
