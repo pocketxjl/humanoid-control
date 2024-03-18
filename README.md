@@ -46,7 +46,7 @@ pip3 install pynput #for teleop.py
 catkin config -DCMAKE_BUILD_TYPE=RelWithDebInfo #important
 catkin build humanoid_controllers humanoid_legged_description mujoco_sim
 # To start simulation with the cheat state estimator.
-# Input the gait command, and press SPACE on mujoco simulation window. 
+# Press SPACE on mujoco simulation window and input the gait command. 
 roslaunch humanoid_controllers load_cheat_controller.launch
 # To start simulation with the normal state estimator.
 roslaunch humanoid_controllers load_normal_controller.launch
