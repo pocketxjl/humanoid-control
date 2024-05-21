@@ -8,12 +8,14 @@ import rospkg
 from std_msgs.msg import Float32MultiArray,Bool
 from nav_msgs.msg import Odometry
 from sensor_msgs.msg import Imu
+import time
 
 
 class HumanoidSim(MuJoCoBase):
   def __init__(self, xml_path):
     super().__init__(xml_path)
     self.simend = 1000.0
+    self.sim_rate = 1000.0
     # print('Total number of DoFs in the model:', self.model.nv)
     # print('Generalized positions:', self.data.qpos)  
     # print('Generalized velocities:', self.data.qvel)
@@ -89,15 +91,20 @@ class HumanoidSim(MuJoCoBase):
   def simulate(self):
     publish_time = self.data.time
     torque_publish_time = self.data.time
+    sim_epoch_start = time.time()
     while not glfw.window_should_close(self.window):
       simstart = self.data.time
 
       while (self.data.time - simstart <= 1.0/60.0 and not self.pause_flag):
 
-        # MIT control
-        self.data.ctrl[:] = self.targetTorque + self.targetKp * (self.targetPos - self.data.qpos[-12:]) + self.targetKd * (self.targetVel - self.data.qvel[-12:])
-        # Step simulation environment
-        mj.mj_step(self.model, self.data)
+        if (time.time() - sim_epoch_start >= 1.0 / self.sim_rate):
+          # MIT control
+          self.data.ctrl[:] = self.targetTorque + self.targetKp * (self.targetPos - self.data.qpos[-12:]) + self.targetKd * (self.targetVel - self.data.qvel[-12:])
+          # Step simulation environment
+          mj.mj_step(self.model, self.data)
+          sim_epoch_start = time.time()
+
+        
         if (self.data.time - publish_time >= 1.0 / 500.0):
           # * Publish joint positions and velocities
           jointsPosVel = Float32MultiArray()

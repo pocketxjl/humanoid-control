@@ -1,6 +1,13 @@
 <mujoco model="humanoid_legged_description">
     <compiler angle="radian" meshdir="../meshes/" />
     <size njmax="500" nconmax="100" />
+    <option timestep="0.001" iterations="50" solver="PGS" gravity="0 0 -9.81" noslip_iterations="20">
+        <flag sensornoise="disable"/>
+    </option>
+    <visual>
+        <quality shadowsize="4096"/>
+        <global realtime="1"/>
+    </visual>
     <asset>
         <texture type="skybox" builtin="gradient" rgb1="0.4 0.6 0.8" width="128" height="128"/>
         <texture name="grid" type="2d" builtin="checker" rgb1=".1 .2 .3" rgb2=".2 .3 .4" width="300" height="300"/>
