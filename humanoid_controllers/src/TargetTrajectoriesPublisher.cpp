@@ -68,17 +68,11 @@ TargetTrajectories goalToTargetTrajectories(const vector_t& goal, const SystemOb
 }
 
 TargetTrajectories cmdVelToTargetTrajectories(const vector_t& cmdVel, const SystemObservation& observation) {
-  static float targetYaw = 0.0;
-
   const vector_t currentPose = observation.state.segment<6>(6);
   const Eigen::Matrix<scalar_t, 3, 1> zyx = currentPose.tail(3);
   vector_t cmdVelRot = getRotationMatrixFromZyxEulerAngles(zyx) * cmdVel.head(3);
 
   const scalar_t timeToTarget = TIME_TO_TARGET;
-  if (plannedModeForTTP != 3)
-  {
-    targetYaw += cmdVel(3) * 0.01;
-  }
   
   const vector_t targetPose = [&]() {
     vector_t target(6);
@@ -87,7 +81,7 @@ TargetTrajectories cmdVelToTargetTrajectories(const vector_t& cmdVel, const Syst
       target(0) = currentPose(0) + cmdVelRot(0) * timeToTarget;
       target(1) = currentPose(1) + cmdVelRot(1) * timeToTarget;
       target(2) = COM_HEIGHT;
-      target(3) = targetYaw;
+      target(3) = currentPose(3) + cmdVel(3) * timeToTarget;
       target(4) = 0;
       target(5) = 0;
     }
@@ -96,7 +90,7 @@ TargetTrajectories cmdVelToTargetTrajectories(const vector_t& cmdVel, const Syst
       target(0) = currentPose(0);
       target(1) = currentPose(1);
       target(2) = COM_HEIGHT;
-      target(3) = targetYaw;
+      target(3) = currentPose(3);
       target(4) = 0;
       target(5) = 0;
     }
