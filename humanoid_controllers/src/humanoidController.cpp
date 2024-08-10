@@ -56,8 +56,7 @@ bool humanoidController::init(HybridJointInterface* robot_hw, ros::NodeHandle& c
   //TODO: setup hardware controller interface
   //create a ROS subscriber to receive the joint pos and vel
     jointPos_ = vector_t::Zero(jointNum_);
-    //set jointPos_ to {0, 0, 0.35, -0.90, -0.55, 0, 0, 0, 0.35, -0.90, -0.55, 0}
-    jointPos_ << 0.0, 0.0, 0.35, 0.90, 0.55, 0, 0.0, 0.0, 0.35, 0.90, 0.55, 0;
+    jointPos_ << 0.0, 0.0, 0.37, 0.90, 0.53, 0, 0.0, 0.0, 0.37, 0.90, 0.53, 0;
     jointVel_ = vector_t::Zero(jointNum_);
     quat_ = Eigen::Quaternion<scalar_t>(1, 0, 0, 0);
   jointPosVelSub_ =  controllerNh_.subscribe<std_msgs::Float32MultiArray>("/jointsPosVel", 10, &humanoidController::jointStateCallback, this);
@@ -113,7 +112,6 @@ void humanoidController::ImuCallback(const sensor_msgs::Imu::ConstPtr &msg) {
 
 void humanoidController::starting(const ros::Time& time) {
   // Initial state
-  //set the initial state = {0, 0, 0, 0, 0, 0, 0, 0, 0.976, 0, 0, 0, 0, 0, 0.35, -0.90, -0.55, 0, 0, 0, 0.35, -0.90, -0.55, 0}
   currentObservation_.state = vector_t::Zero(HumanoidInterface_->getCentroidalModelInfo().stateDim);
   currentObservation_.state(8) = 0.976;
   currentObservation_.state.segment(6 + 6, jointNum_) = defalutJointPos_;
@@ -156,12 +154,12 @@ void humanoidController::update(const ros::Time& time, const ros::Duration& peri
   currentObservation_.input = optimizedInput;
 
   if(currentObservation_.mode == ModeNumber::STANCE){
-    optimizedState.setZero();
-    optimizedInput.setZero();
-    optimizedState.segment(6, 6) = currentObservation_.state.segment<6>(6);
-    optimizedState.segment(6 + 6, jointNum_) = defalutJointPos_;
-    // plannedMode_ = 3;
-    wbc_->setStanceMode(true);
+  optimizedState.setZero();
+  optimizedInput.setZero();
+  optimizedState.segment(6, 6) = currentObservation_.state.segment<6>(6);
+  optimizedState.segment(6 + 6, jointNum_) = defalutJointPos_;
+  // plannedMode_ = 3;
+  wbc_->setStanceMode(true);
   }
   else{
     wbc_->setStanceMode(false);
@@ -191,7 +189,6 @@ void humanoidController::update(const ros::Time& time, const ros::Duration& peri
     return;
   }
 
-  //TODO: send the controller command to hardware interface
     std_msgs::Float32MultiArray targetTorqueMsg;
     for (int i1 = 0; i1 < 12; ++i1) {
         targetTorqueMsg.data.push_back(torque(i1));
@@ -212,8 +209,8 @@ void humanoidController::update(const ros::Time& time, const ros::Duration& peri
     std_msgs::Float32MultiArray targetKp;
     std_msgs::Float32MultiArray targetKd;
     if(currentObservation_.mode == ModeNumber::STANCE){
-      targetKp.data = {350.0, 350.0, 300.0, 400.0, 400.0, 1.0, 350.0, 350.0, 300.0, 400.0, 400.0, 1.0};
-      targetKd.data = {10.0, 10.0, 10.0, 10.0, 0.5, 0.1, 10.0, 10.0, 10.0, 10.0, 0.5, 0.1};
+    targetKp.data = {300.0, 300.0, 350.0, 400.0, 350.0, 1.0, 300.0, 300.0, 350.0, 400.0, 350.0, 1.0};
+    targetKd.data = {10.0, 10.0, 10.0, 10.0, 2.0, 0.1, 10.0, 10.0, 10.0, 10.0, 2.0, 0.1};
     }
     else{
       targetKp.data = {120.0, 120.0, 120.0, 120.0, 1.5, 1.5, 120.0, 120.0, 120.0, 120.0, 1.5, 1.5};
