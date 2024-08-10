@@ -10,7 +10,7 @@ from nav_msgs.msg import Odometry
 from sensor_msgs.msg import Imu
 import time
 
-init_joint_pos = np.array([0.05, 0.0, 0.37, 0.90, 0.53, 0, -0.05, 0.0, 0.37, 0.90, 0.53, 0])
+init_joint_pos = np.array([0.0, 0.0, 0.37, 0.90, 0.53, 0, 0.0, 0.0, 0.37, 0.90, 0.53, 0])
 
 class HumanoidSim(MuJoCoBase):
   def __init__(self, xml_path):

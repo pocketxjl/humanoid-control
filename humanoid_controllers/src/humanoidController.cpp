@@ -209,8 +209,8 @@ void humanoidController::update(const ros::Time& time, const ros::Duration& peri
     std_msgs::Float32MultiArray targetKp;
     std_msgs::Float32MultiArray targetKd;
     if(currentObservation_.mode == ModeNumber::STANCE){
-    targetKp.data = {300.0, 300.0, 350.0, 400.0, 350.0, 1.0, 300.0, 300.0, 350.0, 400.0, 350.0, 1.0};
-    targetKd.data = {10.0, 10.0, 10.0, 10.0, 2.0, 0.1, 10.0, 10.0, 10.0, 10.0, 2.0, 0.1};
+    targetKp.data = {450.0, 300.0, 350.0, 400.0, 350.0, 1.0, 450.0, 300.0, 350.0, 400.0, 350.0, 1.0};
+    targetKd.data = {15.0, 10.0, 10.0, 10.0, 2.0, 0.1, 15.0, 10.0, 10.0, 10.0, 2.0, 0.1};
     }
     else{
       targetKp.data = {120.0, 120.0, 120.0, 120.0, 1.5, 1.5, 120.0, 120.0, 120.0, 120.0, 1.5, 1.5};
