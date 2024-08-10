@@ -14,6 +14,10 @@
 #include <ocs2_mpc/SystemObservation.h>
 #include <ocs2_ros_interfaces/command/TargetTrajectoriesRosPublisher.h>
 
+#include <humanoid_interface/gait/MotionPhaseDefinition.h>
+
+
+
 namespace ocs2 {
 namespace humanoid {
 

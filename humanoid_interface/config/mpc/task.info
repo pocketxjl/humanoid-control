@@ -191,20 +191,20 @@ Q
   (6,6)   500.0    ; p_base_x
   (7,7)   500.0    ; p_base_y
   (8,8)   500.0    ; p_base_z
-  (9,9)   100.0    ; theta_base_z
-  (10,10) 500.0    ; theta_base_y
-  (11,11) 500.0    ; theta_base_x
+  (9,9)   150.0    ; theta_base_z
+  (10,10) 1600.0    ; theta_base_y
+  (11,11) 1600.0    ; theta_base_x
 
   ;; Leg Joint Positions: [LF, LH, RF, RH] ;;
-  (12,12) 100.0     ; leg_l1_joint
-  (13,13) 100.0     ; leg_l2_joint
-  (14,14) 10.0     ; leg_l3_joint
+  (12,12) 200.0     ; leg_l1_joint
+  (13,13) 200.0     ; leg_l2_joint
+  (14,14) 15.0     ; leg_l3_joint
   (15,15) 10.0     ; leg_l4_joint
   (16,16) 10.0     ; leg_l5_joint
   (17,17) 10.0     ; leg_l6_joint
-  (18,18) 100.0     ; leg_r1_joint
-  (19,19) 100.0     ; leg_r2_joint
-  (20,20) 10.0     ; leg_r3_joint
+  (18,18) 200.0     ; leg_r1_joint
+  (19,19) 200.0     ; leg_r2_joint
+  (20,20) 15.0     ; leg_r3_joint
   (21,21) 10.0     ; leg_r4_joint
   (22,22) 10.0     ; leg_r5_joint
   (23,23) 10.0     ; leg_r6_joint

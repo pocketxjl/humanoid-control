@@ -73,10 +73,6 @@ public:
   {
     return contact_force_size_;
   }
-  void setStanceMode(bool stance_mode)
-  {
-    stance_mode_ = stance_mode;
-  }
 
 protected:
   void updateMeasured(const vector_t& rbdStateMeasured);
@@ -131,7 +127,6 @@ protected:
 
   vector_t jointAccDesired_;
   size_t contact_force_size_ = 0;
-  bool stance_mode_ = false;
 };
 
 }  // namespace humanoid

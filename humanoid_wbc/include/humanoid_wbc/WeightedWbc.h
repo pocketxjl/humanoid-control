@@ -28,7 +28,6 @@ public:
 protected:
   virtual Task formulateConstraints();
   virtual Task formulateWeightedTasks(const vector_t& stateDesired, const vector_t& inputDesired, scalar_t period);
-  Task formulateStanceBaseAccelTask(const vector_t& stateDesired, const vector_t& inputDesired, scalar_t period);
 
 private:
   scalar_t weightSwingLeg_, weightBaseAccel_, weightContactForce_;

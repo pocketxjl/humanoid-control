@@ -23,6 +23,12 @@
 #include <humanoid_wbc/WeightedWbc.h>
 #include <pluginlib/class_list_macros.hpp>
 
+namespace ocs2 {
+namespace humanoid {
+size_t plannedModeForTTP;
+}  // namespace humanoid
+}  // namespace ocs2
+
 namespace humanoid_controller{
 using namespace ocs2;
 using namespace humanoid;
@@ -150,20 +156,10 @@ void humanoidController::update(const ros::Time& time, const ros::Duration& peri
   vector_t optimizedState, optimizedInput;
   mpcMrtInterface_->evaluatePolicy(currentObservation_.time, currentObservation_.state, optimizedState, optimizedInput, plannedMode_);
 
+  plannedModeForTTP = plannedMode_;
+
   // Whole body control
   currentObservation_.input = optimizedInput;
-
-  if(currentObservation_.mode == ModeNumber::STANCE){
-  optimizedState.setZero();
-  optimizedInput.setZero();
-  optimizedState.segment(6, 6) = currentObservation_.state.segment<6>(6);
-  optimizedState.segment(6 + 6, jointNum_) = defalutJointPos_;
-  // plannedMode_ = 3;
-  wbc_->setStanceMode(true);
-  }
-  else{
-    wbc_->setStanceMode(false);
-  }
 
   wbcTimer_.startTimer();
   vector_t x = wbc_->update(optimizedState, optimizedInput, measuredRbdState_, plannedMode_, period.toSec());
@@ -208,14 +204,10 @@ void humanoidController::update(const ros::Time& time, const ros::Duration& peri
     targetVelPub_.publish(targetVelMsg);
     std_msgs::Float32MultiArray targetKp;
     std_msgs::Float32MultiArray targetKd;
-    if(currentObservation_.mode == ModeNumber::STANCE){
-    targetKp.data = {450.0, 300.0, 350.0, 400.0, 350.0, 1.0, 450.0, 300.0, 350.0, 400.0, 350.0, 1.0};
-    targetKd.data = {15.0, 10.0, 10.0, 10.0, 2.0, 0.1, 15.0, 10.0, 10.0, 10.0, 2.0, 0.1};
-    }
-    else{
-      targetKp.data = {120.0, 120.0, 120.0, 120.0, 1.5, 1.5, 120.0, 120.0, 120.0, 120.0, 1.5, 1.5};
-      targetKd.data = {4.0, 4.0, 4.0, 4.0, 0.1, 0.1, 4.0, 4.0, 4.0, 4.0, 0.1, 0.1};
-    }
+
+    targetKp.data = {120.0, 120.0, 120.0, 120.0, 1.5, 1.5, 120.0, 120.0, 120.0, 120.0, 1.5, 1.5};
+    targetKd.data = {4.0, 4.0, 4.0, 4.0, 0.1, 0.1, 4.0, 4.0, 4.0, 4.0, 0.1, 0.1};
+
    
     targetKpPub_.publish(targetKp);
     targetKdPub_.publish(targetKd);

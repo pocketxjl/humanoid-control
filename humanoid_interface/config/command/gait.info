@@ -2,6 +2,8 @@ list
 {
   [0] stance
   [1] trot
+  [2] walk
+  [3] quick_trot
 }
 
 stance
@@ -29,5 +31,39 @@ trot
      [0]     0.0
      [1]     0.45
      [2]     0.9
+   }
+}
+
+walk
+ {
+   modeSequence
+   {
+     [0]     LCONTACT
+     [1]     STANCE
+     [2]     RCONTACT
+     [3]     STANCE
+   }
+   switchingTimes
+   {
+     [0]     0.0
+     [1]     0.45
+     [2]     0.6
+     [3]     1.05
+     [4]     1.2
+   }
+}
+
+quick_trot
+ {
+   modeSequence
+   {
+     [0]     LCONTACT
+     [1]     RCONTACT
+   }
+   switchingTimes
+   {
+     [0]     0.0
+     [1]     0.25
+     [2]     0.5
    }
 }

@@ -3,10 +3,12 @@
 //
 
 #include "humanoid_controllers/TargetTrajectoriesPublisher.h"
+#include "humanoid_controllers/humanoidController.h"
 
 #include <ocs2_core/Types.h>
 #include <ocs2_core/misc/LoadData.h>
 #include <ocs2_robotic_tools/common/RotationTransforms.h>
+
 
 using namespace ocs2;
 using namespace humanoid;
@@ -73,15 +75,32 @@ TargetTrajectories cmdVelToTargetTrajectories(const vector_t& cmdVel, const Syst
   vector_t cmdVelRot = getRotationMatrixFromZyxEulerAngles(zyx) * cmdVel.head(3);
 
   const scalar_t timeToTarget = TIME_TO_TARGET;
-  targetYaw += cmdVel(3) * 0.01;
+  if (plannedModeForTTP != 3)
+  {
+    targetYaw += cmdVel(3) * 0.01;
+  }
+  
   const vector_t targetPose = [&]() {
     vector_t target(6);
-    target(0) = currentPose(0) + cmdVelRot(0) * timeToTarget;
-    target(1) = currentPose(1) + cmdVelRot(1) * timeToTarget;
-    target(2) = COM_HEIGHT;
-    target(3) = targetYaw;
-    target(4) = 0;
-    target(5) = 0;
+    if (plannedModeForTTP != 3)
+    {
+      target(0) = currentPose(0) + cmdVelRot(0) * timeToTarget;
+      target(1) = currentPose(1) + cmdVelRot(1) * timeToTarget;
+      target(2) = COM_HEIGHT;
+      target(3) = targetYaw;
+      target(4) = 0;
+      target(5) = 0;
+    }
+    else
+    {
+      target(0) = currentPose(0);
+      target(1) = currentPose(1);
+      target(2) = COM_HEIGHT;
+      target(3) = targetYaw;
+      target(4) = 0;
+      target(5) = 0;
+    }
+    
     return target;
   }();
 
