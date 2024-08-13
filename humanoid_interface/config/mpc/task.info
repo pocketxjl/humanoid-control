@@ -190,10 +190,10 @@ Q
   ;; Base Pose: [position, orientation] ;;
   (6,6)   500.0    ; p_base_x
   (7,7)   500.0    ; p_base_y
-  (8,8)   500.0    ; p_base_z
+  (8,8)   1000.0    ; p_base_z
   (9,9)   150.0    ; theta_base_z
-  (10,10) 1600.0    ; theta_base_y
-  (11,11) 1600.0    ; theta_base_x
+  (10,10) 2000.0    ; theta_base_y
+  (11,11) 2000.0    ; theta_base_x
 
   ;; Leg Joint Positions: [LF, LH, RF, RH] ;;
   (12,12) 200.0     ; leg_l1_joint
