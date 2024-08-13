@@ -68,32 +68,20 @@ TargetTrajectories goalToTargetTrajectories(const vector_t& goal, const SystemOb
 }
 
 TargetTrajectories cmdVelToTargetTrajectories(const vector_t& cmdVel, const SystemObservation& observation) {
-  const vector_t currentPose = observation.state.segment<6>(6);
+    const vector_t currentPose = observation.state.segment<6>(6);
   const Eigen::Matrix<scalar_t, 3, 1> zyx = currentPose.tail(3);
   vector_t cmdVelRot = getRotationMatrixFromZyxEulerAngles(zyx) * cmdVel.head(3);
 
   const scalar_t timeToTarget = TIME_TO_TARGET;
-  
+    
   const vector_t targetPose = [&]() {
     vector_t target(6);
-    if (plannedModeForTTP != 3)
-    {
-      target(0) = currentPose(0) + cmdVelRot(0) * timeToTarget;
-      target(1) = currentPose(1) + cmdVelRot(1) * timeToTarget;
-      target(2) = COM_HEIGHT;
-      target(3) = currentPose(3) + cmdVel(3) * timeToTarget;
-      target(4) = 0;
-      target(5) = 0;
-    }
-    else
-    {
-      target(0) = currentPose(0);
-      target(1) = currentPose(1);
-      target(2) = COM_HEIGHT;
-      target(3) = currentPose(3);
-      target(4) = 0;
-      target(5) = 0;
-    }
+    target(0) = currentPose(0) + cmdVelRot(0) * timeToTarget;
+    target(1) = currentPose(1) + cmdVelRot(1) * timeToTarget;
+    target(2) = COM_HEIGHT;
+    target(3) = currentPose(3) + cmdVel(3) * timeToTarget;
+    target(4) = 0;
+    target(5) = 0;
     
     return target;
   }();
@@ -101,9 +89,9 @@ TargetTrajectories cmdVelToTargetTrajectories(const vector_t& cmdVel, const Syst
   // target reaching duration
   const scalar_t targetReachingTime = observation.time + timeToTarget;
   auto trajectories = targetPoseToTargetTrajectories(targetPose, observation, targetReachingTime);
-  trajectories.stateTrajectory[0].head(3) = cmdVelRot;
-  trajectories.stateTrajectory[1].head(3) = cmdVelRot;
-  return trajectories;
+      trajectories.stateTrajectory[0].head(3) = cmdVelRot;
+    trajectories.stateTrajectory[1].head(3) = cmdVelRot;
+    return trajectories;
 }
 
 int main(int argc, char** argv) {

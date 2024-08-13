@@ -23,11 +23,6 @@
 #include <humanoid_wbc/WeightedWbc.h>
 #include <pluginlib/class_list_macros.hpp>
 
-namespace ocs2 {
-namespace humanoid {
-size_t plannedModeForTTP;
-}  // namespace humanoid
-}  // namespace ocs2
 
 namespace humanoid_controller{
 using namespace ocs2;
@@ -155,8 +150,6 @@ void humanoidController::update(const ros::Time& time, const ros::Duration& peri
   // Evaluate the current policy
   vector_t optimizedState, optimizedInput;
   mpcMrtInterface_->evaluatePolicy(currentObservation_.time, currentObservation_.state, optimizedState, optimizedInput, plannedMode_);
-
-  plannedModeForTTP = plannedMode_;
 
   // Whole body control
   currentObservation_.input = optimizedInput;

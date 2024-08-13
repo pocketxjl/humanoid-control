@@ -24,12 +24,6 @@
 #include "std_msgs/Bool.h"
 #include "sensor_msgs/Imu.h"
 
-namespace ocs2 {
-namespace humanoid {
-extern size_t plannedModeForTTP;
-}  // namespace humanoid
-}  // namespace ocs2
-
 namespace humanoid_controller{
 using namespace ocs2;
 using namespace humanoid;
