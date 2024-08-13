@@ -154,19 +154,19 @@ initialState
    ;; Base Pose: [position, orientation] ;;
    (6,0)  0.0     ; p_base_x
    (7,0)  0.0     ; p_base_y
-   (8,0)  1.225   ; p_base_z
+   (8,0)  1.2   ; p_base_z
    (9,0)  0.0     ; theta_base_z
    (10,0) 0.0     ; theta_base_y
    (11,0) 0.0     ; theta_base_x
 
    ;; Leg Joint Positions: [LF, LH, RF, RH] ;;
-   (12,0) 0.0   ; leg_l1_joint
+   (12,0) 0.05   ; leg_l1_joint
    (13,0) 0   ; leg_l2_joint
    (14,0) 0.37   ; leg_l3_joint
    (15,0) 0.90  ; leg_l4_joint
    (16,0) 0.53   ; leg_l5_joint
    (17,0) 0.00   ; leg_l6_joint
-   (18,0) 0.0   ; leg_r1_joint
+   (18,0) -0.05   ; leg_r1_joint
    (19,0) 0.0   ; leg_r2_joint
    (20,0) 0.37   ; leg_r3_joint
    (21,0) 0.90  ; leg_r4_joint
@@ -190,19 +190,19 @@ Q
   ;; Base Pose: [position, orientation] ;;
   (6,6)   500.0    ; p_base_x
   (7,7)   500.0    ; p_base_y
-  (8,8)   1000.0    ; p_base_z
+  (8,8)   2000.0    ; p_base_z
   (9,9)   200.0    ; theta_base_z
   (10,10) 2000.0    ; theta_base_y
   (11,11) 2000.0    ; theta_base_x
 
   ;; Leg Joint Positions: [LF, LH, RF, RH] ;;
-  (12,12) 200.0     ; leg_l1_joint
+  (12,12) 300.0     ; leg_l1_joint
   (13,13) 200.0     ; leg_l2_joint
   (14,14) 15.0     ; leg_l3_joint
   (15,15) 10.0     ; leg_l4_joint
   (16,16) 10.0     ; leg_l5_joint
   (17,17) 10.0     ; leg_l6_joint
-  (18,18) 200.0     ; leg_r1_joint
+  (18,18) 300.0     ; leg_r1_joint
   (19,19) 200.0     ; leg_r2_joint
   (20,20) 15.0     ; leg_r3_joint
   (21,21) 10.0     ; leg_r4_joint
@@ -322,7 +322,7 @@ weight
 ; State Estimation
 kalmanFilter
 {
-    footRadius                  -0.01
+    footRadius                  0.0
     imuProcessNoisePosition     0.02
     imuProcessNoiseVelocity     0.02
     footProcessNoisePosition    0.9
