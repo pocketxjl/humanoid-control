@@ -226,21 +226,6 @@ Task WbcBase::formulateFrictionConeTask()
   return { a, b, d, f };
 }
 
-// Tracking base xy linear motion task
-Task WbcBase::formulateBaseXYLinearAccelTask()
-{
-  matrix_t a(2, numDecisionVars_);
-  vector_t b(a.rows());
-
-  a.setZero();
-  b.setZero();
-
-  a.block(0, 0, 2, 2) = matrix_t::Identity(2, 2);
-  b = baseAccelerationDes_.segment<2>(0);
-
-  return { a, b, matrix_t(), vector_t() };
-}
-
 // Tracking base height motion task
 Task WbcBase::formulateBaseHeightMotionTask()
 {
@@ -293,7 +278,7 @@ Task WbcBase::formulateBaseAngularMotionTask()
 
 Task WbcBase::formulateBaseAccelTask(const vector_t& stateDesired, const vector_t& inputDesired, scalar_t period)
 {
-  return formulateBaseXYLinearAccelTask() + formulateBaseHeightMotionTask() + formulateBaseAngularMotionTask();
+  return formulateBaseHeightMotionTask() + formulateBaseAngularMotionTask();
 }
 
 Task WbcBase::formulateSwingLegTask()
@@ -384,15 +369,6 @@ void WbcBase::loadTasksSetting(const std::string& taskFile, bool verbose)
   }
   loadData::loadPtreeValue(pt, swingKp_, prefix + "kp", verbose);
   loadData::loadPtreeValue(pt, swingKd_, prefix + "kd", verbose);
-
-  prefix = "baseAccelTask.";
-  if (verbose)
-  {
-    std::cerr << "\n #### Base Accel(Tracking) Task:";
-    std::cerr << "\n #### =============================================================================\n";
-  }
-  loadData::loadPtreeValue(pt, com_kp_, prefix + "kp", verbose);
-  loadData::loadPtreeValue(pt, com_kd_, prefix + "kd", verbose);
 
   prefix = "baseHeightTask.";
   if (verbose)

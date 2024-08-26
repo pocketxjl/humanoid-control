@@ -290,19 +290,13 @@ frictionConeTask
 
 swingLegTask
 {
-    kp                   160  
-    kd                   18   
-}
-
-baseAccelTask
-{
-    kp                   40
-    kd                   4
+    kp                   200  
+    kd                   12   
 }
 
 baseHeightTask
 {
-    kp                   20
+    kp                   25
     kd                   3
 }
 
