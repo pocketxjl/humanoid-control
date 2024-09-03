@@ -9,8 +9,12 @@ from std_msgs.msg import Float32MultiArray,Bool
 from nav_msgs.msg import Odometry
 from sensor_msgs.msg import Imu
 import time
+from scipy.spatial.transform import Rotation as R
 
 init_joint_pos = np.array([0.0, 0.0, 0.37, 0.90, 0.53, 0, 0.0, 0.0, 0.37, 0.90, 0.53, 0])
+init_base_pos = np.array([0, 0, 1.225])
+init_base_eular_zyx = np.array([0.0, -0., 0.0])
+imu_eular_bias = np.array([0.0, 0.0, 0.0])
 
 class HumanoidSim(MuJoCoBase):
   def __init__(self, xml_path):
@@ -43,8 +47,11 @@ class HumanoidSim(MuJoCoBase):
     rospy.Subscriber("/targetKp", Float32MultiArray, self.targetKpCallback)
     rospy.Subscriber("/targetKd", Float32MultiArray, self.targetKdCallback)
     #set the initial joint position
-    self.data.qpos[:3] = np.array([0, 0, 1.225])
+    self.data.qpos[:3] = init_base_pos
+    # init rpy to init quaternion
+    self.data.qpos[3:7] = R.from_euler('xyz', init_base_eular_zyx).as_quat()
     self.data.qpos[-12:] = init_joint_pos
+
     self.data.qvel[:3] = np.array([0, 0, 0])
     self.data.qvel[-12:] = np.zeros(12)
 
@@ -118,7 +125,13 @@ class HumanoidSim(MuJoCoBase):
           # * Publish body pose
           bodyOdom = Odometry()
           pos = self.data.sensor('BodyPos').data.copy()
+
+          #add imu bias
           ori = self.data.sensor('BodyQuat').data.copy()
+          ori = R.from_quat(ori).as_euler('xyz')
+          ori += imu_eular_bias
+          ori = R.from_euler('xyz', ori).as_quat()
+
           vel = self.data.qvel[:3].copy()
           angVel = self.data.sensor('BodyGyro').data.copy()
 
@@ -179,7 +192,13 @@ class HumanoidSim(MuJoCoBase):
         # * Publish body pose
         bodyOdom = Odometry()
         pos = self.data.sensor('BodyPos').data.copy()
+
+        #add imu bias
         ori = self.data.sensor('BodyQuat').data.copy()
+        ori = R.from_quat(ori).as_euler('xyz')
+        ori += imu_eular_bias
+        ori = R.from_euler('xyz', ori).as_quat()
+
         vel = self.data.qvel[:3].copy()
         angVel = self.data.sensor('BodyGyro').data.copy()
         bodyOdom.header.stamp = rospy.Time.now()

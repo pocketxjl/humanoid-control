@@ -88,6 +88,10 @@ void StateEstimateBase::updateImu(const Eigen::Quaternion<scalar_t>& quat, const
   angularVelCovariance_ = angularVelCovariance;
   linearAccelCovariance_ = linearAccelCovariance;
 
+  zyxOffset_(0) = imuBiasYaw_;
+  zyxOffset_(1) = imuBiasPitch_;
+  zyxOffset_(2) = imuBiasRoll_;
+
   vector3_t zyx = quatToZyx(quat) - zyxOffset_;
   vector3_t angularVelGlobal = getGlobalAngularVelocityFromEulerAnglesZyxDerivatives<scalar_t>(
       zyx, getEulerAnglesZyxDerivativesFromLocalAngularVelocity<scalar_t>(quatToZyx(quat), angularVelLocal));
@@ -364,17 +368,7 @@ void StateEstimateBase::lateContactDetection(const ModeSchedule& modeSchedule, s
 
 void StateEstimateBase::loadSettings(const std::string& taskFile, bool verbose)
 {
-  boost::property_tree::ptree pt;
-  boost::property_tree::read_info(taskFile, pt);
-  std::string prefix = "contactForceEsimation.";
-  if (verbose)
-  {
-    std::cerr << "\n #### contactForceEsimation:";
-    std::cerr << "\n #### =============================================================================\n";
-  }
-
-  loadData::loadPtreeValue(pt, cutoffFrequency_, prefix + "cutoffFrequency", verbose);
-  loadData::loadPtreeValue(pt, contactThreshold_, prefix + "contactThreshold", verbose);
+  // overrided by derived class
 }
 
 }  // namespace humanoid

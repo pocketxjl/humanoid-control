@@ -106,6 +106,20 @@ target_link_libraries(normal_controller_node
         )
 target_compile_options(normal_controller_node PRIVATE ${OCS2_CXX_FLAGS})
 
+# Joy Controller Node
+add_executable(joy_controller_node
+        src/JoyControllerNode.cpp
+        )
+add_dependencies(joy_controller_node
+        ${PROJECT_NAME}
+        ${catkin_EXPORTED_TARGETS}
+        )
+target_link_libraries(joy_controller_node
+        ${PROJECT_NAME}
+        ${catkin_LIBRARIES}
+        )
+target_compile_options(joy_controller_node PRIVATE ${OCS2_CXX_FLAGS})
+
 #########################
 ###   CLANG TOOLING   ###
 #########################

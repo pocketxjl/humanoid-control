@@ -296,6 +296,26 @@ void KalmanFilterEstimate::loadSettings(const std::string& taskFile, bool verbos
   loadData::loadPtreeValue(pt, footSensorNoisePosition_, prefix + "footSensorNoisePosition", verbose);
   loadData::loadPtreeValue(pt, footSensorNoiseVelocity_, prefix + "footSensorNoiseVelocity", verbose);
   loadData::loadPtreeValue(pt, footHeightSensorNoise_, prefix + "footHeightSensorNoise", verbose);
+
+  prefix = "contactForceEsimation.";
+  if (verbose)
+  {
+    std::cerr << "\n #### contactForceEsimation:";
+    std::cerr << "\n #### =============================================================================\n";
+  }
+
+  loadData::loadPtreeValue(pt, cutoffFrequency_, prefix + "cutoffFrequency", verbose);
+  loadData::loadPtreeValue(pt, contactThreshold_, prefix + "contactThreshold", verbose);
+
+  prefix = "imuBias.";
+  if (verbose)
+  {
+    std::cerr << "\n #### imuBias:";
+    std::cerr << "\n #### =============================================================================\n";
+  }
+  loadData::loadPtreeValue(pt, imuBiasYaw_, prefix + "yaw", verbose);
+  loadData::loadPtreeValue(pt, imuBiasPitch_, prefix + "pitch", verbose);
+  loadData::loadPtreeValue(pt, imuBiasRoll_, prefix + "roll", verbose);
 }
 
 }  // namespace humanoid

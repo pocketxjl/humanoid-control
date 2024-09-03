@@ -87,7 +87,6 @@ protected:
   Task formulateTorqueLimitsTask();
   Task formulateNoContactMotionTask();
   Task formulateFrictionConeTask();
-  Task formulateBaseHeightMotionTask();
   Task formulateBaseAngularMotionTask();
   Task formulateBaseAccelTask(const vector_t& stateDesired, const vector_t& inputDesired, scalar_t period);
   Task formulateSwingLegTask();

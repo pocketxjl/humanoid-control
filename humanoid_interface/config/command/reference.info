@@ -28,7 +28,7 @@ initialModeSchedule
   }
   eventTimes
   {
-    [0]  0.5
+    [0]  1000.0 ; not used
   }
 }
 
@@ -41,6 +41,6 @@ defaultModeSequenceTemplate
   switchingTimes
   {
     [0]  0.0
-    [1]  1.0
+    [1]  1000.0
   }
 }

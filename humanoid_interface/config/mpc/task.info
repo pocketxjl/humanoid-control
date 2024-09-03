@@ -9,11 +9,11 @@ humanoid_interface
 
 model_settings
 {
-  positionErrorGain             20.0 ; 20.0
+  positionErrorGain             100.0 ; 20.0
   phaseTransitionStanceTime     0.4
 
-  verboseCppAd                  true
-  recompileLibrariesCppAd       true
+  verboseCppAd                  false
+  recompileLibrariesCppAd       false
   modelFolderCppAd              /tmp/ocs2
 }
 
@@ -58,7 +58,7 @@ ipm
   printSolverStatistics                 true
   printSolverStatus                     false
   printLinesearch                       false
-  useFeedbackPolicy                     true
+  useFeedbackPolicy                     false
   integratorType                        RK2
   threadPriority                        50
 
@@ -78,46 +78,6 @@ ipm
   initialDualMarginRate                 1e-2
 }
 
-; DDP settings
-ddp
-{
-  algorithm                       SLQ
-
-  nThreads                        3
-  threadPriority                  50
-
-  maxNumIterations                1
-  minRelCost                      1e-1
-  constraintTolerance             5e-3
-
-  displayInfo                     false
-  displayShortSummary             false
-  checkNumericalStability         false
-  debugPrintRollout               false
-
-  AbsTolODE                       1e-5
-  RelTolODE                       1e-3
-  maxNumStepsPerSecond            10000
-  timeStep                        0.015
-  backwardPassIntegratorType      ODE45
-
-  constraintPenaltyInitialValue   20.0
-  constraintPenaltyIncreaseRate   2.0
-
-  preComputeRiccatiTerms          true
-
-  useFeedbackPolicy               false
-
-  strategy                        LINE_SEARCH
-  lineSearch
-  {
-    minStepLength                 1e-2
-    maxStepLength                 1.0
-    hessianCorrectionStrategy     DIAGONAL_SHIFT
-    hessianCorrectionMultiple     1e-5
-  }
-}
-
 ; Rollout settings
 rollout
 {
@@ -131,7 +91,7 @@ rollout
 
 mpc
 {
-  timeHorizon                     1.4  ; [s]
+  timeHorizon                     1.5  ; [s]
   solutionTimeWindow              -1   ; maximum [s]
   coldStart                       false
 
@@ -140,6 +100,7 @@ mpc
   mpcDesiredFrequency             100  ; [Hz]
   mrtDesiredFrequency             1000 ; [Hz] Useless
 }
+
 
 initialState
 {
@@ -192,20 +153,20 @@ Q
   (7,7)   500.0    ; p_base_y
   (8,8)   2000.0    ; p_base_z
   (9,9)   200.0    ; theta_base_z
-  (10,10) 2000.0    ; theta_base_y
-  (11,11) 2000.0    ; theta_base_x
+  (10,10) 5000.0    ; theta_base_y
+  (11,11) 5000.0    ; theta_base_x
 
   ;; Leg Joint Positions: [LF, LH, RF, RH] ;;
   (12,12) 300.0     ; leg_l1_joint
   (13,13) 200.0     ; leg_l2_joint
-  (14,14) 15.0     ; leg_l3_joint
-  (15,15) 10.0     ; leg_l4_joint
+  (14,14) 60.0     ; leg_l3_joint
+  (15,15) 30.0     ; leg_l4_joint
   (16,16) 10.0     ; leg_l5_joint
   (17,17) 10.0     ; leg_l6_joint
   (18,18) 300.0     ; leg_r1_joint
   (19,19) 200.0     ; leg_r2_joint
-  (20,20) 15.0     ; leg_r3_joint
-  (21,21) 10.0     ; leg_r4_joint
+  (20,20) 60.0     ; leg_r3_joint
+  (21,21) 30.0     ; leg_r4_joint
   (22,22) 10.0     ; leg_r5_joint
   (23,23) 10.0     ; leg_r6_joint
 }
@@ -246,7 +207,7 @@ R
 
 frictionConeSoftConstraint
 {
-  frictionCoefficient    0.5
+  frictionCoefficient    0.7
   
   ; relaxed log barrier parameters
   mu                     0.1
@@ -294,15 +255,9 @@ swingLegTask
     kd                   12   
 }
 
-baseHeightTask
-{
-    kp                   25
-    kd                   3
-}
-
 baseAngularTask 
 {
-    kp                   20
+    kp                   30
     kd                   3
 }
 
@@ -310,23 +265,31 @@ weight
 {
     swingLeg        100
     baseAccel       1
-    contactForce    0.1
+    contactForce    1
 }
 
 ; State Estimation
 kalmanFilter
 {
-    footRadius                  0.0
+    footRadius                  -0.013
     imuProcessNoisePosition     0.02
     imuProcessNoiseVelocity     0.02
-    footProcessNoisePosition    0.9
-    footSensorNoisePosition     0.1
+    footProcessNoisePosition    0.5
+    footSensorNoisePosition     0.5
     footSensorNoiseVelocity     0.05
-    footHeightSensorNoise       0.005
+    footHeightSensorNoise       0.01
 }
 
 contactForceEsimation
 {
    cutoffFrequency    250
    contactThreshold   75
+}
+
+; 机器人Imu装歪了一点，或机器人有向某个方向行走的固定偏差，可以微调这里
+imuBias
+{
+   yaw    0.0 ; useless for relative yaw control
+   pitch  -0.007
+   roll   0.0
 }

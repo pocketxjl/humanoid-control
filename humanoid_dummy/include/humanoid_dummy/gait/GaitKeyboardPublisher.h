@@ -47,6 +47,7 @@ class GaitKeyboardPublisher {
 
   /** Prints the command line interface and responds to user input. Function returns after one user input. */
   void getKeyboardCommand();
+  void publishGaitCommandFromString(const std::string& gaitCommand);
 
  private:
   /** Prints the list of available gaits. */

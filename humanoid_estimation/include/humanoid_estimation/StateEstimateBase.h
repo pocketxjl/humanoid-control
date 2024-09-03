@@ -134,6 +134,10 @@ protected:
   contact_flag_t cmdContactflag_{};
   feet_array_t<std::array<scalar_t, 2>> StartStopTime4Legs_;
 
+  scalar_t imuBiasYaw_ = 0;
+  scalar_t imuBiasPitch_ = 0;
+  scalar_t imuBiasRoll_ = 0;
+
   std::array<contact_flag_t, 2> earlyLatecontact_;
   std_msgs::Float64MultiArray earlyLateContactMsg_;
   std::deque<std::pair<scalar_t, contact_flag_t>> estConHistory_;

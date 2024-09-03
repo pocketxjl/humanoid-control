@@ -19,11 +19,11 @@
     <arg name="gaitCommandFile"   default="$(find humanoid_interface)/config/command/gait.info"/>
 
     <!-- rviz -->
-    <group if="$(arg rviz)">
+    <!-- <group if="$(arg rviz)">
       <param name="$(arg description_name)" textfile="$(arg urdfFileOrigin)"/>
       <arg name="rvizconfig" default="$(find humanoid_dummy)/rviz/humanoid.rviz" />
       <node pkg="rviz" type="rviz" name="rviz" args="-d $(arg rvizconfig)" output="screen" />
-    </group>
+    </group> -->
 
     <!-- make the files into global parameters -->
     <param name="taskFile"          value="$(arg taskFile)" />
@@ -32,16 +32,17 @@
     <param name="urdfFileOrigin"          value="$(arg urdfFileOrigin)" />
     <param name="gaitCommandFile"   value="$(arg gaitCommandFile)"/>
     <param name="$(arg description_name)" textfile="$(arg urdfFileOrigin)"/>
-
-    <node pkg="humanoid_dummy" type="humanoid_gait_command" name="humanoid_gait_command"
-          output="screen" launch-prefix="gnome-terminal --"/>
+    <!-- <param name="dev" type="string" value="/dev/input/js0"/>
+    <param name="deadzone" type="double" value="0.1"/> -->
 
     <node pkg="humanoid_controllers" type="humanoid_target_trajectories_publisher" name="humanoid_target"
           output="screen"/>
-    <node pkg="humanoid_controllers" type="normal_controller_node" name="normal_controller"
+    <node pkg="humanoid_controllers" type="joy_controller_node" name="joy_controller"
           output="screen"/>
     <node pkg="mujoco_sim" type="humanoid_sim.py" name="humanoid_sim"
           output="screen"/>
-    <node pkg="mujoco_sim" type="teleop.py" name="teleop"
-          output="screen" launch-prefix="gnome-terminal --"/>
+    <node pkg="mujoco_sim" type="joy.py" name="joy"
+          output="screen"/>
+    <node pkg="joy" type="joy_node" name="joy_node" output="screen"/>
+      
 </launch>
