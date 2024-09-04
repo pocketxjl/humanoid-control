@@ -5,6 +5,7 @@
 #include "humanoid_controllers/humanoidController.h"
 #include "humanoid_dummy/gait/GaitKeyboardPublisher.h"
 #include <geometry_msgs/Twist.h>
+#include <std_msgs/String.h>
 
 #include <thread>
 
@@ -17,6 +18,7 @@ using Clock = std::chrono::high_resolution_clock;
 // init a GaitKeyboardPublisher ptr
 std::shared_ptr<GaitKeyboardPublisher> gaitCommand;
 double vx, vy, vyaw;
+std::string desiredGait;
 
 // gait command publisher thread
 /*****
@@ -34,7 +36,7 @@ void gaitCommandPublisher(){
         }
         else if(v_mod > 0.00001 && v_mod_last < 0.00001)
         {
-            gaitCommand->publishGaitCommandFromString("trot");
+            gaitCommand->publishGaitCommandFromString(desiredGait);
         }
         v_mod_last = v_mod;
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
@@ -49,6 +51,13 @@ void cmdVelCallback(const geometry_msgs::Twist::ConstPtr& msg){
     vx = msg->linear.x;
     vy = msg->linear.y;
     vyaw = msg->angular.z;
+}
+
+/**
+ * @brief desired_gait callback
+*/
+void desiredGaitCallback(const std_msgs::String::ConstPtr& msg){
+    desiredGait = msg->data;
 }
 
 
@@ -83,6 +92,9 @@ int main(int argc, char** argv){
 
     //create a subscriber to cmd_vel
     ros::Subscriber cmd_vel_sub = nh.subscribe<geometry_msgs::Twist>("cmd_vel", 1, cmdVelCallback);
+
+    //create a subscriber to String /desired_gait_str
+    ros::Subscriber desired_gait_sub = nh.subscribe<std_msgs::String>("desired_gait_str", 1, desiredGaitCallback);
 
     //create a thread to spin the node
     std::thread spin_thread([](){

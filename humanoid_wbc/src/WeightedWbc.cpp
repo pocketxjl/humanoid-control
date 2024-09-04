@@ -47,7 +47,10 @@ vector_t WeightedWbc::update(const vector_t& stateDesired, const vector_t& input
   auto qpProblem = qpOASES::QProblem(getNumDecisionVars(), numConstraints);
   qpOASES::Options options;
   options.setToMPC();
+  options.printLevel = qpOASES::PL_NONE;
+  #ifdef DEBUG
   options.printLevel = qpOASES::PL_LOW;
+  #endif
   options.enableEqualities = qpOASES::BT_TRUE;
   qpProblem.setOptions(options);
   int nWsr = 20;
@@ -59,7 +62,9 @@ vector_t WeightedWbc::update(const vector_t& stateDesired, const vector_t& input
 
   if (!qpProblem.isSolved())
   {
+    #ifdef DEBUG
     std::cout << "ERROR: WeightWBC Not Solved!!!" << std::endl;
+    #endif
     if (last_qpSol.size() > 0)
       qpSol = last_qpSol;
   }
