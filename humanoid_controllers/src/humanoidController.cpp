@@ -198,8 +198,8 @@ void humanoidController::update(const ros::Time& time, const ros::Duration& peri
     std_msgs::Float32MultiArray targetKp;
     std_msgs::Float32MultiArray targetKd;
 
-    targetKp.data = {120.0, 120.0, 120.0, 120.0, 1.5, 1.5, 120.0, 120.0, 120.0, 120.0, 1.5, 1.5};
-    targetKd.data = {4.0, 4.0, 4.0, 4.0, 0.1, 0.1, 4.0, 4.0, 4.0, 4.0, 0.1, 0.1};
+    targetKp.data = {80.0, 60.0, 80.0, 80.0, 4.0, 4.0, 80.0, 60.0, 80.0, 80.0, 4.0, 4.0};
+    targetKd.data = {1.2, 0.9, 1.2, 1.2, 0.1, 0.1, 1.2, 0.9, 1.2, 1.2, 0.1, 0.1};
 
    
     targetKpPub_.publish(targetKp);
