@@ -13,7 +13,7 @@ model_settings
   phaseTransitionStanceTime     0.4
 
   verboseCppAd                  false
-  recompileLibrariesCppAd       false
+  recompileLibrariesCppAd       true
   modelFolderCppAd              /tmp/ocs2
 }
 
