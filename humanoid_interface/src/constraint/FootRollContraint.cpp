@@ -28,7 +28,7 @@ namespace humanoid {
     vector_t FootRollConstraint::getValue(scalar_t time, const vector_t& state, const vector_t& input,
                                                    const PreComputation& preComp) const {
         //获取最后一个关节的速度
-        long index = 5 + (contactPointIndex_) * 6;
+        long index = 5 + (contactPointIndex_ / 2) * 6;
         return centroidal_model::getJointVelocities(input, info_).block<-1, 1>(index, 0, 1, 1);
     }
 
@@ -40,7 +40,7 @@ namespace humanoid {
         approx.f = getValue(time, state, input, preComp);
         approx.dfdx = matrix_t::Zero(1, state.size());
         approx.dfdu = matrix_t::Zero(1, input.size());
-        approx.dfdu.middleCols<1>(17 + (contactPointIndex_) * 6).diagonal() = vector_t::Ones(1);
+        approx.dfdu.middleCols<1>(17 + (contactPointIndex_ / 2) * 6).diagonal() = vector_t::Ones(1);
         return approx;
     }
 }
